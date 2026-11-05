@@ -187,3 +187,9 @@ npm run test:e2e     # Playwright 端到端测试
 - 代码以 [MIT License](LICENSE) 开源。
 - 随包分发的「冯宝宝」角色素材来自用户自制素材包，仅限个人欣赏用途再分发（详见 `public/characters/feng_baobao/NOTICE.md`）。
 - 其余美术资产（主题插画、内置角色、场景）为本项目原创 SVG，随 MIT 许可一并提供。
+
+### GTC exam calendar (T1cs)
+
+In **Calendar**, enable “GTC T1cs 考试日程” to import the public exam schedule. The calendar checks for new or edited entries when you open it; “立即同步” checks again immediately. Imports are normal dated tasks, with a GTC source marker for deduplication. Sync never removes tasks if an entry disappears from the source, and turning it off keeps imported tasks. The source does not publish times, so imported entries have no specific start time.
+
+Live synchronization requires internet access to `www.gtc.com`. Hosted web builds use a fixed server-side rewrite; Electron uses its app protocol, and Android uses Capacitor native HTTP. A static site hosted without a server (outside the packaged apps) cannot refresh this feed. The page structure and academic year are inferred from GTC's public HTML; check the source if the school changes its format or moves to a new academic year.

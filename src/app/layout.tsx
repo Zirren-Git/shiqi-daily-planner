@@ -1,5 +1,5 @@
 ﻿import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import '@/styles/themes.css'
 import { AppProviders } from '@/providers/app-providers'
@@ -7,15 +7,9 @@ import { AppShell } from '@/components/layout/app-shell'
 import { APP_NAME, APP_DESCRIPTION } from '@/lib/constants'
 import { PREPAINT_SCRIPT } from '@/lib/theme/prepaint'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
+const geistSans = localFont({ src: '../fonts/geist-latin.woff2', variable: '--font-geist-sans', display: 'swap' })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+const geistMono = localFont({ src: '../fonts/geist-mono-latin.woff2', variable: '--font-geist-mono', display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
