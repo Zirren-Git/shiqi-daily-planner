@@ -78,12 +78,12 @@ export function parseImportJson(
   try {
     parsed = JSON.parse(json)
   } catch {
-    errors.push('JSON 格式无效')
+    errors.push('Invalid JSON')
     return { tasks: [], errors }
   }
 
   if (!Array.isArray(parsed)) {
-    errors.push('JSON 应该是一个数组')
+    errors.push('JSON must contain an array')
     return { tasks: [], errors }
   }
 
@@ -94,7 +94,7 @@ export function parseImportJson(
     const itemErrors: string[] = []
 
     if (!item || typeof item !== 'object') {
-      itemErrors.push(`第 ${i + 1} 项不是有效对象`)
+      itemErrors.push(`Item ${i + 1} is not an object`)
       errors.push(...itemErrors)
       continue
     }
@@ -102,25 +102,25 @@ export function parseImportJson(
     const obj = item as Record<string, unknown>
 
     if (!obj.title || typeof obj.title !== 'string' || obj.title.trim() === '') {
-      itemErrors.push(`第 ${i + 1} 项缺少 title 字段`)
+      itemErrors.push(`Item ${i + 1} is missing a title`)
     }
 
     // Validate period
     const validPeriods: Period[] = ['morning', 'afternoon', 'evening']
     if (obj.period && !validPeriods.includes(obj.period as Period)) {
-      itemErrors.push(`第 ${i + 1} 项的 period 无效 (${obj.period})`)
+      itemErrors.push(`Item ${i + 1} has an invalid period (${obj.period})`)
     }
 
     // Validate priority
     const validPriorities: Priority[] = ['low', 'normal', 'high', 'urgent']
     if (obj.priority && !validPriorities.includes(obj.priority as Priority)) {
-      itemErrors.push(`第 ${i + 1} 项的 priority 无效 (${obj.priority})`)
+      itemErrors.push(`Item ${i + 1} has an invalid priority (${obj.priority})`)
     }
 
     // Validate status
     const validStatuses: TaskStatus[] = ['todo', 'in_progress', 'done', 'cancelled']
     if (obj.status && !validStatuses.includes(obj.status as TaskStatus)) {
-      itemErrors.push(`第 ${i + 1} 项的 status 无效 (${obj.status})`)
+      itemErrors.push(`Item ${i + 1} has an invalid status (${obj.status})`)
     }
 
     if (itemErrors.length > 0) {
@@ -248,7 +248,7 @@ export function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(new Error('读取文件失败'))
+    reader.onerror = () => reject(new Error('Could not read file'))
     reader.readAsText(file)
   })
 }

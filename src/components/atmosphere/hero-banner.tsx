@@ -1,13 +1,13 @@
-﻿'use client'
+'use client'
 
 // ============================================================
 // 首页主视觉（Hero）
 //
-// 不是"右下角贴一张图"：场景、角色、问候与每日一句被组织成一张卡片，
-// 角色参与构图的右侧，文字在左，场景作为底纹铺满——三种元素互相咬合。
+// 不是"右下角贴一张图"：场景、Character、问候与每日一句被组织成一张卡片，
+// Character参与构图的右侧，文字在左，场景作为底纹铺满——三种元素互相咬合。
 // 卡片本身用 .surface，所以六套主题会自动带上各自的边框/圆角/阴影语言。
 //
-// 纯净模式、关闭氛围、或没有角色的主题下不显示，工作区保持最大。
+// Distraction-free mode、关闭氛围、或没有Character的主题下不显示，工作区保持最大。
 // ============================================================
 
 import { useMemo, useState } from 'react'
@@ -22,11 +22,11 @@ import { QuoteStrip } from './quote-strip'
 
 function greeting(): string {
   const hour = new Date().getHours()
-  if (hour < 6) return '夜深了'
-  if (hour < 11) return '早上好'
-  if (hour < 14) return '中午好'
-  if (hour < 19) return '下午好'
-  return '晚上好'
+  if (hour < 6) return 'Good night'
+  if (hour < 11) return 'Good morning'
+  if (hour < 14) return 'Good afternoon'
+  if (hour < 19) return 'Good afternoon'
+  return 'Good evening'
 }
 
 export function ThemeHero() {
@@ -53,7 +53,7 @@ export function ThemeHero() {
         data-testid="hero-expand"
       >
         <ChevronUp className="h-3 w-3 rotate-180" aria-hidden="true" />
-        展开今日主视觉
+        Expand today’s scene
       </button>
     )
   }
@@ -74,8 +74,8 @@ export function ThemeHero() {
         type="button"
         onClick={() => setCollapsed(true)}
         className="absolute right-2 top-2 z-10 tap-pad rounded-full p-1 text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
-        aria-label="收起主视觉"
-        title="收起（需要更大的工作区时）"
+        aria-label="Collapse scene"
+        title="Collapse for more workspace"
       >
         <X className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
@@ -87,7 +87,7 @@ export function ThemeHero() {
             {greeting()} · {theme.name}
           </p>
           <h2 className="mt-1 text-title text-foreground">
-            今天先做哪一件？
+            What will you do first today?
           </h2>
           {line && (
             <p className="mt-1.5 line-clamp-2 text-caption text-muted-foreground">「{line}」</p>

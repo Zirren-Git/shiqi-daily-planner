@@ -7,7 +7,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 const config: CapacitorConfig = {
   // 新应用新身份：appId 独立于旧版，全新安装
   appId: 'app.shiqi.planner',
-  appName: '时栖',
+  appName: 'ShiQi',
   webDir: 'out',
   android: {
     allowMixedContent: false,

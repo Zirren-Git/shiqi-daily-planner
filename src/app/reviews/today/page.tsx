@@ -15,7 +15,7 @@ export default function ReviewTodayPage() {
     <div className="mx-auto max-w-2xl space-y-6 p-4 sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-display">每日总结</h1>
+          <h1 className="text-display">Daily review</h1>
           <p className="mt-1 text-caption text-muted-foreground">
             {formatDisplayDate(today)} {formatWeekday(today)}
           </p>
@@ -25,7 +25,7 @@ export default function ReviewTodayPage() {
           onClick={() => router.push('/reviews')}
         >
           <History className="h-4 w-4" />
-          查看历史记录
+          View history
         </Button>
       </div>
 

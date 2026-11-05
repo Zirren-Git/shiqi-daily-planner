@@ -28,37 +28,37 @@ export const DEFAULT_RADIUS: RadiusSettings = {
 export const SCALE_OPTIONS = [0.8, 0.9, 1, 1.1, 1.25, 1.5] as const
 
 export const MOTION_OPTIONS: { value: MotionLevel; label: string; hint: string }[] = [
-  { value: 'off', label: '关闭', hint: '不做过渡与动画，状态仍用颜色/边框区分' },
-  { value: 'low', label: '低', hint: '只保留必要的状态过渡' },
-  { value: 'standard', label: '标准', hint: '主题推荐的默认节奏' },
-  { value: 'high', label: '高', hint: '更明显的位移、缩放与装饰动效' },
+  { value: 'off', label: 'Off', hint: 'No animation; colors and borders still show state' },
+  { value: 'low', label: 'Low', hint: 'Only essential transitions' },
+  { value: 'standard', label: 'Standard', hint: 'Recommended by the theme' },
+  { value: 'high', label: 'High', hint: 'More pronounced motion and effects' },
 ]
 
 export const FONT_OPTIONS: { value: FontId; label: string; stack: string; hint: string }[] = [
-  { value: 'theme', label: '跟随主题', stack: '', hint: '使用当前主题自带的字体方案' },
+  { value: 'theme', label: 'Follow theme', stack: '', hint: 'Use the current theme’s font' },
   {
     value: 'system',
-    label: '系统无衬线',
+    label: 'System sans-serif',
     stack: 'var(--font-ui, ui-sans-serif), "Segoe UI", system-ui, "Microsoft YaHei", sans-serif',
-    hint: '最稳妥的默认选择',
+    hint: 'A reliable default',
   },
   {
     value: 'rounded',
-    label: '圆润黑体',
+    label: 'Rounded sans-serif',
     stack: '"Segoe UI Rounded", "Hiragino Maru Gothic ProN", "Yu Gothic UI", "Microsoft YaHei UI", system-ui, sans-serif',
-    hint: '亲和力强，适合日系主题',
+    hint: 'Friendly and rounded',
   },
   {
     value: 'mono',
-    label: '等宽字体',
+    label: 'Monospace',
     stack: 'var(--font-geist-mono), "Cascadia Mono", Consolas, "Sarasa Mono SC", ui-monospace, monospace',
-    hint: '数码、终端感',
+    hint: 'Digital and terminal-inspired',
   },
   {
     value: 'serif',
-    label: '衬线字体',
+    label: 'Serif',
     stack: 'Georgia, "Songti SC", "SimSun", "Noto Serif SC", ui-serif, serif',
-    hint: '偏书卷气、杂志感',
+    hint: 'Classic editorial look',
   },
 ]
 
@@ -78,12 +78,12 @@ function p(overrides: Partial<ThemePersonalization> = {}): ThemePersonalization 
 export const THEMES: ThemeDefinition[] = [
   {
     id: 'fluent',
-    name: '云母',
+    name: 'Mica',
     latinName: 'Fluent',
-    tagline: 'Windows 11 式清爽与层次',
+    tagline: 'Clean, layered Windows 11 style',
     description:
-      '取自 Windows 11 的云母材质：柔和的半透明表面、克制的投影、明确的层级。默认推荐，长时间使用最不容易疲劳。',
-    keywords: ['Fluent', 'Acrylic', 'Mica', '桌面'],
+      'Inspired by Windows 11 Mica, with soft translucent surfaces and clear layers. Comfortable for everyday use.',
+    keywords: ['Fluent', 'Acrylic', 'Mica', 'Desktop'],
     modes: ['light', 'dark'],
     defaultMode: 'light',
     recommended: true,
@@ -107,11 +107,11 @@ export const THEMES: ThemeDefinition[] = [
   },
   {
     id: 'anime',
-    name: '樱色',
+    name: 'Sakura',
     latinName: 'Anime',
-    tagline: '日系二次元的轻盈与可爱',
+    tagline: 'Light and playful anime-inspired design',
     description:
-      '樱花粉、薰衣草与晴空的柔和配色，圆润的卡片、点点星光与轻快弹跳的动效。属于会让人想在睡前多看一眼的界面。',
+      'Soft pink, lavender and sky blue with rounded cards, stars and playful motion.',
     keywords: ['Anime', 'Pastel', 'Kawaii', 'Soft UI'],
     modes: ['light', 'dark'],
     defaultMode: 'light',
@@ -135,11 +135,11 @@ export const THEMES: ThemeDefinition[] = [
   },
   {
     id: 'cyber',
-    name: '霓虹终端',
+    name: 'Neon Terminal',
     latinName: 'Cyberpunk',
-    tagline: 'HUD 面板与冷光扫描线',
+    tagline: 'HUD panels and cool scanlines',
     description:
-      '深空底色、青色数据线与切角面板。标题带机械感的字距，状态用指示灯表达，边角有 HUD 括号。为夜间长时间工作准备，克制发光。',
+      'Deep-space surfaces, cyan data lines and clipped panels. Designed for night work.',
     keywords: ['Cyberpunk', 'HUD', 'Neon', 'Sci-Fi'],
     modes: ['dark'],
     defaultMode: 'dark',
@@ -163,11 +163,11 @@ export const THEMES: ThemeDefinition[] = [
   },
   {
     id: 'minimal',
-    name: '留白',
+    name: 'Minimal',
     latinName: 'Minimal',
-    tagline: '近乎没有装饰的高级感',
+    tagline: 'Refined simplicity',
     description:
-      '去掉边框与投影，全靠留白、字重和精确对齐建立层次。单一强调色，克制的悬停反馈，适合追求长期耐看的桌面工具。',
+      'Minimal borders and shadows, with spacing and typography providing structure.',
     keywords: ['Minimal', 'Apple', 'Linear', 'Clean'],
     modes: ['light', 'dark'],
     defaultMode: 'light',
@@ -191,11 +191,11 @@ export const THEMES: ThemeDefinition[] = [
   },
   {
     id: 'pixel',
-    name: '像素机',
+    name: 'Retro Pixel',
     latinName: 'Retro Pixel',
-    tagline: '8-bit 掌机与街机的复古秩序',
+    tagline: 'Retro 8-bit handheld and arcade style',
     description:
-      '硬边边框、零圆角、错位实心投影，标题带像素感字距，选中项用 ▶ 标记。动效是分步跳变而不是缓动，像在对一台老机器下指令。',
+      'Hard edges, pixel-inspired headings and stepped animations.',
     keywords: ['Retro', 'Pixel Art', '8-bit', 'Arcade'],
     modes: ['light', 'dark'],
     defaultMode: 'light',
@@ -219,11 +219,11 @@ export const THEMES: ThemeDefinition[] = [
   },
   {
     id: 'bento',
-    name: '暗格',
+    name: 'Dark Bento',
     latinName: 'Dark Bento',
-    tagline: '深色模块化，数据一目了然',
+    tagline: 'Dark modular cards at a glance',
     description:
-      '低饱和深色底上铺开大小不一的模块卡，边框极轻、内层有微光，悬停时轻微上浮。适合把计划、习惯、统计摊在一屏里同时看。',
+      'Low-saturation dark surfaces with modular cards for tasks, habits and insights.',
     keywords: ['Dark', 'Bento', 'Premium', 'SaaS'],
     modes: ['dark'],
     defaultMode: 'dark',

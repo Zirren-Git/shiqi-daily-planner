@@ -13,7 +13,7 @@ interface ThemeCardProps {
 /**
  * 主题预览卡。
  * 预览不是截图，而是用同一套 CSS 变量渲染的迷你界面，
- * 所以卡片里看到的颜色、圆角、描边、底纹与真实主题一致。
+ * 所以卡片里看到的Color、圆角、描边、底纹与真实主题一致。
  */
 export function ThemeCard({ def, active, onSelect }: ThemeCardProps) {
   return (
@@ -54,7 +54,7 @@ export function ThemeCard({ def, active, onSelect }: ThemeCardProps) {
         </div>
 
         <div className="flex gap-1.5">
-          {/* 假侧栏 */}
+          {/* 假Sidebar */}
           <div className="tp-surface flex w-6 flex-col gap-1 p-1">
             <span className="tp-soft h-1 w-full rounded-sm" />
             <span className="tp-muted h-1 w-3/4 rounded-sm" />
@@ -69,7 +69,7 @@ export function ThemeCard({ def, active, onSelect }: ThemeCardProps) {
                 className="block text-[9px] font-semibold leading-none"
                 style={{ color: 'var(--foreground)' }}
               >
-                今日 6 项
+                6 tasks today
               </span>
               <span className="tp-soft mt-1.5 block h-1 w-full rounded-sm" />
             </div>
@@ -115,12 +115,12 @@ export function ThemeCard({ def, active, onSelect }: ThemeCardProps) {
 
       {active && (
         <span className="absolute right-2 top-2 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-medium text-primary-foreground">
-          使用中
+          In use
         </span>
       )}
       {!active && def.recommended && (
         <span className="absolute right-2 top-2 rounded-full bg-muted px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground">
-          推荐
+          Recommended
         </span>
       )}
     </button>

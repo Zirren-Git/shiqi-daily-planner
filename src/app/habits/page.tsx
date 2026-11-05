@@ -47,9 +47,9 @@ export default function HabitsPage() {
       setShowCreate(false)
       setNewName('')
       setReminderTime('')
-      toast.success('习惯已创建')
+      toast.success('Habit created')
     },
-    onError: () => toast.error('创建失败'),
+    onError: () => toast.error('Could not create'),
   })
 
   if (!user) return null
@@ -64,54 +64,54 @@ export default function HabitsPage() {
       className="space-y-4"
     >
       <div className="space-y-2">
-        <Label htmlFor="habit-name">习惯名称</Label>
+        <Label htmlFor="habit-name">Habit name</Label>
         <Input
           id="habit-name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
-          placeholder="如：阅读、运动、早睡"
+          placeholder="e.g. reading, exercise, bedtime"
           autoFocus
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label>计量方式</Label>
+          <Label>Measurement</Label>
           <Select value={newType} onValueChange={(v: string | null) => v && setNewType(v as MeasurementType)}>
             <SelectTrigger>
               <SelectValue>
-                {{ boolean: '完成/未完成', count: '次数', duration: '分钟', minutes: '分钟', hours: '小时', numeric: '自定义数值' }[newType] || newType}
+                {{ boolean: 'Done / Not done', count: 'Count', duration: 'minutes', minutes: 'minutes', hours: 'hours', numeric: 'Custom value' }[newType] || newType}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="boolean">完成/未完成</SelectItem>
-              <SelectItem value="count">次数</SelectItem>
-              <SelectItem value="minutes">分钟</SelectItem>
-              <SelectItem value="hours">小时</SelectItem>
-              <SelectItem value="numeric">自定义数值</SelectItem>
+              <SelectItem value="boolean">Done / Not done</SelectItem>
+              <SelectItem value="count">Count</SelectItem>
+              <SelectItem value="minutes">minutes</SelectItem>
+              <SelectItem value="hours">hours</SelectItem>
+              <SelectItem value="numeric">Custom value</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label>目标值</Label>
+          <Label>Target</Label>
           <Input value={newTarget} onChange={(e) => setNewTarget(e.target.value)} type="number" />
         </div>
       </div>
       {newType !== 'boolean' && (
         <div className="space-y-2">
-          <Label>单位</Label>
-          <Input value={newUnit} onChange={(e) => setNewUnit(e.target.value)} placeholder="如：次、分钟、个" />
+          <Label>Unit</Label>
+          <Input value={newUnit} onChange={(e) => setNewUnit(e.target.value)} placeholder="e.g. times, minutes, items" />
         </div>
       )}
       <div className="space-y-2">
         <Label className="flex items-center gap-1.5">
           <Bell className="h-3.5 w-3.5 text-muted-foreground" />
-          提醒时间
+          Reminder time
         </Label>
         <Input type="time" value={reminderTime} onChange={(e) => setReminderTime(e.target.value)} />
-        <p className="text-micro text-muted-foreground">每天在此时间提醒打卡（可选）</p>
+        <p className="text-micro text-muted-foreground">Remind me to check in at this time each day (optional)</p>
       </div>
       <Button type="submit" className="w-full" disabled={createMutation.isPending || !newName.trim()}>
-        创建习惯
+        Create habit
       </Button>
     </form>
   )
@@ -120,11 +120,11 @@ export default function HabitsPage() {
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-display">习惯打卡</h1>
-          <p className="mt-1 text-caption text-muted-foreground">坚持每一天</p>
+          <h1 className="text-display">Habit tracking</h1>
+          <p className="mt-1 text-caption text-muted-foreground">Keep it up every day</p>
         </div>
         <Button onClick={() => setShowCreate(true)}>
-          <Plus className="h-4 w-4" />新建习惯
+          <Plus className="h-4 w-4" />New habit
         </Button>
       </div>
 
@@ -137,7 +137,7 @@ export default function HabitsPage() {
         <Dialog open={showCreate} onOpenChange={setShowCreate}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>新建习惯</DialogTitle>
+              <DialogTitle>New habit</DialogTitle>
             </DialogHeader>
             {form}
           </DialogContent>
@@ -146,7 +146,7 @@ export default function HabitsPage() {
         <Drawer open={showCreate} onOpenChange={setShowCreate}>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>新建习惯</DrawerTitle>
+              <DrawerTitle>New habit</DrawerTitle>
             </DrawerHeader>
             <div className="px-4 pb-4">{form}</div>
           </DrawerContent>

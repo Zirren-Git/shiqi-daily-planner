@@ -43,9 +43,9 @@ import { todayStr } from '@/lib/utils/date'
 import { PERIOD_CLASS } from '@/lib/period-style'
 
 const PERIOD_LABELS: Record<Period, string> = {
-  morning: '上午',
-  afternoon: '下午',
-  evening: '晚上',
+  morning: 'Morning',
+  afternoon: 'Afternoon',
+  evening: 'Evening',
 }
 interface ImportExportDialogProps {
   open: boolean
@@ -76,12 +76,12 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
 
   const handleExportJson = () => {
     downloadJson(allTasks, `tasks-${today}.json`)
-    toast.success('JSON 已导出')
+    toast.success('JSON exported')
   }
 
   const handleExportCsv = () => {
     downloadCsv(allTasks, `tasks-${today}.csv`)
-    toast.success('CSV 已导出')
+    toast.success('CSV exported')
   }
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,14 +96,14 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
       setImportPreview(result.errors.length === 0 ? result.tasks : null)
 
       if (result.errors.length > 0) {
-        toast.error(`JSON 验证失败：${result.errors.length} 个错误`)
+        toast.error(`JSON validation failed: ${result.errors.length} errors`)
       } else if (result.tasks.length === 0) {
-        toast.info('JSON 中没有可导入的事项')
+        toast.info('No tasks to import in this JSON file')
       } else {
-        toast.success(`已解析 ${result.tasks.length} 个事项`)
+        toast.success(`Parsed ${result.tasks.length} tasks`)
       }
     } catch {
-      toast.error('读取文件失败')
+      toast.error('Could not read file')
     }
 
     // Reset file input
@@ -143,7 +143,7 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
 
     setImporting(false)
     queryClient.invalidateQueries({ queryKey: ['tasks'] })
-    toast.success(`导入完成：${imported} 个成功，${skipped} 个跳过`)
+    toast.success(`Import complete: ${imported} imported, ${skipped} skipped`)
     setImportPreview(null)
     setImportErrors([])
     onOpenChange(false)
@@ -155,10 +155,10 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Download className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-          <h3 className="text-section">导出事项</h3>
+          <h3 className="text-section">Export tasks</h3>
         </div>
         <p className="text-caption text-muted-foreground">
-          将当前所有事项导出为文件，可用于备份或迁移
+          Export all tasks to a file for backup or migration
         </p>
         <div className="flex gap-2">
           <Button
@@ -186,10 +186,10 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Upload className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-          <h3 className="text-section">导入事项</h3>
+          <h3 className="text-section">Import tasks</h3>
         </div>
         <p className="text-caption text-muted-foreground">
-          从 JSON 文件导入事项（仅支持 JSON 格式）
+          Import tasks from a JSON file
         </p>
 
         <input
@@ -199,7 +199,7 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
           onChange={handleFileSelect}
           className="hidden"
           id="import-file"
-          aria-label="选择 JSON 备份文件"
+          aria-label="Choose JSON backup file"
         />
         <Button
           variant="outline"
@@ -207,7 +207,7 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
           onClick={() => fileInputRef.current?.click()}
         >
           <Upload className="h-4 w-4" aria-hidden="true" />
-          选择 JSON 文件
+          Choose JSON file
         </Button>
 
         {/* Import errors */}
@@ -215,7 +215,7 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
           <div className="space-y-1.5 rounded-lg border border-destructive/30 bg-destructive/5 p-3">
             <div className="flex items-center gap-1.5 text-caption font-medium text-destructive">
               <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
-              验证错误
+              Validation errors
             </div>
             <ul className="list-inside list-disc space-y-0.5 text-micro text-muted-foreground">
               {importErrors.map((err, i) => (
@@ -230,9 +230,9 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
           <div className="space-y-2">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-success" aria-hidden="true" />
-              <span className="text-caption font-medium">预览</span>
+              <span className="text-caption font-medium">Preview</span>
               <span className="text-micro tabular-nums text-muted-foreground">
-                {importPreview.length} 个事项
+                {importPreview.length} tasks
               </span>
             </div>
             <div className="max-h-40 space-y-1 overflow-y-auto">
@@ -259,7 +259,7 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
               ))}
               {importPreview.length > 10 && (
                 <p className="text-center text-micro text-muted-foreground">
-                  还有 {importPreview.length - 10} 个未显示
+                  {importPreview.length - 10} more not shown
                 </p>
               )}
             </div>
@@ -271,12 +271,12 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
               {importing ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                  导入中…
+                  Importing…
                 </>
               ) : (
                 <>
                   <Upload className="h-4 w-4" aria-hidden="true" />
-                  确认导入 {importPreview.length} 个事项
+                  Import {importPreview.length} tasks
                 </>
               )}
             </Button>
@@ -291,9 +291,9 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-section">导入 / 导出</DialogTitle>
+            <DialogTitle className="text-section">Import / Export</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
-              导出事项备份或从 JSON 文件导入
+              Export a backup or import tasks from JSON
             </DialogDescription>
           </DialogHeader>
           {content}
@@ -306,9 +306,9 @@ export function ImportExportDialog({ open, onOpenChange }: ImportExportDialogPro
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="shadow-[var(--shadow-pop)]">
         <DrawerHeader>
-          <DrawerTitle className="text-section">导入 / 导出</DrawerTitle>
+          <DrawerTitle className="text-section">Import / Export</DrawerTitle>
           <DrawerDescription className="text-caption text-muted-foreground">
-            导出事项备份或从 JSON 文件导入
+            Export a backup or import tasks from JSON
           </DrawerDescription>
         </DrawerHeader>
         <div className="px-4 pb-4">{content}</div>

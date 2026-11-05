@@ -57,7 +57,7 @@ export function SortableTaskItem({ task, children }: SortableTaskItemProps) {
       {...attributes}
       {...listeners}
       tabIndex={-1}
-      aria-label={`拖拽排序: ${task.title}`}
+      aria-label={`Drag to reorder: ${task.title}`}
     >
       <GripVertical className="h-3.5 w-3.5" />
     </button>

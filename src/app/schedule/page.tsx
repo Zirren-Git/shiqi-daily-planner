@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useAuth } from '@/providers/auth-provider'
@@ -45,13 +45,13 @@ function getWeekDateRange(today: string): { dates: string[]; end: string } {
 /** Format a date string for display in week groups */
 function formatWeekDateLabel(dateStr: string, today: string): string {
   const d = parseISO(dateStr)
-  const monthDay = format(d, 'M月d日')
-  const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  const monthDay = format(d, 'MMM d')
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const weekday = weekdays[parseInt(format(d, 'i')) % 7]
 
-  if (dateStr === today) return `今天 · ${monthDay} ${weekday}`
+  if (dateStr === today) return `Today · ${monthDay} ${weekday}`
   const tomorrow = format(addDays(parseISO(today), 1), 'yyyy-MM-dd')
-  if (dateStr === tomorrow) return `明天 · ${monthDay} ${weekday}`
+  if (dateStr === tomorrow) return `Tomorrow · ${monthDay} ${weekday}`
   return `${monthDay} ${weekday}`
 }
 
@@ -239,10 +239,10 @@ export default function SchedulePage() {
                 className="h-7 gap-1 text-caption"
                 onClick={() => setSearchOpen(true)}
                 data-testid="open-search"
-                title="搜索事项（Ctrl+K）"
+                title="Search tasks (Ctrl+K)"
               >
                 <Search className="h-3.5 w-3.5" aria-hidden="true" />
-                搜索
+                Search
               </Button>
             </div>
 
@@ -262,8 +262,8 @@ export default function SchedulePage() {
                     undatedTasks.length === 0 ? (
                       <ScheduleEmptyState
                         icon={FolderOpen}
-                        title="今天还没有计划"
-                        description="在上方输入框添加一项计划吧"
+                        title="No plans for today"
+                        description="Add a plan using the field above"
                       />
                     ) : (
                       <>
@@ -321,8 +321,8 @@ export default function SchedulePage() {
                     {weekDateGroups.length === 0 && overdueTasks.length === 0 ? (
                       <ScheduleEmptyState
                         icon={FolderOpen}
-                        title="未来7天暂无计划"
-                        description="可以新增一项计划，提前安排接下来的时间"
+                        title="No plans for the next 7 days"
+                        description="Add a plan to prepare for the days ahead"
                       />
                     ) : (
                       <>
@@ -390,8 +390,8 @@ export default function SchedulePage() {
                       <Input
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="搜索所有事项……"
-                        aria-label="搜索所有事项"
+                        placeholder="Search all tasks…"
+                        aria-label="Search all tasks"
                         className="h-9 pl-8 text-body"
                       />
                     </div>
@@ -423,8 +423,8 @@ export default function SchedulePage() {
                     {categoryGroups.length === 0 ? (
                       <ScheduleEmptyState
                         icon={TagIcon}
-                        title="暂无分类任务"
-                        description="当前视图范围内没有任务"
+                        title="No tasks in this category"
+                        description="No tasks in this view"
                       />
                     ) : (
                       categoryGroups.map((group) => (

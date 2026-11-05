@@ -106,7 +106,7 @@ describe('task grouping', () => {
 
       expect(uncat).toBeDefined()
       expect(uncat?.total).toBe(1)
-      expect(uncat?.tagName).toBe('未分类')
+      expect(uncat?.tagName).toBe('Uncategorized')
     })
 
     it('excludes cancelled tasks by default', () => {

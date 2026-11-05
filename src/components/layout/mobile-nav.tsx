@@ -63,7 +63,7 @@ export function MobileNav() {
               )}
             />
             <MoreHorizontal className="h-5 w-5" />
-            <span className="w-full truncate text-center text-micro leading-none">更多</span>
+            <span className="w-full truncate text-center text-micro leading-none">More</span>
           </button>
         </div>
       </nav>
@@ -71,7 +71,7 @@ export function MobileNav() {
       <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
         <SheetContent side="bottom" showCloseButton={false} className="rounded-t-xl">
           <SheetHeader className="pb-1">
-            <SheetTitle className="text-section">更多</SheetTitle>
+            <SheetTitle className="text-section">More</SheetTitle>
           </SheetHeader>
           <div className="grid grid-cols-2 gap-2 px-4 pb-2">
             {moreNavItems.map((item) => {

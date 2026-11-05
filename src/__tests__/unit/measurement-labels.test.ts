@@ -9,28 +9,28 @@ import {
 // ---- Measurement type labels ----
 
 describe('Measurement type labels', () => {
-  it('should return Chinese label for boolean', () => {
-    expect(getMeasurementTypeLabel('boolean')).toBe('完成/未完成')
+  it('should return English label for boolean', () => {
+    expect(getMeasurementTypeLabel('boolean')).toBe('Done / Not done')
   })
 
-  it('should return Chinese label for count', () => {
-    expect(getMeasurementTypeLabel('count')).toBe('次数')
+  it('should return English label for count', () => {
+    expect(getMeasurementTypeLabel('count')).toBe('Count')
   })
 
-  it('should return Chinese label for minutes', () => {
-    expect(getMeasurementTypeLabel('minutes')).toBe('分钟')
+  it('should return English label for minutes', () => {
+    expect(getMeasurementTypeLabel('minutes')).toBe('minutes')
   })
 
-  it('should return Chinese label for hours', () => {
-    expect(getMeasurementTypeLabel('hours')).toBe('小时')
+  it('should return English label for hours', () => {
+    expect(getMeasurementTypeLabel('hours')).toBe('hours')
   })
 
-  it('should return Chinese label for duration (legacy)', () => {
-    expect(getMeasurementTypeLabel('duration')).toBe('分钟')
+  it('should return English label for duration (legacy)', () => {
+    expect(getMeasurementTypeLabel('duration')).toBe('minutes')
   })
 
-  it('should return Chinese label for numeric', () => {
-    expect(getMeasurementTypeLabel('numeric')).toBe('自定义数值')
+  it('should return English label for numeric', () => {
+    expect(getMeasurementTypeLabel('numeric')).toBe('Custom value')
   })
 
   it('should return unknown type as-is', () => {
@@ -41,16 +41,16 @@ describe('Measurement type labels', () => {
 // ---- Period labels ----
 
 describe('Period labels', () => {
-  it('should return 上午 for morning', () => {
-    expect(getPeriodLabel('morning')).toBe('上午')
+  it('should return Morning for morning', () => {
+    expect(getPeriodLabel('morning')).toBe('Morning')
   })
 
-  it('should return 下午 for afternoon', () => {
-    expect(getPeriodLabel('afternoon')).toBe('下午')
+  it('should return Afternoon for afternoon', () => {
+    expect(getPeriodLabel('afternoon')).toBe('Afternoon')
   })
 
-  it('should return 晚上 for evening', () => {
-    expect(getPeriodLabel('evening')).toBe('晚上')
+  it('should return Evening for evening', () => {
+    expect(getPeriodLabel('evening')).toBe('Evening')
   })
 
   it('should return period as-is for unknown value', () => {
@@ -65,20 +65,20 @@ describe('Period labels', () => {
 // ---- Difficulty labels ----
 
 describe('Difficulty labels', () => {
-  it('should return 简单 for easy', () => {
-    expect(getDifficultyLabel('easy')).toBe('简单')
+  it('should return Easy for easy', () => {
+    expect(getDifficultyLabel('easy')).toBe('Easy')
   })
 
-  it('should return 一般 for medium', () => {
-    expect(getDifficultyLabel('medium')).toBe('一般')
+  it('should return Medium for medium', () => {
+    expect(getDifficultyLabel('medium')).toBe('Medium')
   })
 
-  it('should return 困难 for hard', () => {
-    expect(getDifficultyLabel('hard')).toBe('困难')
+  it('should return Hard for hard', () => {
+    expect(getDifficultyLabel('hard')).toBe('Hard')
   })
 
-  it('should return 极难 for very_hard', () => {
-    expect(getDifficultyLabel('very_hard')).toBe('极难')
+  it('should return Very hard for very_hard', () => {
+    expect(getDifficultyLabel('very_hard')).toBe('Very hard')
   })
 
   it('should return difficulty as-is for unknown value', () => {
@@ -100,7 +100,7 @@ describe('MEASUREMENT_TYPE_LABELS completeness', () => {
   })
 
   it('should have no duplicate labels among minutes/duration', () => {
-    // duration and minutes both map to 分钟 — this is intentional for backward compat
+    // duration and minutes both map to minutes — this is intentional for backward compat
     expect(MEASUREMENT_TYPE_LABELS['duration']).toBe(MEASUREMENT_TYPE_LABELS['minutes'])
   })
 

@@ -1,10 +1,10 @@
 ﻿'use client'
 
 // ============================================================
-// 角色详情面板（轻量弹窗）
+// Character详情面板（轻量弹窗）
 //
-// 大图 + 名称/作品/简介 + 推荐主题/场景/配色 + 设为陪伴角色 + 收藏。
-// 素材包还可以在这里替换图片。
+// 大图 + 名称/作品/简介 + Recommended主题/Scenes/配色 + Set as companion + Favorites。
+// 素材包还可以在这里Replace image。
 // ============================================================
 
 import { useState } from 'react'
@@ -50,7 +50,7 @@ export function CharacterDetail({
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-0 backdrop-blur-[2px] sm:items-center sm:p-6"
       role="dialog"
       aria-modal="true"
-      aria-label={`${item.name} 的角色详情`}
+      aria-label={`${item.name} character details`}
       onClick={onClose}
       data-testid="character-detail"
     >
@@ -62,7 +62,7 @@ export function CharacterDetail({
           type="button"
           onClick={onClose}
           className="absolute right-2 top-2 z-10 rounded-full bg-black/25 p-1.5 text-white backdrop-blur-[2px] ui-transition hover:bg-black/40"
-          aria-label="关闭详情"
+          aria-label="Close details"
         >
           <X className="h-4 w-4" />
         </button>
@@ -86,7 +86,7 @@ export function CharacterDetail({
 
         <div className="space-y-3 p-4">
           {item.packId && (
-            <div className="space-y-2" aria-label="表情与台词预览">
+            <div className="space-y-2" aria-label="Preview expressions and dialogue">
               <div className="flex flex-wrap gap-1">
                 {(Object.keys(EXPRESSION_LABELS) as CharacterExpression[]).map((mood) => (
                   <button key={mood} type="button" aria-pressed={expression === mood}
@@ -97,8 +97,8 @@ export function CharacterDetail({
                 ))}
               </div>
               {previewLine && <div className="rounded-lg border border-border bg-surface-2 p-3 text-caption" role="status">{previewLine}</div>}
-              {previewLines.length > 1 && <button type="button" className="text-caption text-primary" onClick={() => setLineIndex((i) => i + 1)}>换句台词</button>}
-              <p className="text-micro text-muted-foreground">点击角色可弹出台词；没有独立表情图时使用默认图。</p>
+              {previewLines.length > 1 && <button type="button" className="text-caption text-primary" onClick={() => setLineIndex((i) => i + 1)}>Next line</button>}
+              <p className="text-micro text-muted-foreground">Click a character to see their dialogue. If no expression image exists, the default is used.</p>
             </div>
           )}
           <div className="flex items-start justify-between gap-2">
@@ -106,14 +106,14 @@ export function CharacterDetail({
               <h3 className="text-title text-foreground">{item.name}</h3>
               <p className="mt-0.5 text-caption text-muted-foreground">
                 {item.work}
-                {item.packId && ' · 本地素材'}
+                {item.packId && ' · Local artwork'}
               </p>
             </div>
             <button
               type="button"
               onClick={onToggleFavorite}
               aria-pressed={favorite}
-              aria-label={favorite ? '取消收藏' : '收藏'}
+              aria-label={favorite ? 'Remove from favorites' : 'Favorites'}
               className={cn(
                 'rounded-full border border-border p-2 ui-transition',
                 favorite ? 'text-amber-500' : 'text-muted-foreground hover:text-foreground'
@@ -141,11 +141,11 @@ export function CharacterDetail({
             <p className="text-caption leading-relaxed text-muted-foreground">{item.description}</p>
           )}
 
-          {/* 推荐搭配 */}
+          {/* Recommended look */}
           <div className="rounded-md border border-border bg-surface-2/60 p-2.5">
             <p className="flex flex-wrap items-center gap-1.5 text-micro text-muted-foreground">
               <Sparkles className="h-3 w-3" aria-hidden="true" />
-              推荐搭配
+              Recommended look
               <span className="text-foreground">{getTheme(item.recommend.themeId).name}</span>
               <span aria-hidden="true">·</span>
               <span className="text-foreground">{sceneName}</span>
@@ -163,7 +163,7 @@ export function CharacterDetail({
               onClick={onApplyRecommendation}
               data-testid="detail-apply-recommend"
             >
-              应用这套搭配
+              Apply this look
             </Button>
           </div>
 
@@ -177,22 +177,22 @@ export function CharacterDetail({
               {active ? (
                 <>
                   <Check className="h-4 w-4" />
-                  正在陪伴
+                  Active companion
                 </>
               ) : (
-                '设为陪伴角色'
+                'Set as companion'
               )}
             </Button>
             <Button variant="outline" className="h-9 gap-1" onClick={onReplace}>
               <Upload className="h-3.5 w-3.5" />
-              替换图片
+              Replace image
             </Button>
             {onDeletePack && (
               <Button
                 variant="ghost"
                 className="h-9 px-2 text-muted-foreground hover:text-destructive"
                 onClick={onDeletePack}
-                aria-label="删除这个本地角色包"
+                aria-label="Delete this local character pack"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>

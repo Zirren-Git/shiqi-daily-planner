@@ -1,7 +1,7 @@
 {
-  "name": "时栖",
-  "short_name": "时栖",
-  "description": "把一天分成上午 / 下午 / 晚上三个时段来排计划，顺手打卡习惯、写每日复盘",
+  "name": "ShiQi",
+  "short_name": "ShiQi",
+  "description": "Plan your day, track habits and reflect on your progress",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -22,7 +22,7 @@
     }
   ],
   "categories": ["productivity", "utilities"],
-  "lang": "zh-CN",
+  "lang": "en",
   "dir": "ltr",
   "scope": "/",
   "prefer_related_applications": false

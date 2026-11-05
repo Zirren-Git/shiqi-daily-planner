@@ -69,6 +69,6 @@ export function describeOverdue(task: Task, now: Date = new Date()): string {
   const diffDays = Math.floor(diffHours / 24)
 
   if (diffHours <= 0) return ''
-  if (diffHours < 24) return `已逾期${diffHours}小时`
-  return `已逾期${diffDays}天`
+  if (diffHours < 24) return `${diffHours} hours overdue`
+  return `${diffDays} days overdue`
 }

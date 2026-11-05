@@ -46,7 +46,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', user!.id] })
     },
-    onError: () => toast.error('操作失败'),
+    onError: () => toast.error('Action failed'),
   })
 
   const handleRescheduleToday = async (task: Task) => {
@@ -54,7 +54,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
       id: task.id,
       updates: { task_date: today },
     })
-    toast.success(`「${task.title}」已移至今天`)
+    toast.success(`Moved “${task.title}” to today`)
   }
 
   const handleRescheduleTomorrow = async (task: Task) => {
@@ -63,7 +63,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
       id: task.id,
       updates: { task_date: target },
     })
-    toast.success(`「${task.title}」已移至明天`)
+    toast.success(`Moved “${task.title}” to tomorrow`)
   }
 
   const handleMarkCancelled = async (task: Task) => {
@@ -71,7 +71,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
       id: task.id,
       updates: { status: 'cancelled' },
     })
-    toast.success(`「${task.title}」已取消`)
+    toast.success(`Cancelled “${task.title}”`)
   }
 
   const handleBulkRescheduleToday = async () => {
@@ -81,7 +81,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
         updates: { task_date: today },
       })
     }
-    toast.success(`已将 ${overdueTasks.length} 个事项移至今天`)
+    toast.success(`Moved ${overdueTasks.length} tasks to today`)
   }
 
   const handleBulkCancel = async () => {
@@ -91,7 +91,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
         updates: { status: 'cancelled' },
       })
     }
-    toast.success(`已取消 ${overdueTasks.length} 个事项`)
+    toast.success(`Cancelled ${overdueTasks.length} tasks`)
   }
 
   if (isLoading) {
@@ -109,12 +109,12 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
       <div className={cn('space-y-3', className)}>
         <div className="flex items-center gap-2">
           <CheckCircle2 className="h-4 w-4 text-success" aria-hidden="true" />
-          <h3 className="text-section">过期事项</h3>
+          <h3 className="text-section">Overdue tasks</h3>
         </div>
         <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border px-3 py-5 text-center">
           <CheckCircle2 className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">没有过期事项</p>
-          <p className="text-caption text-muted-foreground/80">保持得很好，继续按计划推进</p>
+          <p className="text-body text-muted-foreground">No overdue tasks</p>
+          <p className="text-caption text-muted-foreground/80">You are on track—keep it up</p>
         </div>
       </div>
     )
@@ -126,7 +126,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <AlertTriangle className="h-4 w-4 text-destructive" aria-hidden="true" />
-          <h3 className="text-section">过期事项</h3>
+          <h3 className="text-section">Overdue tasks</h3>
           <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-micro tabular-nums text-destructive">
             {overdueTasks.length}
           </span>
@@ -139,7 +139,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
             onClick={handleBulkRescheduleToday}
             disabled={updateMutation.isPending}
           >
-            全部移至今天
+            Move all to today
           </Button>
           <Button
             variant="outline"
@@ -148,7 +148,7 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
             onClick={handleBulkCancel}
             disabled={updateMutation.isPending}
           >
-            全部取消
+            Cancel all
           </Button>
         </div>
       </div>
@@ -170,12 +170,12 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
                     PRIORITY_COLORS[task.priority]
                   )}
                 >
-                  {task.priority === 'urgent' ? '紧急' : task.priority === 'high' ? '高' : ''}
+                  {task.priority === 'urgent' ? 'Urgent' : task.priority === 'high' ? 'High' : ''}
                 </span>
               </div>
               <p className="text-caption tabular-nums text-muted-foreground">
                 {task.task_date} · {PERIOD_LABELS[task.period]}
-                {task.estimated_minutes && ` · ${task.estimated_minutes} 分钟`}
+                {task.estimated_minutes && ` · ${task.estimated_minutes} minutes`}
               </p>
             </div>
 
@@ -186,28 +186,28 @@ export function OverdueProcessor({ className }: OverdueProcessorProps) {
                 size="sm"
                 className="text-caption"
                 onClick={() => handleRescheduleToday(task)}
-                title="移至今天"
+                title="Move to today"
               >
                 <ArrowRight className="h-3 w-3" aria-hidden="true" />
-                今天
+                Today
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 className="text-caption"
                 onClick={() => handleRescheduleTomorrow(task)}
-                title="移至明天"
+                title="Move to tomorrow"
               >
                 <Calendar className="h-3 w-3" aria-hidden="true" />
-                明天
+                Tomorrow
               </Button>
               <Button
                 variant="ghost"
                 size="icon-sm"
                 className="text-muted-foreground hover:text-destructive"
                 onClick={() => handleMarkCancelled(task)}
-                title="取消"
-                aria-label="取消该过期事项"
+                title="Cancel"
+                aria-label="Cancel overdue task"
               >
                 <XCircle className="h-3.5 w-3.5" aria-hidden="true" />
               </Button>

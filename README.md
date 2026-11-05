@@ -193,3 +193,7 @@ npm run test:e2e     # Playwright 端到端测试
 In **Calendar**, enable “GTC T1cs 考试日程” to import the public exam schedule. The calendar checks for new or edited entries when you open it; “立即同步” checks again immediately. Imports are normal dated tasks, with a GTC source marker for deduplication. Sync never removes tasks if an entry disappears from the source, and turning it off keeps imported tasks. The source does not publish times, so imported entries have no specific start time.
 
 Live synchronization requires internet access to `www.gtc.com`. Hosted web builds use a fixed server-side rewrite; Electron uses its app protocol, and Android uses Capacitor native HTTP. A static site hosted without a server (outside the packaged apps) cannot refresh this feed. The page structure and academic year are inferred from GTC's public HTML; check the source if the school changes its format or moves to a new academic year.
+
+### English interface
+
+The app interface, calendar/date labels, notifications, settings, built-in themes, recommended habits, and bundled character dialogue are now in English. Existing user-created tasks, tags, reviews and previously imported character packs are left unchanged rather than silently rewriting personal data. Newly created defaults use English names.

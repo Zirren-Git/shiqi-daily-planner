@@ -139,27 +139,27 @@ export default function InsightsPage() {
 
   const statCards = [
     {
-      label: '计划总数',
+      label: 'Total tasks',
       value: totalTasks,
-      sub: '本月计划事项',
+      sub: 'Tasks planned this month',
       icon: BarChart3,
     },
     {
-      label: '完成率',
+      label: 'Completion rate',
       value: `${completionRate}%`,
-      sub: `${taskStats.done} 项已完成`,
+      sub: `${taskStats.done} completed`,
       icon: CheckCircle2,
     },
     {
-      label: '习惯打卡',
+      label: 'Habit tracking',
       value: habitCompletionDays,
-      sub: '本月打卡记录',
+      sub: 'Habit check-ins this month',
       icon: Clock,
     },
     {
-      label: '每日评价',
+      label: 'Daily rating',
       value: reviewDays,
-      sub: '评价天数',
+      sub: 'Days reviewed',
       icon: TrendingUp,
     },
   ]
@@ -168,14 +168,14 @@ export default function InsightsPage() {
     <div className="mx-auto max-w-5xl space-y-6 p-4 sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-display">统计与复盘</h1>
+          <h1 className="text-display">Insights and reviews</h1>
           <p className="mt-1 text-caption text-muted-foreground">
-            {format(new Date(), 'M月')} 数据概览
+            {format(new Date(), 'MMMM')} overview
           </p>
         </div>
         <Link href="/reviews/today" className={cn('shrink-0', buttonVariants())}>
           <PenLine className="h-4 w-4" />
-          写今日评价
+          Write today’s review
         </Link>
       </div>
 
@@ -203,17 +203,17 @@ export default function InsightsPage() {
       {/* 最近 7 天完成趋势 */}
       <div className="surface p-4">
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-section">最近 7 天</h2>
+          <h2 className="text-section">Last 7 days</h2>
           <span className="text-micro tabular-nums text-muted-foreground">
-            完成 {weekDone} / {weekTotal}
+            Completed {weekDone} / {weekTotal}
           </span>
         </div>
 
         {weekTotal === 0 ? (
           <EmptyState
             icon={BarChart3}
-            title="最近 7 天还没有计划"
-            hint="先在今天添加一个计划，趋势会在这里出现"
+            title="No tasks in the last 7 days"
+            hint="Add a task today to see your progress here"
           />
         ) : (
           <>
@@ -233,7 +233,7 @@ export default function InsightsPage() {
                         <div
                           className="relative w-full rounded-t-sm bg-primary/15"
                           style={{ height: totalH }}
-                          title={`${day.date}：完成 ${day.done} / 共 ${day.total}`}
+                          title={`${day.date} — completed ${day.done} / ${day.total}`}
                         >
                           <div
                             className="absolute bottom-0 left-0 right-0 rounded-t-sm bg-gradient-to-t from-primary to-primary/70 ui-transition"
@@ -255,7 +255,7 @@ export default function InsightsPage() {
               })}
             </div>
             <p className="mt-3 text-micro text-muted-foreground">
-              实心为主色已完成数量，浅色部分为当天计划总量
+              The solid bar shows completed tasks; the lighter bar shows all planned tasks
             </p>
           </>
         )}
@@ -264,12 +264,12 @@ export default function InsightsPage() {
       <div className="grid gap-3 md:grid-cols-2">
         {/* 时段分布 */}
         <div className="surface p-4">
-          <h2 className="text-section">时段分布</h2>
+          <h2 className="text-section">Time of day</h2>
           {taskStats.total === 0 ? (
             <EmptyState
               icon={Clock}
-              title="本月还没有计划事项"
-              hint="添加计划后，这里会显示三个时段的完成度"
+              title="No tasks planned this month"
+              hint="Add tasks to see completion by time of day"
             />
           ) : (
             <div className="mt-3 space-y-3">
@@ -302,12 +302,12 @@ export default function InsightsPage() {
 
         {/* 标签统计 */}
         <div className="surface p-4">
-          <h2 className="text-section">标签统计</h2>
+          <h2 className="text-section">Tag statistics</h2>
           {tagStats.length === 0 ? (
             <EmptyState
               icon={Tag}
-              title="本月还没有带标签的事项"
-              hint="给计划加上标签，就能看到分类分布"
+              title="No tagged tasks this month"
+              hint="Tag your tasks to see their category breakdown"
             />
           ) : (
             <div className="mt-3 space-y-3">
@@ -347,23 +347,23 @@ export default function InsightsPage() {
       {/* 评价趋势 */}
       <div className="surface p-4">
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-section">评价趋势</h2>
+          <h2 className="text-section">Review trends</h2>
           <Link href="/reviews" className="text-micro text-primary hover:underline">
-            查看历史评价
+            View past reviews
           </Link>
         </div>
 
         {reviewStats.totalReviews === 0 ? (
           <EmptyState
             icon={TrendingUp}
-            title="本月还没有评价"
-            hint="写一篇今天的评价，记录自己的成长"
+            title="No reviews this month"
+            hint="Write a review today to track your progress"
             action={
               <Link
                 href="/reviews/today"
                 className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'text-caption')}
               >
-                写今日评价
+                Write today’s review
               </Link>
             }
           />
@@ -371,7 +371,7 @@ export default function InsightsPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-2">
               <div className="rounded-md bg-surface-2 p-3">
-                <div className="text-caption text-muted-foreground">平均评分</div>
+                <div className="text-caption text-muted-foreground">Average rating</div>
                 <div className="mt-1 flex items-baseline gap-0.5">
                   <span className="text-title tabular-nums">
                     {reviewStats.avgScore != null ? reviewStats.avgScore.toFixed(1) : '—'}
@@ -381,7 +381,7 @@ export default function InsightsPage() {
                 <BlockMeter value={reviewStats.avgScore ?? 0} max={10} />
               </div>
               <div className="rounded-md bg-surface-2 p-3">
-                <div className="text-caption text-muted-foreground">平均心情</div>
+                <div className="text-caption text-muted-foreground">Average mood</div>
                 <div className="mt-1 flex items-baseline gap-0.5">
                   <span className="text-title tabular-nums">
                     {reviewStats.avgMood != null ? reviewStats.avgMood.toFixed(1) : '—'}
@@ -391,10 +391,10 @@ export default function InsightsPage() {
                 <BlockMeter value={reviewStats.avgMood ?? 0} max={5} />
               </div>
               <div className="rounded-md bg-surface-2 p-3">
-                <div className="text-caption text-muted-foreground">评价天数</div>
+                <div className="text-caption text-muted-foreground">Days reviewed</div>
                 <div className="mt-1 flex items-baseline gap-0.5">
                   <span className="text-title tabular-nums">{reviewStats.totalReviews}</span>
-                  <span className="text-micro text-muted-foreground">天</span>
+                  <span className="text-micro text-muted-foreground">days</span>
                 </div>
                 <div className="mt-2 h-1.5 rounded-full bg-muted" />
               </div>
@@ -412,7 +412,7 @@ export default function InsightsPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-micro text-muted-foreground">累计两天的评分后显示趋势</p>
+              <p className="text-micro text-muted-foreground">Trends appear after two days of ratings</p>
             )}
           </div>
         )}

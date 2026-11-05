@@ -1,15 +1,15 @@
 'use client'
 
 // ============================================================
-// 角色库（资料卡版）
+// Character library（资料卡版）
 //
 // 三种来源合并成一个列表：
-// 1. 本地素材包（模式 A，优先）—— 用户放进 characters/ 的文件夹
+// 1. Local artwork包（模式 A，优先）—— 用户放进 characters/ 的文件夹
 // 2. 内置立绘（模式 B，分系列重绘）
-// 3. 待导入推荐位 —— 只有配色与主题推荐
+// 3. 待导入Recommended位 —— 只有配色与主题Recommended
 //
-// 卡片是"资料卡"而不是头像卡：主视觉、作品丝带、标签、收藏、选中态。
-// 点卡片开详情，点「选用」直接换成陪伴角色。
+// 卡片是"资料卡"而不是头像卡：Hero、作品丝带、标签、Favorites、选中态。
+// 点卡片开详情，点「Select」直接换成陪伴Character。
 // ============================================================
 
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -90,7 +90,7 @@ export function CharacterLibraryPanel() {
       if (cancelled || scanned.length === 0) return
       const result = await importScannedPacks(scanned)
       if (!cancelled && result.imported.length > 0) {
-        setNote(`已从本地目录载入 ${result.imported.length} 个角色包：${result.imported.join('、')}`)
+        setNote(`Loaded ${result.imported.length} local character packs: ${result.imported.join('、')}`)
       }
     })()
     return () => {
@@ -120,8 +120,8 @@ export function CharacterLibraryPanel() {
       const accent = manifest.preferred_accent
       return {
         id: pack.id,
-        name: manifest.name ?? '未命名角色',
-        work: manifest.series ?? '本地素材',
+        name: manifest.name ?? 'Unnamed character',
+        work: manifest.series ?? 'Local artwork',
         tags: manifest.tags ?? [],
         categories: ['custom'],
         artId: null,
@@ -209,7 +209,7 @@ export function CharacterLibraryPanel() {
       bgSource: 'scene',
     })
     applySeed(accent, 'accent')
-    setNote(`已应用「${item.name}」的推荐搭配`)
+    setNote(`Applied the recommended look for ${item.name}`)
   }
 
   const handleFolder = async (files: FileList | null) => {
@@ -219,11 +219,11 @@ export function CharacterLibraryPanel() {
     setBusy(false)
     if (result.imported.length > 0) {
       setNote(
-        `导入 ${result.imported.length} 个角色包：${result.imported.join('、')}` +
-          (result.skipped.length ? `；跳过 ${result.skipped.join('、')}` : '')
+        `Imported ${result.imported.length} character packs: ${result.imported.join('、')}` +
+          (result.skipped.length ? `; skipped ${result.skipped.join('、')}` : '')
       )
     } else {
-      setNote(result.error ?? '导入失败')
+      setNote(result.error ?? 'Import failed')
     }
   }
 
@@ -231,7 +231,7 @@ export function CharacterLibraryPanel() {
     if (!file) return
     const result = await addAsset(file, {
       kind: 'character',
-      name: item ? `${item.name}（导入）` : '自定义角色',
+      name: item ? `${item.name} (imported)` : 'Custom character',
     })
     if (!result.ok) {
       setNote(result.error)
@@ -242,7 +242,7 @@ export function CharacterLibraryPanel() {
       characterEnabled: true,
       mode: 'immersive',
     })
-    setNote(`已导入 ${file.name}`)
+    setNote(`Imported ${file.name}`)
   }
 
   return (
@@ -253,10 +253,10 @@ export function CharacterLibraryPanel() {
             <UserRound className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-section text-foreground">角色库</h2>
+            <h2 className="text-section text-foreground">Character library</h2>
             <p className="mt-0.5 text-caption text-muted-foreground">
-              {packs.length > 0 && `${packs.length} 个本地素材包 · `}
-              内置 {installedItems.length - packs.length} 个角色 · {pendingCharacters().length} 个待导入
+              {packs.length > 0 && `${packs.length} local packs · `}
+              {installedItems.length - packs.length} built-in characters · {pendingCharacters().length} awaiting import
             </p>
           </div>
         </div>
@@ -270,7 +270,7 @@ export function CharacterLibraryPanel() {
             data-testid="import-character-pack"
           >
             <FolderPlus className="h-3.5 w-3.5" />
-            {busy ? '导入中…' : '导入角色包'}
+            {busy ? 'Importing…' : 'Import character pack'}
           </Button>
           <Button
             size="sm"
@@ -280,7 +280,7 @@ export function CharacterLibraryPanel() {
             data-testid="import-from-url"
           >
             <Link2 className="h-3.5 w-3.5" />
-            从链接添加
+            Add from URL
           </Button>
           <Button
             size="sm"
@@ -289,7 +289,7 @@ export function CharacterLibraryPanel() {
             onClick={() => singleInput.current?.click()}
           >
             <Upload className="h-3.5 w-3.5" />
-            单张立绘
+            Single image
           </Button>
           <input
             ref={folderInput}
@@ -320,9 +320,9 @@ export function CharacterLibraryPanel() {
           <Input
             value={urlValue}
             onChange={(e) => setUrlValue(e.target.value)}
-            placeholder="粘贴图片直链，例如 https://…/baobao.png"
+            placeholder="Paste a direct image URL, e.g. https://…/character.png"
             className="h-8 min-w-48 flex-1"
-            aria-label="图片链接"
+            aria-label="Image URL"
             data-testid="url-input"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -331,7 +331,7 @@ export function CharacterLibraryPanel() {
                   setBusy(true)
                   const r = await importPackFromUrl(urlValue)
                   setBusy(false)
-                  setNote(r.ok ? `已添加 ${r.imported[0]}` : r.error ?? '导入失败')
+                  setNote(r.ok ? `Added ${r.imported[0]}` : r.error ?? 'Import failed')
                   if (r.ok) {
                     setUrlValue('')
                     setUrlOpen(false)
@@ -349,17 +349,17 @@ export function CharacterLibraryPanel() {
               setBusy(true)
               const r = await importPackFromUrl(urlValue)
               setBusy(false)
-              setNote(r.ok ? `已添加 ${r.imported[0]}` : r.error ?? '导入失败')
+              setNote(r.ok ? `Added ${r.imported[0]}` : r.error ?? 'Import failed')
               if (r.ok) {
                 setUrlValue('')
                 setUrlOpen(false)
               }
             }}
           >
-            添加
+            Add
           </Button>
           <span className="text-micro text-muted-foreground">
-            图片只存在本机；需要对方允许跨域读取
+            Images stay on this device. The host must allow cross-origin access.
           </span>
         </div>
       )}
@@ -372,9 +372,9 @@ export function CharacterLibraryPanel() {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜角色名 / 作品名 / 标签…"
+            placeholder="Search characters, series or tags…"
             className="h-8 pl-7"
-            aria-label="搜索角色"
+            aria-label="Search characters"
             data-testid="character-search"
           />
         </div>
@@ -382,9 +382,9 @@ export function CharacterLibraryPanel() {
           value={work}
           onChange={(e) => setWork(e.target.value)}
           className="h-8 rounded-md border border-input bg-background px-2 text-caption"
-          aria-label="按作品筛选"
+          aria-label="Filter by series"
         >
-          <option value="all">全部作品</option>
+          <option value="all">All series</option>
           {works.map((w) => (
             <option key={w} value={w}>
               {w}
@@ -395,7 +395,7 @@ export function CharacterLibraryPanel() {
 
       <div className="mt-2 flex flex-wrap gap-1">
         {CATEGORY_ORDER.map((key) => {
-          const label = key === 'all' ? '全部角色' : CATEGORY_LABELS[key as CharacterCategory]
+          const label = key === 'all' ? 'All characters' : CATEGORY_LABELS[key as CharacterCategory]
           const count = counts[key] ?? 0
           return (
             <button
@@ -424,7 +424,7 @@ export function CharacterLibraryPanel() {
           {favoriteItems.length > 0 && (
             <span className="flex flex-wrap items-center gap-1">
               <Heart className="h-3 w-3" aria-hidden="true" />
-              收藏
+              Favorites
               {favoriteItems.map((c) => (
                 <button
                   key={c.id}
@@ -442,7 +442,7 @@ export function CharacterLibraryPanel() {
           )}
           {recentItems.length > 0 && (
             <span className="flex flex-wrap items-center gap-1">
-              最近
+              Recent
               {recentItems.map((c) => (
                 <button
                   key={c.id}
@@ -479,7 +479,7 @@ export function CharacterLibraryPanel() {
         ))}
         {list.length === 0 && (
           <p className="col-span-full py-6 text-center text-caption text-muted-foreground">
-            没有匹配的角色，换个关键词试试
+            No characters found. Try a different search.
           </p>
         )}
       </div>
@@ -487,9 +487,9 @@ export function CharacterLibraryPanel() {
       {note && <p className="mt-2 text-micro text-muted-foreground">{note}</p>}
 
       <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
-        想用自己收藏的高清立绘？把 <span className="font-mono">characters/角色名/manifest.json</span>{' '}
-        连同图片放进一个文件夹，点「导入角色包」选中整个文件夹即可；图片只存在本机，不上传。
-        内置立绘为本项目绘制的同人风演绎（非官方素材），仅供本地体验。
+        To import your own character artwork, place <span className="font-mono">characters/character-name/manifest.json</span>{' '}
+        and its images in a folder, then choose Import character pack. Images stay on this device.
+        Built-in artwork is original fan art, not official material.
       </p>
 
       {detail && (
@@ -514,7 +514,7 @@ export function CharacterLibraryPanel() {
                   await deletePack(detail.packId as string)
                   if (selectedId === detail.id) selectCharacter(null)
                   setDetailId(null)
-                  setNote(`已删除「${detail.name}」的本地素材包`)
+                  setNote(`Deleted local pack for ${detail.name}`)
                 }
               : undefined
           }

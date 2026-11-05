@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useMemo, useState, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -225,7 +225,7 @@ export function WeekView({ currentDate, onTaskClick, onOverflowClick }: WeekView
                                 e.stopPropagation()
                                 onOverflowClick?.(day, period, dayTasks)
                               }}
-                              aria-label={`查看${format(parseISO(day), 'M月d日')}${PERIOD_LABELS[period]}的另外 ${overflowCount} 项`}
+                              aria-label={`View ${format(parseISO(day), 'MMM d')}${PERIOD_LABELS[period]} and ${overflowCount} more tasks`}
                               className="flex w-full items-center justify-center rounded-md px-1 py-1 text-micro tabular-nums text-muted-foreground ui-transition hover:bg-background hover:text-foreground"
                             >
                               +{overflowCount}

@@ -34,7 +34,7 @@ export function InboxSection({ tasks, tags, activeTaskId, onTaskClick }: InboxSe
             <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
           )}
           <Inbox className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <span className="text-section">收集箱</span>
+          <span className="text-section">Inbox</span>
           <span className="text-micro tabular-nums text-muted-foreground">{tasks.length}</span>
         </div>
         <Link
@@ -42,7 +42,7 @@ export function InboxSection({ tasks, tags, activeTaskId, onTaskClick }: InboxSe
           className="shrink-0 text-micro text-muted-foreground ui-transition hover:text-foreground"
           onClick={(e) => e.stopPropagation()}
         >
-          全部
+          All
         </Link>
       </button>
 
@@ -62,7 +62,7 @@ export function InboxSection({ tasks, tags, activeTaskId, onTaskClick }: InboxSe
               href="/inbox"
               className="block py-1 text-center text-caption text-muted-foreground ui-transition hover:text-foreground"
             >
-              查看全部 {tasks.length} 项
+              View all {tasks.length} tasks
             </Link>
           )}
         </div>

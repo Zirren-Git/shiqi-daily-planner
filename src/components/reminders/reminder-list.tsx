@@ -34,26 +34,26 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
 
   const handleEnableNotifications = async () => {
     if (!isSupported) {
-      toast.error('您的浏览器不支持通知功能')
+      toast.error('Your browser does not support notifications')
       return
     }
     const state = await requestPermission()
     if (state === 'granted') {
-      toast.success('通知已开启')
+      toast.success('Notifications enabled')
       notifyNow()
     } else if (state === 'denied') {
-      toast.error('通知权限被拒绝，请在浏览器设置中开启')
+      toast.error('Notification permission denied. Enable it in browser settings.')
     } else if (state === 'unsupported') {
-      toast.error('您的浏览器不支持通知功能')
+      toast.error('Your browser does not support notifications')
     }
   }
 
   const handleNotifyNow = () => {
     const { shown } = notifyNow()
     if (shown === 0) {
-      toast.info('没有需要提醒的事项')
+      toast.info('No reminders to send')
     } else {
-      toast.success(`已发送 ${shown} 条提醒`)
+      toast.success(`Sent ${shown} reminders`)
     }
   }
 
@@ -81,8 +81,8 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
             size="icon"
             className="relative"
             onClick={handleNotifyNow}
-            title="发送提醒"
-            aria-label="发送提醒"
+            title="Send reminders"
+            aria-label="Send reminders"
           >
             <BellRing className="h-4 w-4" aria-hidden="true" />
             {overdueCount > 0 && (
@@ -96,8 +96,8 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
             variant="ghost"
             size="icon"
             onClick={handleEnableNotifications}
-            title="通知已关闭"
-            aria-label="通知已关闭，点击开启"
+            title="Notifications disabled"
+            aria-label="Notifications disabled; click to enable"
           >
             <BellOff className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
           </Button>
@@ -106,8 +106,8 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
             variant="ghost"
             size="icon"
             onClick={handleEnableNotifications}
-            title="开启通知"
-            aria-label="开启通知"
+            title="Enable notifications"
+            aria-label="Enable notifications"
           >
             <Bell className="h-4 w-4" aria-hidden="true" />
           </Button>
@@ -123,10 +123,10 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <BellRing className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-          <h2 className="text-title">提醒中心</h2>
+          <h2 className="text-title">Reminder center</h2>
           {overdueCount > 0 && (
             <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-micro tabular-nums text-destructive">
-              {overdueCount} 过期
+              {overdueCount} overdue
             </span>
           )}
         </div>
@@ -139,7 +139,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
               onClick={handleNotifyNow}
             >
               <RefreshCw className="h-3 w-3" aria-hidden="true" />
-              立即提醒
+              Remind now
             </Button>
           ) : (
             <Button
@@ -152,12 +152,12 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
               {permission === 'denied' ? (
                 <>
                   <BellOff className="h-3 w-3" aria-hidden="true" />
-                  通知已关闭
+                  Notifications disabled
                 </>
               ) : (
                 <>
                   <Bell className="h-3 w-3" aria-hidden="true" />
-                  开启通知
+                  Enable notifications
                 </>
               )}
             </Button>
@@ -169,7 +169,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
       {!isSupported && (
         <div className="flex items-center gap-2 rounded-lg border border-border bg-surface-2 px-3 py-2 text-caption text-muted-foreground">
           <AlertTriangle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          您的浏览器不支持桌面通知，请使用 Chrome、Edge 或 Firefox 等现代浏览器
+          Your browser does not support desktop notifications
         </div>
       )}
 
@@ -177,7 +177,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
       {permission === 'denied' && (
         <div className="flex items-center gap-2 rounded-lg border border-border bg-surface-2 px-3 py-2 text-caption text-muted-foreground">
           <BellOff className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          通知已被关闭，请在浏览器设置中重新开启通知权限
+          Enable notification permission in your browser settings
         </div>
       )}
 
@@ -185,8 +185,8 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
       {items.length === 1 && reviewReminder?.isDone && overdueItems.length === 0 && taskReminders.length === 0 && habitReminders.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-2 py-8 text-center">
           <CheckCircle2 className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">今天没有需要提醒的事项</p>
-          <p className="text-caption text-muted-foreground/80">太棒了，继续保持</p>
+          <p className="text-body text-muted-foreground">No reminders today</p>
+          <p className="text-caption text-muted-foreground/80">Great work—keep it up</p>
         </div>
       )}
 
@@ -195,7 +195,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <AlertTriangle className="h-3.5 w-3.5 text-destructive" aria-hidden="true" />
-            <h3 className="text-section text-destructive">过期事项</h3>
+            <h3 className="text-section text-destructive">Overdue tasks</h3>
             <span className="text-caption tabular-nums text-muted-foreground">
               {overdueItems.length}
             </span>
@@ -213,7 +213,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <ClipboardList className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
-            <h3 className="text-section">事项提醒</h3>
+            <h3 className="text-section">Task reminders</h3>
             <span className="text-caption tabular-nums text-muted-foreground">
               {taskReminders.length}
             </span>
@@ -231,7 +231,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <Activity className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
-            <h3 className="text-section">习惯打卡</h3>
+            <h3 className="text-section">Habit tracking</h3>
             <span className="text-caption tabular-nums text-muted-foreground">
               {habitReminders.length}
             </span>
@@ -249,7 +249,7 @@ export function ReminderList({ className, compact = false }: ReminderListProps) 
         <div className="space-y-2">
           <div className="flex items-center gap-1.5">
             <ClipboardList className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
-            <h3 className="text-section">每日总结</h3>
+            <h3 className="text-section">Daily review</h3>
           </div>
           <ReminderCard item={reviewReminder} variant="review" />
         </div>
@@ -300,7 +300,7 @@ function ReminderCard({ item, variant }: ReminderCardProps) {
           <>
             <p className="truncate text-body font-medium">{item.task.title}</p>
             <p className="text-caption tabular-nums text-muted-foreground">
-              {item.isOverdue ? '已过期' : `提醒 ${item.timeLabel}`}
+              {item.isOverdue ? 'Overdue' : `Reminder: ${item.timeLabel}`}
               {item.task.task_date && ` · ${item.task.task_date}`}
               {item.task.period && ` · ${PERIOD_LABELS[item.task.period]}`}
             </p>
@@ -310,18 +310,18 @@ function ReminderCard({ item, variant }: ReminderCardProps) {
           <>
             <p className="truncate text-body font-medium">{item.habit.name}</p>
             <p className="text-caption tabular-nums text-muted-foreground">
-              提醒 {item.timeLabel}
+              Reminder: {item.timeLabel}
               {item.habit.target_value > 1
-                ? ` · 目标 ${item.habit.target_value}${item.habit.unit || ''}`
+                ? ` · Target: ${item.habit.target_value}${item.habit.unit || ''}`
                 : ''}
             </p>
           </>
         )}
         {item.type === 'review' && (
           <>
-            <p className="text-body font-medium">今日总结</p>
+            <p className="text-body font-medium">Daily review</p>
             <p className="text-caption text-muted-foreground">
-              {item.isDone ? '已完成' : '尚未填写'}
+              {item.isDone ? 'Completed' : 'Not written yet'}
             </p>
           </>
         )}
@@ -335,7 +335,7 @@ function ReminderCard({ item, variant }: ReminderCardProps) {
             PRIORITY_COLORS[item.task.priority]
           )}
         >
-          {item.task.priority === 'urgent' ? '紧急' : item.task.priority === 'high' ? '高' : ''}
+          {item.task.priority === 'urgent' ? 'Urgent' : item.task.priority === 'high' ? 'High' : ''}
         </span>
       )}
     </div>

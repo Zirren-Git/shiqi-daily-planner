@@ -64,11 +64,11 @@ export function WidgetTaskForm({
   return (
     <div className="absolute inset-0 z-20 flex flex-col bg-card">
       <div className="app-drag flex h-11 shrink-0 items-center gap-2 border-b border-border bg-surface-2/50 px-3 select-none">
-        <span className="text-section">{mode === 'create' ? '新建事项' : '编辑事项'}</span>
+        <span className="text-section">{mode === 'create' ? 'New task' : 'Edit task'}</span>
         <button
           type="button"
           onClick={onCancel}
-          aria-label="取消"
+          aria-label="Cancel"
           className="app-no-drag ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
         >
           <X className="h-3.5 w-3.5" />
@@ -77,7 +77,7 @@ export function WidgetTaskForm({
 
       <div className="flex-1 space-y-3 overflow-y-auto px-3 py-3">
         <div className="space-y-2">
-          <p className="text-micro text-muted-foreground">标题</p>
+          <p className="text-micro text-muted-foreground">Title</p>
           <Input
             data-testid="widget-form-title"
             value={title}
@@ -88,7 +88,7 @@ export function WidgetTaskForm({
                 submit()
               }
             }}
-            placeholder="要做的事…"
+            placeholder="Something to do…"
             autoFocus
             className="h-9 text-body"
           />
@@ -96,7 +96,7 @@ export function WidgetTaskForm({
 
         {/* 时段 */}
         <div className="space-y-2">
-          <p className="text-micro text-muted-foreground">时段</p>
+          <p className="text-micro text-muted-foreground">Period</p>
           <div className="grid grid-cols-3 gap-1.5">
             {PERIOD_ORDER.map((item) => (
               <button
@@ -120,14 +120,14 @@ export function WidgetTaskForm({
 
         {/* 标签 */}
         <div className="space-y-2">
-          <p className="text-micro text-muted-foreground">标签</p>
+          <p className="text-micro text-muted-foreground">Tags</p>
           <select
             data-testid="widget-form-tag"
             value={tagId}
             onChange={(e) => setTagId(e.target.value)}
             className="h-9 w-full rounded-md border border-input bg-background px-2.5 text-body text-foreground ui-transition outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/35 dark:bg-input/25"
           >
-            <option value="">未分类</option>
+            <option value="">Uncategorized</option>
             {tags.map((tag) => (
               <option key={tag.id} value={tag.id}>
                 {tag.name}
@@ -138,13 +138,13 @@ export function WidgetTaskForm({
 
         {/* 时间 */}
         <div className="space-y-2">
-          <p className="text-micro text-muted-foreground">时间（可选）</p>
+          <p className="text-micro text-muted-foreground">Time (optional)</p>
           <div className="flex items-center gap-1.5">
             <input
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              aria-label="开始时间"
+              aria-label="Start time"
               className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-caption tabular-nums ui-transition outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/35 dark:bg-input/25"
             />
             <span className="shrink-0 text-micro text-muted-foreground">→</span>
@@ -152,7 +152,7 @@ export function WidgetTaskForm({
               type="time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              aria-label="结束时间"
+              aria-label="End time"
               className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-caption tabular-nums ui-transition outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/35 dark:bg-input/25"
             />
           </div>
@@ -167,7 +167,7 @@ export function WidgetTaskForm({
           className="h-9 w-full"
         >
           {saving ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
-          {mode === 'create' ? '添加' : '保存'}
+          {mode === 'create' ? 'Add' : 'Save'}
         </Button>
         {mode === 'edit' && (
           <div className="flex gap-1.5">
@@ -177,7 +177,7 @@ export function WidgetTaskForm({
               className="h-8 flex-1 text-caption"
             >
               <Check className="mr-1 h-3 w-3" />
-              {isDone ? '标记未完成' : '标记完成'}
+              {isDone ? 'Mark incomplete' : 'Mark complete'}
             </Button>
             <Button
               variant="outline"
@@ -185,7 +185,7 @@ export function WidgetTaskForm({
               className="h-8 text-caption text-destructive hover:bg-destructive/10"
             >
               <Trash2 className="mr-1 h-3 w-3" />
-              删除
+              Delete
             </Button>
           </div>
         )}

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useCallback, type ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -35,7 +35,7 @@ interface SearchFilterProps {
   onSelectTask?: (task: Task) => void
   compact?: boolean
 }
-/** 已选筛选项胶囊：点击移除 */
+/** 已选Filter项胶囊：点击移除 */
 function FilterPill({
   label,
   tone = 'default',
@@ -62,7 +62,7 @@ function FilterPill({
   )
 }
 
-/** 筛选开关胶囊：选中 acg-pill */
+/** Filter开关胶囊：选中 acg-pill */
 function TogglePill({
   active,
   onClick,
@@ -137,11 +137,11 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
             aria-hidden="true"
           />
           <Input
-            placeholder="搜索事项标题或描述…"
+            placeholder="Search task titles or descriptions…"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="pl-8 pr-9"
-            aria-label="搜索事项"
+            aria-label="Search tasks"
           />
           {searchText && (
             <Button
@@ -149,7 +149,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
               size="icon-xs"
               onClick={() => setSearchText('')}
               className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground"
-              aria-label="清空搜索"
+              aria-label="Clear search"
             >
               <X className="h-3.5 w-3.5" aria-hidden="true" />
             </Button>
@@ -160,7 +160,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
           size="icon"
           className="shrink-0"
           onClick={() => setShowFilters(!showFilters)}
-          aria-label={showFilters ? '收起筛选' : '展开筛选'}
+          aria-label={showFilters ? 'Collapse filters' : 'Expand filters'}
           aria-expanded={showFilters}
         >
           <Filter className="h-4 w-4" aria-hidden="true" />
@@ -197,13 +197,13 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
           {filterOptions.overdue && (
             <FilterPill
               tone="danger"
-              label="已过期"
+              label="Overdue"
               onRemove={() => setFilterOptions((prev) => ({ ...prev, overdue: false }))}
             />
           )}
           {filterOptions.hasRecurrence && (
             <FilterPill
-              label="重复"
+              label="Repeat"
               onRemove={() => setFilterOptions((prev) => ({ ...prev, hasRecurrence: false }))}
             />
           )}
@@ -213,7 +213,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
             className="text-caption text-muted-foreground"
             onClick={clearAll}
           >
-            清除全部
+            Clear all
           </Button>
         </div>
       )}
@@ -224,32 +224,32 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
           <CardContent className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <label className="text-caption text-muted-foreground">状态</label>
+                <label className="text-caption text-muted-foreground">Status</label>
                 <Select
                   value={filterOptions.status?.[0] || 'all'}
                   onValueChange={(v) =>
                     setFilterOptions((prev) => ({
                       ...prev,
-                      // 「全部」不是一个真实状态值，必须清空筛选而不是传 'all'
+                      // 「全部」不是一个真实状态值，必须清空Filter而不是传 'all'
                       status: v && v !== 'all' ? [v] : undefined,
                     }))
                   }
                 >
                   <SelectTrigger className="w-full rounded-md">
-                    <SelectValue placeholder="全部" />
+                    <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="todo">未开始</SelectItem>
-                    <SelectItem value="in_progress">进行中</SelectItem>
-                    <SelectItem value="done">已完成</SelectItem>
-                    <SelectItem value="cancelled">已取消</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="todo">Not started</SelectItem>
+                    <SelectItem value="in_progress">In progress</SelectItem>
+                    <SelectItem value="done">Completed</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-caption text-muted-foreground">优先级</label>
+                <label className="text-caption text-muted-foreground">Priority</label>
                 <Select
                   value={filterOptions.priority?.[0] || 'all'}
                   onValueChange={(v) =>
@@ -260,20 +260,20 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                   }
                 >
                   <SelectTrigger className="w-full rounded-md">
-                    <SelectValue placeholder="全部" />
+                    <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="urgent">紧急</SelectItem>
-                    <SelectItem value="high">高</SelectItem>
-                    <SelectItem value="normal">普通</SelectItem>
-                    <SelectItem value="low">低</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="urgent">Urgent</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="normal">Normal</SelectItem>
+                    <SelectItem value="low">Low</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-caption text-muted-foreground">标签</label>
+                <label className="text-caption text-muted-foreground">Tags</label>
                 <Select
                   value={filterOptions.tagIds?.[0] || 'all'}
                   onValueChange={(v) =>
@@ -284,10 +284,10 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                   }
                 >
                   <SelectTrigger className="w-full rounded-md">
-                    <SelectValue placeholder="全部" />
+                    <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
                     {tagList.map((tag) => (
                       <SelectItem key={tag.id} value={tag.id}>
                         <span className="flex items-center gap-1.5">
@@ -301,7 +301,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
               </div>
 
               <div className="col-span-2 space-y-2">
-                <label className="text-caption text-muted-foreground">日期范围</label>
+                <label className="text-caption text-muted-foreground">Date range</label>
                 <div className="flex gap-2">
                   <Input
                     type="date"
@@ -313,7 +313,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                       }))
                     }
                     className="tabular-nums"
-                    aria-label="开始日期"
+                    aria-label="Start date"
                   />
                   <Input
                     type="date"
@@ -325,7 +325,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                       }))
                     }
                     className="tabular-nums"
-                    aria-label="结束日期"
+                    aria-label="End date"
                   />
                 </div>
               </div>
@@ -340,7 +340,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                 }
               >
                 <AlertCircle className="h-3 w-3" aria-hidden="true" />
-                已过期
+                Overdue
               </TogglePill>
               <TogglePill
                 active={!!filterOptions.hasRecurrence}
@@ -352,13 +352,13 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                 }
               >
                 <RefreshCw className="h-3 w-3" aria-hidden="true" />
-                重复
+                Repeat
               </TogglePill>
             </div>
 
             <div className="flex justify-end">
               <Button variant="ghost" size="sm" className="text-caption" onClick={clearAll}>
-                清除全部筛选
+                Clear all filters
               </Button>
             </div>
           </CardContent>
@@ -375,10 +375,10 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
       ) : results.length > 0 ? (
         <div className="space-y-2">
           <p className="text-caption tabular-nums text-muted-foreground">
-            {results.length} 条结果
+            {results.length} results
             {overdueTasks.length > 0 && (
               <span className="ml-2 text-destructive">
-                {overdueTasks.length} 项已过期
+                {overdueTasks.length} overdue tasks
               </span>
             )}
           </p>
@@ -428,7 +428,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                     <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-caption text-muted-foreground">
                       <span className="flex items-center gap-1 tabular-nums">
                         <Calendar className="h-3 w-3" aria-hidden="true" />
-                        {task.task_date ? formatDisplayDate(task.task_date) : '未安排日期'}
+                        {task.task_date ? formatDisplayDate(task.task_date) : 'Unscheduled'}
                       </span>
                       <span
                         className={cn(
@@ -454,7 +454,7 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
                   {isOverdue && (
                     <span className="flex shrink-0 items-center gap-0.5 rounded-full border border-destructive/30 bg-destructive/10 px-2 py-0.5 text-micro text-destructive">
                       <AlertCircle className="h-2.5 w-2.5" aria-hidden="true" />
-                      过期
+                      Overdue
                     </span>
                   )}
                 </div>
@@ -465,17 +465,17 @@ export function SearchFilter({ onSelectTask, compact = false }: SearchFilterProp
       ) : hasActiveFilters ? (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
           <Inbox className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">没有匹配的事项</p>
-          <p className="text-caption text-muted-foreground/80">换个关键词或放宽筛选条件</p>
+          <p className="text-body text-muted-foreground">No matching tasks</p>
+          <p className="text-caption text-muted-foreground/80">Try another keyword or fewer filters</p>
           <Button variant="ghost" size="sm" className="text-caption" onClick={clearAll}>
-            清除筛选
+            Clear filters
           </Button>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
           <Search className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">开始搜索事项</p>
-          <p className="text-caption text-muted-foreground/80">输入关键词或添加筛选条件</p>
+          <p className="text-body text-muted-foreground">Search for tasks</p>
+          <p className="text-caption text-muted-foreground/80">Enter keywords or add filters</p>
         </div>
       )}
     </div>

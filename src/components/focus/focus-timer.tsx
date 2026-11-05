@@ -89,7 +89,7 @@ function StepButton({
   return (
     <button
       type="button"
-      aria-label={direction > 0 ? '增加时长' : '减少时长'}
+      aria-label={direction > 0 ? 'Increase duration' : 'Decrease duration'}
       onPointerDown={(e) => {
         e.preventDefault()
         begin(!e.shiftKey)
@@ -110,7 +110,7 @@ function StepButton({
 }
 
 interface FocusTimerProps {
-  /** card：主应用里的完整卡片；widget：桌面浮窗里的紧凑版 */
+  /** card：主应用里的完整卡片；widget：Desktop widget里的紧凑版 */
   variant?: 'card' | 'widget'
 }
 
@@ -135,12 +135,12 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
 
   const handleStart = useCallback(
     (planned: number, nextMode: 'countdown' | 'stopwatch') => {
-      // 角色进入"专注中"状态（真实会话开始，不是演出来的）
+      // Character进入"Focusing"状态（真实会话开始，不是演出来的）
       atmosphereEvents.working()
       focus.start({
         planned_minutes: planned,
         timer_mode: nextMode,
-        title: focusTagId ? `分类：${getTagDisplayName(tagList, focusTagId)}` : undefined,
+        title: focusTagId ? `Category: ${getTagDisplayName(tagList, focusTagId)}` : undefined,
         mode: 'focus',
       })
     },
@@ -150,7 +150,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
   const isActive = focus.isRunning || focus.isPaused
   const isPaused = focus.isPaused
   const isStopwatch = focus.timerMode === 'stopwatch'
-  // 正计时的目标时长存在 planned_minutes 里，刷新/换窗口后依然能画出进度环
+  // Stopwatch的目标时长存在 planned_minutes 里，Refresh/换窗口后依然能画出进度环
   const effectiveTarget = isStopwatch ? focus.plannedMinutes : 0
   const ringProgress = isStopwatch
     ? stopwatchProgress(focus.elapsedSeconds, effectiveTarget)
@@ -161,7 +161,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
   const ringSize = isWidget ? 132 : 184
   const centerTime = formatClock(displaySeconds)
 
-  // 仍在专注中：浮窗与主窗口共用一个会话，这里只做展示与操作
+  // 仍在Focusing：浮窗与主窗口共用一个会话，这里只做展示与操作
   if (isActive) {
     return (
       <div className={cn('rounded-xl', !isWidget && 'acg-frame')}>
@@ -185,10 +185,10 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                   isPaused ? 'bg-warning' : 'bg-primary acg-breathe'
                 )}
               />
-              {isPaused ? '已暂停' : isStopwatch ? '正计时中' : '专注中'}
+              {isPaused ? 'Paused' : isStopwatch ? 'Stopwatch running' : 'Focusing'}
             </span>
             <span className="shrink-0 text-micro tabular-nums text-muted-foreground">
-              {isStopwatch ? (target > 0 ? `目标 ${target} 分钟` : '自由计时') : `${focus.plannedMinutes} 分钟`}
+              {isStopwatch ? (target > 0 ? `Target: ${target} minutes` : 'Free timing') : `${focus.plannedMinutes} minutes`}
             </span>
           </div>
 
@@ -202,11 +202,11 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
               <span className="text-display tabular-nums">{centerTime}</span>
               {overtime ? (
                 <span className="mt-0.5 text-micro font-medium tabular-nums text-destructive">
-                  超出 {overtime}
+                  Overtime:  {overtime}
                 </span>
               ) : (
                 <span className="mt-0.5 text-micro text-muted-foreground">
-                  {isStopwatch ? '已专注' : '剩余'}
+                  {isStopwatch ? 'Focused' : 'Remaining'}
                 </span>
               )}
               {focus.sessionTitle && !isWidget && (
@@ -220,11 +220,11 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
           <div className="flex items-center justify-center gap-1.5">
             {isPaused ? (
               <Button size="sm" onClick={focus.resume} className="h-8">
-                <Play className="h-3.5 w-3.5" />继续
+                <Play className="h-3.5 w-3.5" />Resume
               </Button>
             ) : (
               <Button size="sm" variant="outline" onClick={focus.pause} className="h-8">
-                <Pause className="h-3.5 w-3.5" />暂停
+                <Pause className="h-3.5 w-3.5" />Pause
               </Button>
             )}
             {!isStopwatch && (
@@ -233,7 +233,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                 variant="outline"
                 onClick={() => focus.extend(1)}
                 className="h-8"
-                title="加 1 分钟"
+                title="Add 1 minute"
               >
                 <Plus className="h-3.5 w-3.5" />1
               </Button>
@@ -244,21 +244,21 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
               onClick={() => setShowCancelConfirm(true)}
               className="h-8 text-destructive hover:bg-destructive/10"
             >
-              <Square className="h-3.5 w-3.5" />结束
+              <Square className="h-3.5 w-3.5" />End
             </Button>
           </div>
 
           <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
             <DialogContent className="sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle>结束这次专注？</DialogTitle>
+                <DialogTitle>End this focus session?</DialogTitle>
                 <DialogDescription>
-                  已用时间会记进统计。想继续的话按「取消」回到计时。
+                  Elapsed time will be saved. Choose Cancel to continue.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setShowCancelConfirm(false)}>
-                  取消
+                  Cancel
                 </Button>
                 <Button
                   variant="destructive"
@@ -267,7 +267,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                     focus.cancel()
                   }}
                 >
-                  确认结束
+                  End session
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -284,8 +284,8 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
       <div className="mb-2 flex rounded-full bg-surface-2 p-0.5">
         {(
           [
-            { key: 'countdown', label: '倒计时', icon: Brain },
-            { key: 'stopwatch', label: '正计时', icon: TimerReset },
+            { key: 'countdown', label: 'Countdown', icon: Brain },
+            { key: 'stopwatch', label: 'Stopwatch', icon: TimerReset },
           ] as const
         ).map((item) => (
           <button
@@ -320,7 +320,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                     ? 'border border-primary/30 bg-primary/10 font-semibold text-primary'
                     : 'border border-transparent text-muted-foreground hover:bg-surface-2'
                 )}
-                title={`${preset.hint}（${preset.minutes} 分钟）`}
+                title={`${preset.hint} (${preset.minutes} minutes)`}
               >
                 {preset.kind === 'break' ? (
                   <Coffee className="mb-0.5 h-3 w-3 opacity-70" />
@@ -354,9 +354,9 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                   setMinutes(clampMinutes(parsed))
                 }}
                 className="w-20 bg-transparent text-center text-display tabular-nums outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
-                aria-label="专注时长（分钟）"
+                aria-label="Focus duration (minutes)"
               />
-              <span className="text-micro text-muted-foreground">分钟</span>
+              <span className="text-micro text-muted-foreground">minutes</span>
             </div>
             <StepButton direction={1} onStep={(fine) => setMinutes((prev) => adjustMinutes(prev, 1, fine))} />
           </div>
@@ -370,7 +370,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
             min={1}
             max={240}
             step={1}
-            aria-label="专注时长滑块"
+            aria-label="Focus duration slider"
             className="mb-3"
             trackClassName="bg-surface-2"
             indicatorClassName="bg-primary"
@@ -380,7 +380,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
       ) : (
         <div className="mb-2 space-y-1.5">
           <p className="text-center text-micro text-muted-foreground">
-            从 00:00 开始，先做起来再说
+            Start at 00:00 and just begin
           </p>
           <div className="flex items-center justify-center gap-1">
             {STOPWATCH_TARGETS.map((value) => (
@@ -395,7 +395,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
                     : 'text-muted-foreground hover:bg-surface-2'
                 )}
               >
-                {value === 0 ? '不设目标' : `${value} 分`}
+                {value === 0 ? 'No target' : `${value} min`}
               </button>
             ))}
           </div>
@@ -409,12 +409,12 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
           onValueChange={(value) => setFocusTagId(value && value !== 'none' ? value : '')}
         >
           <SelectTrigger className="mb-2 h-8 text-caption">
-            <SelectValue placeholder="选择专注分类">
-              {focusTagId ? getTagDisplayName(tagList, focusTagId) : '选择专注分类'}
+            <SelectValue placeholder="Choose a focus category">
+              {focusTagId ? getTagDisplayName(tagList, focusTagId) : 'Choose a focus category'}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="none">不分类</SelectItem>
+            <SelectItem value="none">No category</SelectItem>
             {tagList.map((tag) => (
               <SelectItem key={tag.id} value={tag.id}>
                 <span className="flex items-center gap-2">
@@ -434,7 +434,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
         data-testid="focus-start"
         onClick={() => {
           if (mode === 'countdown' && minutes <= 0) {
-            toast.error('请输入有效时长')
+            toast.error('Enter a valid duration')
             return
           }
           handleStart(mode === 'stopwatch' ? target : minutes, mode)
@@ -442,7 +442,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
         className="h-9 w-full"
       >
         <Play className="h-3.5 w-3.5" />
-        {mode === 'stopwatch' ? '开始正计时' : `开始专注 · ${minutes} 分钟`}
+        {mode === 'stopwatch' ? 'Start stopwatch' : `Start focus · ${minutes} minutes`}
       </Button>
     </div>
   )
@@ -461,7 +461,7 @@ export function HomeFocusTimer({ variant = 'card' }: FocusTimerProps) {
         >
           <span className="flex items-center gap-1.5 text-caption font-medium text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
-            专注
+            Focus
           </span>
           <ChevronRight
             className={cn(

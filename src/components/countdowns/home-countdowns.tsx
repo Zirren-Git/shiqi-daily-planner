@@ -35,7 +35,7 @@ import { toast } from 'sonner'
 const COUNTDOWN_ICONS = ['Target', 'Star', 'Heart', 'GraduationCap', 'Briefcase', 'Plane', 'Gift', 'Calendar']
 const COUNTDOWN_COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316']
 
-/** 剩余天数状态色：已过 danger，≤3 天 warning */
+/** Remaining天数状态色：已过 danger，≤3 天 warning */
 function daysTone(days?: number) {
   if (days === undefined) return 'text-muted-foreground'
   if (days < 0) return 'text-destructive'
@@ -100,9 +100,9 @@ export function HomeCountdowns() {
       setDescription('')
       setShowOnHome(true)
       setShowCreate(false)
-      toast.success('倒数日已创建')
+      toast.success('Countdown created')
     } catch {
-      toast.error('创建失败')
+      toast.error('Could not create')
     }
   }, [title, targetDate, isYearly, color, icon, description, showOnHome, user, cdRepo, queryClient, rawList.length])
 
@@ -112,7 +112,7 @@ export function HomeCountdowns() {
         await cdRepo.update(user!.id, c.id, { is_pinned: !c.is_pinned } as Partial<Countdown>)
         queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       }
     },
     [user, cdRepo, queryClient]
@@ -124,9 +124,9 @@ export function HomeCountdowns() {
       await cdRepo.delete(user.id, deleteTarget.id)
       queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       setDeleteTarget(null)
-      toast.success('已删除')
+      toast.success('Deleted')
     } catch {
-      toast.error('删除失败')
+      toast.error('Could not delete')
     }
   }, [deleteTarget, user, cdRepo, queryClient])
 
@@ -155,9 +155,9 @@ export function HomeCountdowns() {
       } as Partial<Countdown>)
       queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       setEditTarget(null)
-      toast.success('已更新')
+      toast.success('Updated')
     } catch {
-      toast.error('保存失败')
+      toast.error('Could not save')
     }
   }, [editTarget, title, targetDate, isYearly, color, icon, description, showOnHome, user, cdRepo, queryClient])
 
@@ -166,14 +166,14 @@ export function HomeCountdowns() {
       try {
         if (c.archived_at) {
           await cdRepo.unarchive(user!.id, c.id)
-          toast.success('已取消归档')
+          toast.success('Unarchived')
         } else {
           await cdRepo.archive(user!.id, c.id)
-          toast.success('已归档')
+          toast.success('Archived')
         }
         queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       }
     },
     [user, cdRepo, queryClient]
@@ -186,7 +186,7 @@ export function HomeCountdowns() {
           <div className="mb-2 flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-caption text-muted-foreground">
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-              倒数日
+              Countdowns
             </span>
             <Button
               variant="ghost"
@@ -195,13 +195,13 @@ export function HomeCountdowns() {
               onClick={() => setShowCreate(true)}
             >
               <Plus className="h-3 w-3" aria-hidden="true" />
-              新建
+              New
             </Button>
           </div>
           <div className="flex flex-col items-center gap-2 py-4 text-center">
             <Clock className="h-6 w-6 text-muted-foreground/60" aria-hidden="true" />
-            <p className="text-caption text-muted-foreground">还没有倒数日</p>
-            <p className="text-micro text-muted-foreground/80">添加纪念日、考试或假期，看看还有多少天</p>
+            <p className="text-caption text-muted-foreground">No countdowns yet</p>
+            <p className="text-micro text-muted-foreground/80">Add a milestone, exam or vacation</p>
           </div>
         </CardContent>
       </Card>
@@ -220,7 +220,7 @@ export function HomeCountdowns() {
               className="flex items-center gap-1.5 text-caption text-muted-foreground ui-transition hover:text-foreground"
             >
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-              倒数日
+              Countdowns
               <ChevronRight className={cn('h-3 w-3 transition-transform', !collapsed && 'rotate-90')} aria-hidden="true" />
             </button>
             <div className="flex items-center gap-1">
@@ -229,13 +229,13 @@ export function HomeCountdowns() {
                 size="icon-xs"
                 className="text-muted-foreground"
                 onClick={() => setShowCreate(true)}
-                aria-label="新建倒数日"
+                aria-label="New countdown"
               >
                 <Plus className="h-3 w-3" aria-hidden="true" />
               </Button>
               <Link href="/countdowns">
                 <Button variant="ghost" size="sm" className="h-6 text-caption text-muted-foreground">
-                  全部
+                  All
                 </Button>
               </Link>
             </div>
@@ -268,8 +268,8 @@ export function HomeCountdowns() {
                       size="icon-xs"
                       className="text-muted-foreground"
                       onClick={() => startEdit(c)}
-                      title="编辑"
-                      aria-label={`编辑 ${c.title}`}
+                      title="Edit"
+                      aria-label={`Edit ${c.title}`}
                     >
                       <Pencil className="h-3 w-3" aria-hidden="true" />
                     </Button>
@@ -278,8 +278,8 @@ export function HomeCountdowns() {
                       size="icon-xs"
                       className="text-muted-foreground"
                       onClick={() => handleTogglePin(c)}
-                      title={c.is_pinned ? '取消置顶' : '置顶'}
-                      aria-label={c.is_pinned ? '取消置顶' : '置顶'}
+                      title={c.is_pinned ? 'Unpin' : 'Pin'}
+                      aria-label={c.is_pinned ? 'Unpin' : 'Pin'}
                     >
                       {c.is_pinned ? (
                         <PinOff className="h-3 w-3" aria-hidden="true" />
@@ -292,8 +292,8 @@ export function HomeCountdowns() {
                       size="icon-xs"
                       className="text-muted-foreground"
                       onClick={() => handleArchive(c)}
-                      title={c.archived_at ? '取消归档' : '归档'}
-                      aria-label={c.archived_at ? '取消归档' : '归档'}
+                      title={c.archived_at ? 'Unarchive' : 'Archive'}
+                      aria-label={c.archived_at ? 'Unarchive' : 'Archive'}
                     >
                       <Archive className="h-3 w-3" aria-hidden="true" />
                     </Button>
@@ -302,7 +302,7 @@ export function HomeCountdowns() {
                       size="icon-xs"
                       className="text-muted-foreground hover:text-destructive"
                       onClick={() => setDeleteTarget(c)}
-                      aria-label={`删除 ${c.title}`}
+                      aria-label={`Delete ${c.title}`}
                     >
                       <Trash2 className="h-3 w-3" aria-hidden="true" />
                     </Button>
@@ -316,9 +316,9 @@ export function HomeCountdowns() {
                   <Input
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="倒数日标题"
+                    placeholder="Countdown title"
                     autoFocus
-                    aria-label="倒数日标题"
+                    aria-label="Countdown title"
                   />
                   <div className="flex items-center gap-2">
                     <Input
@@ -326,7 +326,7 @@ export function HomeCountdowns() {
                       value={targetDate}
                       onChange={(e) => setTargetDate(e.target.value)}
                       className="flex-1 tabular-nums"
-                      aria-label="目标日期"
+                      aria-label="Target date"
                     />
                     <button
                       type="button"
@@ -334,7 +334,7 @@ export function HomeCountdowns() {
                       aria-pressed={isYearly}
                       className={togglePillClass(isYearly)}
                     >
-                      每年
+                      Yearly
                     </button>
                   </div>
                   <div className="flex gap-1">
@@ -343,7 +343,7 @@ export function HomeCountdowns() {
                         key={c}
                         type="button"
                         onClick={() => setColor(c)}
-                        aria-label={`选择颜色 ${c}`}
+                        aria-label={`Choose color ${c}`}
                         aria-pressed={color === c}
                         className={cn(
                           'h-5 w-5 rounded-full border-2 ui-transition',
@@ -360,7 +360,7 @@ export function HomeCountdowns() {
                       className="text-caption"
                       onClick={() => setShowCreate(false)}
                     >
-                      取消
+                      Cancel
                     </Button>
                     <Button
                       size="sm"
@@ -368,7 +368,7 @@ export function HomeCountdowns() {
                       onClick={handleCreate}
                       disabled={!title.trim() || !targetDate}
                     >
-                      保存
+                      Save
                     </Button>
                   </div>
                 </div>
@@ -382,14 +382,14 @@ export function HomeCountdowns() {
       <Dialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-section">删除倒数日</DialogTitle>
+            <DialogTitle className="text-section">Delete countdown</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
-              确定要删除「{deleteTarget?.title}」吗？此操作无法撤销。
+              Delete “{deleteTarget?.title}”? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDeleteTarget(null)}>取消</Button>
-            <Button variant="destructive" onClick={handleDelete}>删除</Button>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -398,21 +398,21 @@ export function HomeCountdowns() {
       <Dialog open={!!editTarget} onOpenChange={() => setEditTarget(null)}>
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-section">编辑倒数日</DialogTitle>
+            <DialogTitle className="text-section">Edit countdown</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label className="text-caption text-muted-foreground">标题</Label>
+              <Label className="text-caption text-muted-foreground">Title</Label>
               <Input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="倒数日标题"
+                placeholder="Countdown title"
                 autoFocus
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-caption text-muted-foreground">目标日期</Label>
+                <Label className="text-caption text-muted-foreground">Target date</Label>
                 <Input
                   type="date"
                   value={targetDate}
@@ -421,11 +421,11 @@ export function HomeCountdowns() {
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-caption text-muted-foreground">描述（可选）</Label>
+                <Label className="text-caption text-muted-foreground">Description (optional)</Label>
                 <Input
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="描述"
+                  placeholder="Description"
                 />
               </div>
             </div>
@@ -436,7 +436,7 @@ export function HomeCountdowns() {
                 aria-pressed={isYearly}
                 className={togglePillClass(isYearly)}
               >
-                每年重复
+                Repeat yearly
               </button>
               <button
                 type="button"
@@ -444,7 +444,7 @@ export function HomeCountdowns() {
                 aria-pressed={showOnHome}
                 className={togglePillClass(showOnHome)}
               >
-                显示在首页
+                Show on home
               </button>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -453,7 +453,7 @@ export function HomeCountdowns() {
                   key={c}
                   type="button"
                   onClick={() => setColor(c)}
-                  aria-label={`选择颜色 ${c}`}
+                  aria-label={`Choose color ${c}`}
                   aria-pressed={color === c}
                   className={cn(
                     'h-6 w-6 rounded-full border-2 ui-transition',
@@ -465,8 +465,8 @@ export function HomeCountdowns() {
             </div>
           </div>
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setEditTarget(null)}>取消</Button>
-            <Button onClick={handleUpdate} disabled={!title.trim() || !targetDate}>保存修改</Button>
+            <Button variant="outline" onClick={() => setEditTarget(null)}>Cancel</Button>
+            <Button onClick={handleUpdate} disabled={!title.trim() || !targetDate}>Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

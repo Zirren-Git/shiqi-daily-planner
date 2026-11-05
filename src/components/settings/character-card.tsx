@@ -1,11 +1,11 @@
 ﻿'use client'
 
 // ============================================================
-// 角色资料卡 / 角色详情
+// Character资料卡 / Character详情
 //
-// 卡片不是"头像 + 名字"：主视觉占卡片主体，作品名做成系列丝带，
-// 底部是名字与标签，右上角收藏，选中态有描边与勾选。
-// 本地素材包优先使用用户提供的图，没有才退回内置立绘。
+// 卡片不是"头像 + 名字"：Hero占卡片主体，作品名做成系列丝带，
+// 底部是名字与标签，右上角Favorites，选中态有描边与勾选。
+// Local artwork包优先使用用户提供的图，没有才退回内置立绘。
 // ============================================================
 
 import { useMemo } from 'react'
@@ -23,9 +23,9 @@ export interface LibraryItem {
   work: string
   tags: string[]
   categories: CharacterCategory[]
-  /** 内置立绘 key；本地素材包为 null */
+  /** 内置立绘 key；Local artwork包为 null */
   artId: string | null
-  /** 本地素材包 id；内置为 null */
+  /** Local artwork包 id；内置为 null */
   packId: string | null
   /** 素材包展示图 URL */
   displayUrl: string | null
@@ -34,11 +34,11 @@ export interface LibraryItem {
   recommend: { themeId: ThemeId; sceneId: string; accent: string }
   description?: string
   dialogue?: PackDialogue
-  /** pending = 只有推荐位，没有图 */
+  /** pending = 只有Recommended位，没有图 */
   source: 'builtin' | 'pack' | 'pending'
 }
 
-/** 统一的"角色图像"渲染：素材包用 <img>，内置用 SVG */
+/** 统一的"Character图像"渲染：素材包用 <img>，内置用 SVG */
 export function CharacterVisual({
   item,
   expression = 'idle',
@@ -58,7 +58,7 @@ export function CharacterVisual({
 
   if (url) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element -- 本地素材是运行时 object URL
+      // eslint-disable-next-line @next/next/no-img-element -- Local artwork是运行时 object URL
       <img
         src={url}
         alt={item.name}
@@ -90,7 +90,7 @@ export function CharacterCard({
   onOpen: () => void
   onImport: () => void
 }) {
-  // 本地素材包用它自己 manifest 里声明的强调色，内置角色用作品主色
+  // Local artwork包用它自己 manifest 里声明的强调色，内置Character用作品主色
   const accent = item.source === 'pack' ? item.recommend.accent : seriesAccentOf(item.work)
   const missing = item.source === 'pending'
 
@@ -106,13 +106,13 @@ export function CharacterCard({
       data-active={active ? 'true' : 'false'}
       data-series={seriesKeyOf(item.work)}
     >
-      {/* 主视觉区：占卡片 3/4，系列色做底 */}
+      {/* Hero区：占卡片 3/4，系列色做底 */}
       <button
         type="button"
         onClick={missing ? onImport : onOpen}
-        // 主视觉按 3:4 立绘比例，避免竖幅图两侧留白
+        // Hero按 3:4 立绘比例，避免竖幅图两侧留白
         className="relative block aspect-[3/4] w-full overflow-hidden text-left"
-        aria-label={missing ? `为 ${item.name} 导入立绘` : `查看 ${item.name} 详情`}
+        aria-label={missing ? `Import image for ${item.name}` : `View ${item.name} details`}
         style={{
           background: `linear-gradient(160deg, ${accent}22, transparent 58%), var(--surface-2)`,
         }}
@@ -120,7 +120,7 @@ export function CharacterCard({
         {missing ? (
           <span className="flex h-full flex-col items-center justify-center gap-1.5 text-muted-foreground">
             <Upload className="h-5 w-5" aria-hidden="true" />
-            <span className="text-micro">待导入立绘</span>
+            <span className="text-micro">Image not imported</span>
           </span>
         ) : (
           <CharacterVisual
@@ -144,21 +144,21 @@ export function CharacterCard({
         {active && (
           <span className="absolute bottom-1.5 left-1.5 flex items-center gap-0.5 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-medium text-primary-foreground shadow">
             <Check className="h-2.5 w-2.5" aria-hidden="true" />
-            使用中
+            In use
           </span>
         )}
         {item.packId && (
           <span className="absolute bottom-1.5 right-1.5 rounded-full bg-black/55 px-1.5 py-0.5 text-[10px] text-white backdrop-blur-[2px]">
-            本地素材
+            Local artwork
           </span>
         )}
       </button>
 
-      {/* 收藏 */}
+      {/* Favorites */}
       <button
         type="button"
         onClick={onToggleFavorite}
-        aria-label={favorite ? `取消收藏 ${item.name}` : `收藏 ${item.name}`}
+        aria-label={favorite ? `Remove from favorites ${item.name}` : `Add ${item.name} to favorites`}
         aria-pressed={favorite}
         className={cn(
           'absolute right-1 top-1 rounded-full bg-black/25 p-1 backdrop-blur-[2px] transition-colors',
@@ -201,7 +201,7 @@ export function CharacterCard({
             missing && 'opacity-40'
           )}
         >
-          {active ? '已选' : '选用'}
+          {active ? 'Selected' : 'Select'}
         </button>
       </div>
     </div>

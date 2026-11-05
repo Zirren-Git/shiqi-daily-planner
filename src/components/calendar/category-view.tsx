@@ -34,7 +34,7 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
   const [hideDoneTasks, setHideDoneTasks] = useState(false)
 
   // 按分类是全局总览（没有日期导航），因此取全部事项：
-  // 之前只取「本月」，跨月后上个月的事项会整批消失，且无日期事项永远进不来。
+  // 之前只取「This month」，跨月后Previous month的事项会整批消失，且无日期事项永远进不来。
   const { data: tasks = [], isLoading: tasksLoading } = useQuery({
     queryKey: ['tasks', user?.id, 'all'],
     queryFn: () => taskRepo.getAll(user!.id),
@@ -101,13 +101,13 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 px-6 py-16 text-center">
         <FolderOpen className="h-7 w-7 text-muted-foreground/60" />
-        <p className="text-body text-muted-foreground">还没有事项</p>
+        <p className="text-body text-muted-foreground">No tasks yet</p>
         <p className="text-caption text-muted-foreground/70">
-          按分类整理你的计划，创建第一条事项开始记录
+          Organize your plans by category; create your first task
         </p>
         <Button size="sm" className="mt-1" onClick={() => onNewTask()}>
           <Plus className="h-4 w-4" />
-          新建事项
+          New task
         </Button>
       </div>
     )
@@ -127,7 +127,7 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
             onCheckedChange={setHideEmpty}
           />
           <Label htmlFor="hide-empty" className="text-caption">
-            隐藏空分类
+            Hide empty categories
           </Label>
         </div>
         <div className="flex items-center gap-2">
@@ -137,7 +137,7 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
             onCheckedChange={setHideDoneTasks}
           />
           <Label htmlFor="hide-done" className="text-caption">
-            隐藏已完成
+            Hide completed
           </Label>
         </div>
       </div>
@@ -195,7 +195,7 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
                   size="icon"
                   className="shrink-0"
                   onClick={() => handleNewInCategory(group.tagId)}
-                  aria-label={`在「${group.tagName}」中新建事项`}
+                  aria-label={`Add a task to ${group.tagName}`}
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -228,7 +228,7 @@ export function CategoryView({ onEditTask, onNewTask }: CategoryViewProps) {
                               className="h-6 px-1.5 text-caption"
                               onClick={() => toggleDone(group.tagId)}
                             >
-                              {isDoneCollapsed ? '展开' : '收起'}
+                              {isDoneCollapsed ? 'Expand' : 'Collapse'}
                             </Button>
                           )}
                         </div>

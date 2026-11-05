@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useRef, useState, type ComponentType, type ReactNode } from 'react'
 import {
@@ -146,7 +146,7 @@ function RadiusRow({
         max={32}
         step={1}
         className="flex-1"
-        aria-label={`${label}圆角`}
+        aria-label={`${label}corner radius`}
       />
       <span className="w-10 shrink-0 text-right text-caption tabular-nums text-muted-foreground">
         {value}px
@@ -214,7 +214,7 @@ export function AppearancePanel() {
         window.setTimeout(() => setImportOk(false), 2500)
       } else {
         setImportOk(false)
-        setImportError(result.error ?? '导入失败')
+        setImportError(result.error ?? 'Import failed')
       }
     }
     reader.readAsText(file)
@@ -225,8 +225,8 @@ export function AppearancePanel() {
       {/* 主题 */}
       <Panel
         icon={Palette}
-        title="主题"
-        description="六套主题各自有独立的配色、字体、边框与装饰；点击即时生效，并自动保存"
+        title="Theme"
+        description="Each theme has its own colors, fonts, borders and decorations. Changes are saved automatically."
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {THEMES.map((def) => (
@@ -256,11 +256,11 @@ export function AppearancePanel() {
       {/* 明暗 */}
       <Panel
         icon={mode === 'dark' ? Moon : Sun}
-        title="明暗模式"
+        title="Light / dark mode"
         description={
           modeSupported
-            ? '同一套主题在浅色与深色下都经过单独调色'
-            : `${theme.name} 主题本身就是${theme.defaultMode === 'dark' ? '深色' : '浅色'}设计，不支持切换明暗`
+            ? 'Both light and dark modes have their own tuned colors'
+            : `${theme.name} This theme is designed for ${theme.defaultMode === 'dark' ? 'Dark' : 'Light'} mode and cannot switch modes`
         }
       >
         <div className="flex flex-wrap items-center gap-2">
@@ -272,7 +272,7 @@ export function AppearancePanel() {
             onClick={() => setMode('light')}
           >
             <Sun className="h-3.5 w-3.5" />
-            浅色
+            Light
           </Button>
           <Button
             variant={!state.followSystem && state.mode === 'dark' ? 'default' : 'outline'}
@@ -282,7 +282,7 @@ export function AppearancePanel() {
             onClick={() => setMode('dark')}
           >
             <Moon className="h-3.5 w-3.5" />
-            深色
+            Dark
           </Button>
           <Button
             variant={state.followSystem ? 'default' : 'outline'}
@@ -292,11 +292,11 @@ export function AppearancePanel() {
             onClick={() => setFollowSystem(true)}
           >
             <Monitor className="h-3.5 w-3.5" />
-            跟随系统
+            Follow system
           </Button>
           {state.followSystem && modeSupported && (
             <span className="text-micro text-muted-foreground">
-              当前系统为{mode === 'dark' ? '深色' : '浅色'}
+              System appearance: {mode === 'dark' ? 'Dark' : 'Light'}
             </span>
           )}
         </div>
@@ -305,8 +305,8 @@ export function AppearancePanel() {
       {/* 强调色 */}
       <Panel
         icon={Wand2}
-        title="强调色"
-        description="只覆盖当前主题的强调色，不改动主题本身；文字颜色会自动按对比度取深或浅"
+        title="Accent color"
+        description="Override the accent color without changing the theme. Text contrast adjusts automatically."
         action={
           p.accent ? (
             <Button
@@ -315,11 +315,11 @@ export function AppearancePanel() {
               className="h-7 text-caption text-muted-foreground"
               onClick={() => patchPersonalization({ accent: null })}
             >
-              用主题色
+              Use theme color
             </Button>
           ) : (
             <span className="rounded-full bg-surface-2 px-2 py-0.5 text-micro text-muted-foreground">
-              跟随主题
+              Follow theme
             </span>
           )
         }
@@ -328,7 +328,7 @@ export function AppearancePanel() {
           <button
             type="button"
             onClick={() => patchPersonalization({ accent: null })}
-            aria-label="使用主题自带强调色"
+            aria-label="Use the theme accent color"
             className={cn(
               'flex h-8 w-8 items-center justify-center rounded-full border-2 ui-transition',
               p.accent ? 'border-border' : 'border-primary'
@@ -341,7 +341,7 @@ export function AppearancePanel() {
             <button
               key={color}
               type="button"
-              aria-label={`强调色 ${color}`}
+              aria-label={`Accent color ${color}`}
               onClick={() => patchPersonalization({ accent: color })}
               className={cn(
                 'flex h-8 w-8 items-center justify-center rounded-full border-2 ui-transition',
@@ -353,13 +353,13 @@ export function AppearancePanel() {
             </button>
           ))}
           <label className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-border px-2.5 text-caption text-muted-foreground ui-transition hover:text-foreground">
-            自定义
+            Custom
             <input
               type="color"
               value={p.accent ?? theme.preview[theme.defaultMode].accent}
               onChange={(e) => patchPersonalization({ accent: e.target.value })}
               className="h-4 w-4 cursor-pointer border-0 bg-transparent p-0"
-              aria-label="自定义强调色"
+              aria-label="Custom accent color"
             />
           </label>
         </div>
@@ -368,8 +368,8 @@ export function AppearancePanel() {
       {/* 圆角 */}
       <Panel
         icon={SlidersHorizontal}
-        title="圆角"
-        description="按钮、卡片、输入框、弹窗各自可调，其余层级会按比例跟随"
+        title="Corner radius"
+        description="Adjust buttons, cards, inputs and dialogs separately."
         action={
           <span className="text-micro tabular-nums text-muted-foreground">
             {p.radius.button}/{p.radius.card}/{p.radius.input}/{p.radius.dialog} px
@@ -378,22 +378,22 @@ export function AppearancePanel() {
       >
         <div className="space-y-2.5">
           <RadiusRow
-            label="按钮"
+            label="Buttons"
             value={p.radius.button}
             onChange={(v) => patchPersonalization({ radius: { ...p.radius, button: v } })}
           />
           <RadiusRow
-            label="卡片"
+            label="Cards"
             value={p.radius.card}
             onChange={(v) => patchPersonalization({ radius: { ...p.radius, card: v } })}
           />
           <RadiusRow
-            label="输入框"
+            label="Inputs"
             value={p.radius.input}
             onChange={(v) => patchPersonalization({ radius: { ...p.radius, input: v } })}
           />
           <RadiusRow
-            label="弹窗"
+            label="Dialogs"
             value={p.radius.dialog}
             onChange={(v) => patchPersonalization({ radius: { ...p.radius, dialog: v } })}
           />
@@ -403,8 +403,8 @@ export function AppearancePanel() {
       {/* 缩放 + 字体 + 动效 */}
       <Panel
         icon={Type}
-        title="字体与缩放"
-        description="缩放通过根字号实现，不拉伸画面，因此不会糊；字体在不可用时自动回退"
+        title="Font and scale"
+        description="Scale the interface without blurring it. Unavailable fonts fall back automatically."
         action={
           <Button
             variant="ghost"
@@ -420,15 +420,15 @@ export function AppearancePanel() {
             }
           >
             <RotateCcw className="h-3 w-3" />
-            恢复
+            Restore
           </Button>
         }
       >
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <Label className="text-caption text-muted-foreground">界面缩放</Label>
+            <Label className="text-caption text-muted-foreground">Interface scale</Label>
             <Segmented
-              label="界面缩放"
+              label="Interface scale"
               value={p.scale}
               options={SCALE_OPTIONS.map((s) => ({ value: s, label: `${Math.round(s * 100)}%` }))}
               onChange={(v) => patchPersonalization({ scale: v })}
@@ -436,7 +436,7 @@ export function AppearancePanel() {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <Label className="text-caption text-muted-foreground">字体</Label>
+            <Label className="text-caption text-muted-foreground">Font</Label>
             <select
               value={p.fontId}
               onChange={(e) =>
@@ -445,7 +445,7 @@ export function AppearancePanel() {
                 })
               }
               className="h-8 min-w-40 rounded-md border border-input bg-background px-2 text-caption"
-              aria-label="字体"
+              aria-label="Font"
             >
               {FONT_OPTIONS.map((f) => (
                 <option key={f.value} value={f.value}>
@@ -456,7 +456,7 @@ export function AppearancePanel() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Label className="w-16 shrink-0 text-caption text-muted-foreground">正文字号</Label>
+            <Label className="w-16 shrink-0 text-caption text-muted-foreground">Body font size</Label>
             <Slider
               value={[Math.round(p.typeScale * 100)]}
               onValueChange={(v) => patchPersonalization({ typeScale: (v as number[])[0] / 100 })}
@@ -464,7 +464,7 @@ export function AppearancePanel() {
               max={120}
               step={1}
               className="flex-1"
-              aria-label="正文字号"
+              aria-label="Body font size"
             />
             <span className="w-10 shrink-0 text-right text-caption tabular-nums text-muted-foreground">
               {Math.round(p.typeScale * 100)}%
@@ -472,7 +472,7 @@ export function AppearancePanel() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Label className="w-16 shrink-0 text-caption text-muted-foreground">标题比例</Label>
+            <Label className="w-16 shrink-0 text-caption text-muted-foreground">Heading scale</Label>
             <Slider
               value={[Math.round(p.titleScale * 100)]}
               onValueChange={(v) => patchPersonalization({ titleScale: (v as number[])[0] / 100 })}
@@ -480,7 +480,7 @@ export function AppearancePanel() {
               max={125}
               step={1}
               className="flex-1"
-              aria-label="标题比例"
+              aria-label="Heading scale"
             />
             <span className="w-10 shrink-0 text-right text-caption tabular-nums text-muted-foreground">
               {Math.round(p.titleScale * 100)}%
@@ -492,12 +492,12 @@ export function AppearancePanel() {
       {/* 动效 */}
       <Panel
         icon={Sparkles}
-        title="动画强度"
-        description="统一影响过渡、悬停与装饰动效；关闭后仍用颜色和边框表达状态"
+        title="Animation intensity"
+        description="Controls transitions and decorative effects. Colors and borders still convey state when disabled."
       >
         <div className="flex flex-wrap items-center gap-2">
           <Segmented
-            label="动画强度"
+            label="Animation intensity"
             value={p.motion}
             options={MOTION_OPTIONS.map((m) => ({ value: m.value, label: m.label }))}
             onChange={(v) => patchPersonalization({ motion: v })}
@@ -511,17 +511,17 @@ export function AppearancePanel() {
       {/* 预设 */}
       <Panel
         icon={Save}
-        title="我的预设"
-        description="把当前主题与个性化参数存成命名预设，之后一键套用（与六套内置主题分开管理）"
+        title="My presets"
+        description="Save your current theme settings as a named preset for later use."
       >
         <div className="flex flex-wrap items-center gap-2">
           <Input
             value={presetName}
             onChange={(e) => setPresetName(e.target.value)}
-            placeholder="例如：夜间写作"
+            placeholder="e.g. Night writing"
             maxLength={40}
             className="h-8 w-48"
-            aria-label="预设名称"
+            aria-label="Preset name"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
@@ -538,16 +538,16 @@ export function AppearancePanel() {
             }}
           >
             <Save className="h-3.5 w-3.5" />
-            保存为预设
+            Save as preset
           </Button>
           {presets.length >= 30 && (
-            <span className="text-micro text-muted-foreground">最多 30 个预设</span>
+            <span className="text-micro text-muted-foreground">Up to 30 presets</span>
           )}
         </div>
 
         {presets.length === 0 ? (
           <p className="mt-3 text-caption text-muted-foreground">
-            还没有自定义预设。调好颜色和圆角后，给它起个名字存起来。
+            No custom presets yet. Adjust your appearance and save it with a name.
           </p>
         ) : (
           <ul className="mt-3 divide-y divide-border overflow-hidden rounded-md border border-border">
@@ -572,7 +572,7 @@ export function AppearancePanel() {
                     value={renameValue}
                     onChange={(e) => setRenameValue(e.target.value)}
                     className="h-7 w-40"
-                    aria-label="重命名预设"
+                    aria-label="Rename preset"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         renamePreset(preset.id, renameValue)
@@ -594,7 +594,7 @@ export function AppearancePanel() {
                     className="h-6 px-2 text-micro"
                     onClick={() => applyPreset(preset.id)}
                   >
-                    应用
+                    Apply
                   </Button>
                   <Button
                     variant="ghost"
@@ -605,14 +605,14 @@ export function AppearancePanel() {
                       setRenameValue(preset.name)
                     }}
                   >
-                    重命名
+                    Rename
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon-xs"
                     className="text-muted-foreground hover:text-destructive"
                     onClick={() => deletePreset(preset.id)}
-                    aria-label={`删除预设 ${preset.name}`}
+                    aria-label={`Delete preset ${preset.name}`}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
@@ -623,20 +623,20 @@ export function AppearancePanel() {
         )}
       </Panel>
 
-      {/* 角色库 */}
+      {/* Character library */}
       <CharacterLibraryPanel />
 
-      {/* 智能配色 */}
+      {/* Smart colors */}
       <ColorPanel />
 
-      {/* 沉浸氛围 */}
+      {/* Atmosphere */}
       <AtmospherePanel />
 
       {/* 恢复 + 导入导出 */}
       <Panel
         icon={RotateCcw}
-        title="恢复与迁移"
-        description="恢复只影响外观设置，不会动任何计划、习惯或复盘数据"
+        title="Restore and migrate"
+        description="Resetting appearance does not affect your tasks, habits or reviews."
       >
         <div className="flex flex-wrap items-center gap-2">
           <Button
@@ -647,7 +647,7 @@ export function AppearancePanel() {
             onClick={() => setConfirmAction('current')}
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            恢复当前主题默认
+            Reset current theme
           </Button>
           <Button
             variant="outline"
@@ -656,12 +656,12 @@ export function AppearancePanel() {
             onClick={() => setConfirmAction('all')}
           >
             <Trash2 className="h-3.5 w-3.5" />
-            恢复全部默认
+            Reset everything
           </Button>
           <span className="mx-1 h-5 w-px bg-border" aria-hidden="true" />
           <Button variant="outline" size="sm" className="h-8 gap-1" onClick={handleExport}>
             <Download className="h-3.5 w-3.5" />
-            导出配置
+            Export settings
           </Button>
           <Button
             variant="outline"
@@ -670,7 +670,7 @@ export function AppearancePanel() {
             onClick={() => fileRef.current?.click()}
           >
             <Upload className="h-3.5 w-3.5" />
-            导入配置
+            Import settings
           </Button>
           <input
             ref={fileRef}
@@ -682,11 +682,11 @@ export function AppearancePanel() {
               e.target.value = ''
             }}
           />
-          {importOk && <span className="text-micro text-success">已导入</span>}
+          {importOk && <span className="text-micro text-success">Imported</span>}
           {importError && <span className="text-micro text-destructive">{importError}</span>}
         </div>
         <p className="mt-2 text-micro text-muted-foreground">
-          配置文件是 JSON，只包含主题与个性化参数；导入时会逐项校验取值范围，非法值会被忽略。
+          The JSON settings file contains only appearance settings; invalid values are ignored.
         </p>
       </Panel>
 
@@ -700,17 +700,17 @@ export function AppearancePanel() {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle className="text-section">
-              {confirmAction === 'all' ? '恢复全部默认外观' : '恢复当前主题默认'}
+              {confirmAction === 'all' ? 'Reset all appearance settings' : 'Reset current theme'}
             </DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
               {confirmAction === 'all'
-                ? '会把主题切回「云母」并清空所有自定义参数与预设。计划、习惯、复盘数据不受影响。'
-                : `会清除「${theme.name}」上的强调色、圆角、字体与动效设置，回到主题自带的样子。`}
+                ? 'Resets the theme and clears custom settings and presets. Your tasks, habits and reviews are safe.'
+                : `Reset custom colors, corners, fonts and animations for ${theme.name}.`}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setConfirmAction(null)}>
-              取消
+              Cancel
             </Button>
             <Button
               variant="destructive"
@@ -720,7 +720,7 @@ export function AppearancePanel() {
                 setConfirmAction(null)
               }}
             >
-              确认恢复
+              Confirm reset
             </Button>
           </DialogFooter>
         </DialogContent>

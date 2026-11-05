@@ -57,7 +57,7 @@ export function ReviewCalendar({
     return result
   }, [currentMonth])
 
-  const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   const isFutureDate = (date: Date): boolean => {
     const dateStr = format(date, 'yyyy-MM-dd')
@@ -72,13 +72,13 @@ export function ReviewCalendar({
           variant="ghost"
           size="icon-sm"
           onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-          aria-label="上个月"
+          aria-label="Previous month"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <div className="flex items-baseline gap-2">
           <span className="text-section tabular-nums">
-            {format(currentMonth, 'yyyy年M月')}
+            {format(currentMonth, 'MMMM yyyy')}
           </span>
           <Button
             variant="ghost"
@@ -86,14 +86,14 @@ export function ReviewCalendar({
             className="h-6 px-1.5 text-micro text-muted-foreground"
             onClick={() => onMonthChange(new Date())}
           >
-            本月
+            This month
           </Button>
         </div>
         <Button
           variant="ghost"
           size="icon-sm"
           onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-          aria-label="下个月"
+          aria-label="Next month"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -122,11 +122,11 @@ export function ReviewCalendar({
                 key={`${wi}-${di}`}
                 onClick={() => !isFuture && onDateSelect(dateStr)}
                 disabled={isFuture}
-                aria-label={`${dateStr}${hasReview ? '，已有评价' : ''}`}
+                aria-label={`${dateStr}${hasReview ? '，Reviewed' : ''}`}
                 aria-pressed={isSelected}
                 title={
                   hasReview
-                    ? `${dateStr} · 评分 ${review?.score ?? '—'}/10 · 心情 ${review?.mood ?? '—'}/5`
+                    ? `${dateStr} · Rating ${review?.score ?? '—'}/10 · Mood ${review?.mood ?? '—'}/5`
                     : dateStr
                 }
                 className={cn(

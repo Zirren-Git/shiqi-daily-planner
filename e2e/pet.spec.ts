@@ -39,7 +39,7 @@ test('desktop pet: pixel passthrough, talk, drag, expressions and saved settings
   const pet = page.getByTestId('pet-character')
   const image = pet.locator('img')
   await expect(image).toBeVisible()
-  await expect(page.getByTestId('pet-bubble')).toContainText('按住拖动')
+  await expect(page.getByTestId('pet-bubble')).toContainText('drag to move')
   const rect = (await image.boundingBox())!
   const body = { x: rect.x + rect.width * 0.75, y: rect.y + rect.height * 0.5 }
   const transparent = { x: rect.x + rect.width * 0.25, y: body.y }
@@ -63,11 +63,11 @@ test('desktop pet: pixel passthrough, talk, drag, expressions and saved settings
   await pet.dispatchEvent('pointerdown', { button: 0, pointerId: 2, screenX: 100, screenY: 100 })
   await pet.dispatchEvent('pointercancel', { pointerId: 2 })
   await expect(page.getByTestId('pet-bubble')).toHaveText('开心咯')
-  await page.getByRole('button', { name: '桌宠设置', exact: true }).click()
-  const panel = page.getByRole('dialog', { name: '桌宠设置面板' })
+  await page.getByRole('button', { name: 'Pet settings', exact: true }).click()
+  const panel = page.getByRole('dialog', { name: 'Pet settings panel' })
   await expect(panel).toBeVisible()
-  await page.getByRole('slider', { name: '人物大小' }).fill('160')
-  await page.getByRole('checkbox', { name: '轻微动作反馈' }).uncheck()
+  await page.getByRole('slider', { name: 'Character size' }).fill('160')
+  await page.getByRole('checkbox', { name: 'Subtle animation' }).uncheck()
   await expect(image).toHaveCSS('max-height', '160px')
   const bounds = (await panel.boundingBox())!
   expect(bounds.y + bounds.height).toBeLessThanOrEqual(380)
@@ -75,6 +75,6 @@ test('desktop pet: pixel passthrough, talk, drag, expressions and saved settings
   await expect(panel).toHaveCount(0)
   await page.reload()
   await expect(image).toHaveCSS('max-height', '160px')
-  await page.getByRole('button', { name: '桌宠设置', exact: true }).click()
-  await expect(page.getByRole('checkbox', { name: '轻微动作反馈' })).not.toBeChecked()
+  await page.getByRole('button', { name: 'Pet settings', exact: true }).click()
+  await expect(page.getByRole('checkbox', { name: 'Subtle animation' })).not.toBeChecked()
 })

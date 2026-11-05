@@ -69,7 +69,7 @@ describe('本地日期（时区安全）', () => {
     vi.useFakeTimers()
     // 2026-10-21 是周三
     vi.setSystemTime(new Date(2026, 9, 21, 0, 30, 0))
-    expect(formatWeekday('2026-10-21')).toBe('周三')
+    expect(formatWeekday('2026-10-21')).toBe('Wed')
     expect(thisWeekendStr()).toBe('2026-10-24') // 周六
     expect(nextWeekStr()).toBe('2026-10-26') // 下周一
 

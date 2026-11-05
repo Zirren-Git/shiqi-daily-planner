@@ -17,12 +17,12 @@ export type TimeBucket =
   | 'done'
 
 export const TIME_BUCKET_LABELS: Record<TimeBucket, string> = {
-  overdue: '已延期',
-  today: '今天',
-  next7days: '未来7天',
-  later: '更晚',
-  undated: '未安排日期',
-  done: '已完成',
+  overdue: 'Overdue',
+  today: 'Today',
+  next7days: 'Next 7 days',
+  later: 'Later',
+  undated: 'Unscheduled',
+  done: 'Completed',
 }
 
 export const TIME_BUCKET_ORDER: TimeBucket[] = [
@@ -122,7 +122,7 @@ export function groupTasksByTag(
   // Uncategorized first
   const uncatTasks = groupMap.get(null) || []
   if (!hideEmpty || uncatTasks.length > 0) {
-    result.push(buildCategoryGroup(null, '未分类', '#94a3b8', uncatTasks, -1, referenceDate))
+    result.push(buildCategoryGroup(null, 'Uncategorized', '#94a3b8', uncatTasks, -1, referenceDate))
   }
 
   // Then sorted tags

@@ -50,7 +50,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
       queryClient.invalidateQueries({ queryKey: ['taskSubitems', taskId] })
       setNewTitle('')
     },
-    onError: () => toast.error('创建子任务失败'),
+    onError: () => toast.error('Could not create subtask'),
   })
 
   const updateMutation = useMutation({
@@ -59,7 +59,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['taskSubitems', taskId] })
     },
-    onError: () => toast.error('更新失败'),
+    onError: () => toast.error('Could not update'),
   })
 
   const deleteMutation = useMutation({
@@ -67,7 +67,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['taskSubitems', taskId] })
     },
-    onError: () => toast.error('删除失败'),
+    onError: () => toast.error('Could not delete'),
   })
 
   const handleAdd = () => {
@@ -93,7 +93,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-baseline justify-between">
-        <span className="text-section">子任务</span>
+        <span className="text-section">Subtasks</span>
         {subitems.length > 0 && (
           <span className="text-caption tabular-nums text-muted-foreground">
             {completedCount}/{subitems.length}
@@ -104,7 +104,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
       {/* Add new subtask */}
       <div className="flex items-center gap-2">
         <Input
-          placeholder="添加子任务…"
+          placeholder="Add a subtask…"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
           onKeyDown={(e) => {
@@ -119,7 +119,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
           className="shrink-0"
           onClick={handleAdd}
           disabled={createMutation.isPending || !newTitle.trim()}
-          aria-label="添加子任务"
+          aria-label="Add subtask"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
         </Button>
@@ -135,8 +135,8 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
       ) : subitems.length === 0 ? (
         <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border px-3 py-5 text-center">
           <ListChecks className="h-6 w-6 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">暂无子任务</p>
-          <p className="text-caption text-muted-foreground/80">把大任务拆成小步骤，逐项完成</p>
+          <p className="text-body text-muted-foreground">No subtasks</p>
+          <p className="text-caption text-muted-foreground/80">Break a large task into smaller steps</p>
         </div>
       ) : (
         <div className="max-h-48 space-y-0.5 overflow-y-auto">
@@ -159,8 +159,8 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
                 type="button"
                 onClick={() => handleToggle(sub)}
                 className="shrink-0 rounded-full"
-                title={sub.is_completed ? '标记未完成' : '标记完成'}
-                aria-label={sub.is_completed ? '标记未完成' : '标记完成'}
+                title={sub.is_completed ? 'Mark incomplete' : 'Mark complete'}
+                aria-label={sub.is_completed ? 'Mark incomplete' : 'Mark complete'}
               >
                 {sub.is_completed ? (
                   <CheckCircle2 className="h-4 w-4 text-success" aria-hidden="true" />
@@ -176,7 +176,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
                   sub.is_completed && 'text-muted-foreground line-through'
                 )}
                 onDoubleClick={() => setRenaming({ id: sub.id, title: sub.title })}
-                title="双击编辑"
+                title="Double-click to edit"
               >
                 {sub.title}
               </span>
@@ -187,7 +187,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
                 size="icon-xs"
                 className="hover-reveal tap-pad shrink-0 text-muted-foreground ui-transition hover:text-destructive focus-visible:opacity-100"
                 onClick={() => deleteMutation.mutate(sub.id)}
-                aria-label="删除子任务"
+                aria-label="Delete subtask"
               >
                 <Trash2 className="h-3 w-3" aria-hidden="true" />
               </Button>
@@ -218,9 +218,9 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
       >
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-section">编辑子任务</DialogTitle>
+            <DialogTitle className="text-section">Edit subtask</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
-              改个好认的名字，回车即可保存。
+              Enter a recognizable name and press Enter to save.
             </DialogDescription>
           </DialogHeader>
           <Input
@@ -239,11 +239,11 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
                 }
               }
             }}
-            aria-label="子任务标题"
+            aria-label="Subtask title"
           />
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setRenaming(null)}>
-              取消
+              Cancel
             </Button>
             <Button
               onClick={() => {
@@ -253,7 +253,7 @@ export function SubtaskManager({ taskId }: SubtaskManagerProps) {
                 setRenaming(null)
               }}
             >
-              保存
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>

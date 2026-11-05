@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useMemo } from 'react'
 import { useRepos } from '@/providers/repo-provider'
@@ -48,8 +48,8 @@ export function TaskListSheet({
 
   const dateDisplay = useMemo(() => {
     const d = new Date(date + 'T00:00:00')
-    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${weekdays[d.getDay()]}`
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    return `${weekdays[d.getDay()]}, ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
   }, [date])
 
   const toggleMutation = useMutation({
@@ -73,8 +73,8 @@ export function TaskListSheet({
       {sorted.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-1.5 px-4 py-10 text-center">
           <Inbox className="h-6 w-6 text-muted-foreground/60" />
-          <p className="text-body text-muted-foreground">暂无事项</p>
-          <p className="text-caption text-muted-foreground/70">这一时段还没有安排</p>
+          <p className="text-body text-muted-foreground">No tasks</p>
+          <p className="text-caption text-muted-foreground/70">Nothing scheduled for this period</p>
         </div>
       )}
       {sorted.map((task) => (
@@ -109,7 +109,7 @@ export function TaskListSheet({
               toggleMutation.mutate(task)
             }}
             className="shrink-0"
-            title={task.status === 'done' ? '标记未完成' : '标记完成'}
+            title={task.status === 'done' ? 'Mark incomplete' : 'Mark complete'}
           >
             {task.status === 'done' ? (
               <CheckCircle2 className="h-5 w-5 text-emerald-500" />
@@ -150,7 +150,7 @@ export function TaskListSheet({
   )
 
   const title = `${dateDisplay} — ${PERIOD_LABELS[period]}`
-  const description = `共 ${tasks.length} 项，已完成 ${tasks.filter((t) => t.status === 'done').length} 项`
+  const description = `${tasks.length} tasks, ${tasks.filter((t) => t.status === 'done').length} completed`
 
   if (isDesktop) {
     return (

@@ -1,11 +1,11 @@
-﻿'use client'
+'use client'
 
 import { useMemo, useState, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/providers/auth-provider'
 import { useRepos } from '@/providers/repo-provider'
 import { format, parseISO, isToday } from 'date-fns'
-import { zhCN } from 'date-fns/locale'
+import { enUS } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { PERIOD_LABELS } from '@/lib/constants'
 import { useTaskDnd } from '@/hooks/use-task-dnd'
@@ -241,7 +241,7 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
       if (!user) return
       try {
         await tasks.create(user.id, {
-          title: `${task.title} (副本)`,
+          title: `${task.title} (copy)`,
           description: task.description,
           task_date: task.task_date,
           period: task.period,
@@ -275,8 +275,8 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
               size="icon"
               className="shrink-0"
               onClick={() => onDateChange(dayNav(currentDate, -1))}
-              title="前一天"
-              aria-label="前一天"
+              title="Previous day"
+              aria-label="Previous day"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -287,11 +287,11 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
                   isToday(parseISO(currentDate)) ? 'text-primary' : 'text-foreground'
                 )}
               >
-                {format(parseISO(currentDate), 'M月d日 EEEE', { locale: zhCN })}
+                {format(parseISO(currentDate), 'EEEE, MMM d', { locale: enUS })}
               </h2>
               <p className="text-micro tabular-nums text-muted-foreground">
-                {doneCount}/{totalCount} 已完成
-                {isMoving && ' · 移动中'}
+                {doneCount}/{totalCount} completed
+                {isMoving && ' · moving'}
               </p>
             </div>
             <Button
@@ -299,8 +299,8 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
               size="icon"
               className="shrink-0"
               onClick={() => onDateChange(dayNav(currentDate, 1))}
-              title="后一天"
-              aria-label="后一天"
+              title="Next day"
+              aria-label="Next day"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -361,7 +361,7 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
                     className="h-7 shrink-0 px-2 text-caption"
                     onClick={() => setNewTaskPeriod(period)}
                   >
-                    <Plus className="h-3.5 w-3.5" />添加
+                    <Plus className="h-3.5 w-3.5" />Add
                   </Button>
                 </div>
 
@@ -378,10 +378,10 @@ export function DayView({ currentDate, onDateChange, embedded = false }: DayView
                     >
                       <CalendarPlus className="h-6 w-6 text-muted-foreground/60" />
                       <p className="text-body text-muted-foreground">
-                        {PERIOD_LABELS[period]}暂无事项
+                        {PERIOD_LABELS[period]} has no tasks
                       </p>
                       <p className="text-caption text-muted-foreground/70">
-                        拖拽事项到这里，或点击右上角「添加」
+                        Drag a task here or click Add
                       </p>
                     </div>
                   ) : (
@@ -497,7 +497,7 @@ function TaskCard({
       <button
         onClick={onToggle}
         className="mt-0.5 shrink-0"
-        title={task.status === 'done' ? '标记未完成' : '标记完成'}
+        title={task.status === 'done' ? 'Mark incomplete' : 'Mark complete'}
       >
         {task.status === 'done' ? (
           <CheckCircle2 className="h-5 w-5 text-emerald-500" />
@@ -524,10 +524,10 @@ function TaskCard({
             {task.title}
           </span>
           {task.priority === 'urgent' && task.status !== 'done' && (
-            <Badge variant="destructive" className="h-4 shrink-0 px-1.5 text-micro">紧急</Badge>
+            <Badge variant="destructive" className="h-4 shrink-0 px-1.5 text-micro">Urgent</Badge>
           )}
           {task.priority === 'high' && task.status !== 'done' && (
-            <Badge variant="outline" className="h-4 shrink-0 border-orange-300 px-1.5 text-micro text-orange-600">高</Badge>
+            <Badge variant="outline" className="h-4 shrink-0 border-orange-300 px-1.5 text-micro text-orange-600">High</Badge>
           )}
         </div>
 
@@ -555,34 +555,34 @@ function TaskCard({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuItem onSelect={onEdit}>
-              <Edit2 className="h-3.5 w-3.5 mr-2" />编辑
+              <Edit2 className="h-3.5 w-3.5 mr-2" />Edit
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={onCopy}>
-              <Edit2 className="h-3.5 w-3.5 mr-2" />复制
+              <Edit2 className="h-3.5 w-3.5 mr-2" />Duplicate
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={onMoveUp}>
-              <ArrowUp className="h-3.5 w-3.5 mr-2" />上移
+              <ArrowUp className="h-3.5 w-3.5 mr-2" />Move up
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={onMoveDown}>
-              <ArrowDown className="h-3.5 w-3.5 mr-2" />下移
+              <ArrowDown className="h-3.5 w-3.5 mr-2" />Move down
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => onMoveToPeriod('morning')}>
-              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />移到上午
+              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />Move to morning
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => onMoveToPeriod('afternoon')}>
-              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />移到下午
+              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />Move to afternoon
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => onMoveToPeriod('evening')}>
-              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />移到晚上
+              <MoveHorizontal className="h-3.5 w-3.5 mr-2" />Move to evening
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive"
               onSelect={onDelete}
             >
-              <Trash2 className="h-3.5 w-3.5 mr-2" />删除
+              <Trash2 className="h-3.5 w-3.5 mr-2" />Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -633,49 +633,49 @@ function QuickAddDialog({
   const content = (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="qt-title">事项标题</Label>
+        <Label htmlFor="qt-title">Task title</Label>
         <Input
           id="qt-title"
-          placeholder="快速添加事项..."
+          placeholder="Quick add task…"
           autoFocus
           {...form.register('title')}
         />
       </div>
       <div className="flex gap-2">
         <div className="flex-1">
-          <Label htmlFor="qt-priority">难度</Label>
+          <Label htmlFor="qt-priority">Difficulty</Label>
           <Select
             defaultValue="medium"
             onValueChange={(v: string | null) => v && form.setValue('priority', v)}
           >
             <SelectTrigger id="qt-priority">
               <SelectValue>
-                {{ low: '简单', normal: '普通', high: '高', urgent: '紧急', medium: '一般' }[form.watch('priority') || 'medium'] || '一般'}
+                {{ low: 'Easy', normal: 'Normal', high: 'High', urgent: 'Urgent', medium: 'Medium' }[form.watch('priority') || 'medium'] || 'Medium'}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="low">简单</SelectItem>
-              <SelectItem value="medium">一般</SelectItem>
-              <SelectItem value="high">困难</SelectItem>
-              <SelectItem value="urgent">极难</SelectItem>
+              <SelectItem value="low">Easy</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">Hard</SelectItem>
+              <SelectItem value="urgent">Very hard</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="flex-1">
-          <Label htmlFor="qt-tag">标签</Label>
+          <Label htmlFor="qt-tag">Tags</Label>
           <Select
             defaultValue="none"
             onValueChange={(v: string | null) => v && form.setValue('tag_id', v)}
           >
             <SelectTrigger id="qt-tag">
-              <SelectValue placeholder="未分类">
+              <SelectValue placeholder="Uncategorized">
                 {form.watch('tag_id') && form.watch('tag_id') !== 'none'
-                  ? (tagList.find((t) => t.id === form.watch('tag_id'))?.name || '未分类')
-                  : '未分类'}
+                  ? (tagList.find((t) => t.id === form.watch('tag_id'))?.name || 'Uncategorized')
+                  : 'Uncategorized'}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="none">无标签</SelectItem>
+              <SelectItem value="none">No tag</SelectItem>
               {tagList.map((tag) => (
                 <SelectItem key={tag.id} value={tag.id}>
                   <span className="flex items-center gap-1">
@@ -689,7 +689,7 @@ function QuickAddDialog({
         </div>
       </div>
       <Button type="submit" className="w-full">
-        添加 {PERIOD_LABELS[period]} 事项
+        Add a task for {PERIOD_LABELS[period]}
       </Button>
     </form>
   )
@@ -699,7 +699,7 @@ function QuickAddDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>快速添加 — {PERIOD_LABELS[period]}</DialogTitle>
+            <DialogTitle>Quick add — {PERIOD_LABELS[period]}</DialogTitle>
           </DialogHeader>
           {content}
         </DialogContent>
@@ -711,7 +711,7 @@ function QuickAddDialog({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>快速添加 — {PERIOD_LABELS[period]}</DrawerTitle>
+          <DrawerTitle>Quick add — {PERIOD_LABELS[period]}</DrawerTitle>
         </DrawerHeader>
         <div className="px-4">{content}</div>
         <DrawerFooter />

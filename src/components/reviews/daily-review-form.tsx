@@ -43,11 +43,11 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dailyReview', date] })
       queryClient.invalidateQueries({ queryKey: ['reviews'] })
-      toast.success('评价已保存')
+      toast.success('Review saved')
       onSaved?.()
     },
     onError: () => {
-      toast.error('保存失败，请重试')
+      toast.error('Could not save. Please try again.')
     },
   })
 
@@ -102,8 +102,8 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
       <div className="surface overflow-hidden">
         <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div>
-            <p className="text-section">每日评价</p>
-            <p className="mt-0.5 text-micro text-muted-foreground">记录今天的感受与收获</p>
+            <p className="text-section">Daily rating</p>
+            <p className="mt-0.5 text-micro text-muted-foreground">Capture how you felt and what you learned today</p>
           </div>
           <Button type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? (
@@ -111,7 +111,7 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
             ) : (
               <Save className="h-4 w-4" />
             )}
-            保存
+            Save
           </Button>
         </div>
 
@@ -119,14 +119,14 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
           {/* Quick scores */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <ScoreSelect
-              label="评分"
+              label="Rating"
               icon={<Star className="h-3.5 w-3.5" />}
               value={form.watch('score')}
               onChange={(v) => form.setValue('score', v ?? undefined)}
               max={10}
             />
             <ScoreSelect
-              label="完成度"
+              label="Progress"
               value={form.watch('subjective_completion')}
               onChange={(v) => form.setValue('subjective_completion', v ?? undefined)}
               max={100}
@@ -135,14 +135,14 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
               includeZero
             />
             <ScoreSelect
-              label="心情"
+              label="Mood"
               icon={<Smile className="h-3.5 w-3.5" />}
               value={form.watch('mood')}
               onChange={(v) => form.setValue('mood', v ?? undefined)}
               max={5}
             />
             <ScoreSelect
-              label="精力"
+              label="Energy"
               icon={<Zap className="h-3.5 w-3.5" />}
               value={form.watch('energy')}
               onChange={(v) => form.setValue('energy', v ?? undefined)}
@@ -153,55 +153,55 @@ export function DailyReviewForm({ date = todayStr(), onSaved }: DailyReviewFormP
           {/* Text fields */}
           <div className="space-y-3">
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">今日最重要的成果</Label>
+              <Label className="text-caption text-muted-foreground">Today’s biggest achievement</Label>
               <Textarea
                 {...form.register('achievement')}
-                placeholder="今天完成了什么？"
+                placeholder="What did you accomplish today?"
                 rows={2}
                 className="text-body"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">未完成的事情</Label>
+              <Label className="text-caption text-muted-foreground">Unfinished tasks</Label>
               <Textarea
                 {...form.register('unfinished')}
-                placeholder="什么没有按计划完成？"
+                placeholder="What did not go to plan?"
                 rows={2}
                 className="text-body"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">遇到的问题</Label>
+              <Label className="text-caption text-muted-foreground">Challenges</Label>
               <Textarea
                 {...form.register('problems')}
-                placeholder="遇到了什么困难？"
+                placeholder="What was difficult?"
                 rows={2}
                 className="text-body"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">今日收获</Label>
+              <Label className="text-caption text-muted-foreground">What I learned</Label>
               <Textarea
                 {...form.register('lessons')}
-                placeholder="今天学到了什么？"
+                placeholder="What did you learn today?"
                 rows={2}
                 className="text-body"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">明日最重要的三件事</Label>
+              <Label className="text-caption text-muted-foreground">Tomorrow’s top three priorities</Label>
               <Textarea
                 {...form.register('tomorrow_focus')}
-                placeholder="明天需要优先完成什么？"
+                placeholder="What matters most tomorrow?"
                 rows={2}
                 className="text-body"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-caption text-muted-foreground">自由总结</Label>
+              <Label className="text-caption text-muted-foreground">Additional notes</Label>
               <Textarea
                 {...form.register('summary')}
-                placeholder="还有想记录的..."
+                placeholder="Anything else to note…"
                 rows={3}
                 className="text-body"
               />

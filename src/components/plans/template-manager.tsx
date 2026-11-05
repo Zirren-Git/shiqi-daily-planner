@@ -69,24 +69,24 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       setShowCreate(false)
       setNewName('')
       setNewDesc('')
-      toast.success('模板已创建')
+      toast.success('Template created')
     },
-    onError: () => toast.error('创建失败'),
+    onError: () => toast.error('Could not create'),
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => taskTemplates.delete(user!.id, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['taskTemplates'] })
-      toast.success('模板已删除')
+      toast.success('Template deleted')
     },
-    onError: () => toast.error('删除失败'),
+    onError: () => toast.error('Could not delete'),
   })
 
   const handleApply = async (template: TaskTemplate) => {
     if (onApply) {
       onApply(template.template_data[0] as Partial<Task>)
-      toast.success(`已应用模板「${template.name}」`)
+      toast.success(`Applied template “${template.name}”`)
       return
     }
     // Create a task from the template data
@@ -94,7 +94,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       const taskData = template.template_data[0] as Partial<Task>
       try {
         await tasks.create(user!.id, {
-          title: taskData.title || '未命名事项',
+          title: taskData.title || 'Untitled task',
           description: taskData.description,
           task_date: todayStr(),
           period: taskData.period || 'morning',
@@ -105,9 +105,9 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
           order_index: 0,
         } as Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>)
         queryClient.invalidateQueries({ queryKey: ['tasks'] })
-        toast.success(`已从模板「${template.name}」创建事项`)
+        toast.success(`Created task from template “${template.name}”`)
       } catch {
-        toast.error('创建失败')
+        toast.error('Could not create')
       }
     }
   }
@@ -124,25 +124,25 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       <div className="space-y-3">
         <div className="space-y-2">
           <Label htmlFor="tpl-name" className="text-caption text-muted-foreground">
-            模板名称
+            Template name
           </Label>
           <Input
             id="tpl-name"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="如：每日站会、周报"
+            placeholder="e.g. daily stand-up, weekly report"
             autoFocus
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="tpl-desc" className="text-caption text-muted-foreground">
-            描述（可选）
+            Description (optional)
           </Label>
           <Textarea
             id="tpl-desc"
             value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
-            placeholder="模板用途说明"
+            placeholder="Describe the template"
             rows={2}
             className="rounded-md"
           />
@@ -150,7 +150,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       </div>
       <div className="flex justify-end border-t border-border pt-4">
         <Button type="submit" disabled={createMutation.isPending || !newName.trim()}>
-          创建模板
+          Create template
         </Button>
       </div>
     </form>
@@ -173,7 +173,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-          <h3 className="text-section">事项模板</h3>
+          <h3 className="text-section">Task templates</h3>
           {templates.length > 0 && (
             <span className="rounded-full bg-secondary px-2 py-0.5 text-micro tabular-nums text-secondary-foreground">
               {templates.length}
@@ -186,7 +186,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
           onClick={() => setShowCreate(true)}
         >
           <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-          新建模板
+          New template
         </Button>
       </div>
 
@@ -194,8 +194,8 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       {templates.length === 0 && (
         <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border px-3 py-6 text-center">
           <FileText className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">暂无模板</p>
-          <p className="text-caption text-muted-foreground/80">从常用事项创建模板，快速添加</p>
+          <p className="text-body text-muted-foreground">No templates yet</p>
+          <p className="text-caption text-muted-foreground/80">Create templates from frequently used tasks</p>
         </div>
       )}
 
@@ -233,7 +233,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
                     )}
                     {template.template_data[0].estimated_minutes && (
                       <span className="rounded-full border border-border px-2 py-0.5 text-micro tabular-nums text-muted-foreground">
-                        {template.template_data[0].estimated_minutes} 分钟
+                        {template.template_data[0].estimated_minutes} minutes
                       </span>
                     )}
                   </div>
@@ -244,8 +244,8 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
                   variant="ghost"
                   size="icon-sm"
                   onClick={() => handleApply(template)}
-                  title="应用模板"
-                  aria-label={`应用模板 ${template.name}`}
+                  title="Apply template"
+                  aria-label={`Apply template ${template.name}`}
                 >
                   <Play className="h-3.5 w-3.5" aria-hidden="true" />
                 </Button>
@@ -254,8 +254,8 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
                   size="icon-sm"
                   className="text-muted-foreground hover:text-destructive"
                   onClick={() => setPendingDelete({ id: template.id, name: template.name })}
-                  title="删除模板"
-                  aria-label={`删除模板 ${template.name}`}
+                  title="Delete template"
+                  aria-label={`Delete template ${template.name}`}
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 </Button>
@@ -270,7 +270,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
         <Dialog open={showCreate} onOpenChange={setShowCreate}>
           <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-section">新建模板</DialogTitle>
+              <DialogTitle className="text-section">New template</DialogTitle>
             </DialogHeader>
             {createFormContent}
           </DialogContent>
@@ -279,7 +279,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
         <Drawer open={showCreate} onOpenChange={setShowCreate}>
           <DrawerContent className="shadow-[var(--shadow-pop)]">
             <DrawerHeader>
-              <DrawerTitle className="text-section">新建模板</DrawerTitle>
+              <DrawerTitle className="text-section">New template</DrawerTitle>
             </DrawerHeader>
             <div className="px-4 pb-4">{createFormContent}</div>
           </DrawerContent>
@@ -295,14 +295,14 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
       >
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-section">删除模板</DialogTitle>
+            <DialogTitle className="text-section">Delete template</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
-              确定删除「{pendingDelete?.name}」吗？删除后无法恢复，已用该模板创建的事项不受影响。
+              Delete “{pendingDelete?.name}”? Existing tasks created from this template will remain.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setPendingDelete(null)}>
-              取消
+              Cancel
             </Button>
             <Button
               variant="destructive"
@@ -311,7 +311,7 @@ export function TemplateManager({ onApply }: TemplateManagerProps) {
                 setPendingDelete(null)
               }}
             >
-              删除
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

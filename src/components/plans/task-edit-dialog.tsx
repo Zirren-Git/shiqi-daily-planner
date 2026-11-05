@@ -38,7 +38,7 @@ import { toast } from 'sonner'
 import { Bell, Repeat } from 'lucide-react'
 
 const taskFormSchema = z.object({
-  title: z.string().min(1, '标题不能为空'),
+  title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   task_date: z.string().min(1),
   period: z.enum(['morning', 'afternoon', 'evening']),
@@ -188,10 +188,10 @@ export function TaskEditDialog({
     try {
       if (task) {
         await tasks.update(user.id, task.id, taskData)
-        toast.success('事项已更新')
+        toast.success('Task updated')
       } else {
         await tasks.create(user.id, taskData as Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>)
-        toast.success('事项已创建')
+        toast.success('Task created')
       }
 
       // Invalidate relevant queries
@@ -199,7 +199,7 @@ export function TaskEditDialog({
 
       onOpenChange(false)
     } catch {
-      toast.error('保存失败，请重试')
+      toast.error('Could not save. Please try again.')
     }
   }
 
@@ -215,7 +215,7 @@ export function TaskEditDialog({
         <Field
           label={
             <>
-              标题<span className="text-destructive"> *</span>
+              Title<span className="text-destructive"> *</span>
             </>
           }
           htmlFor="title"
@@ -224,17 +224,17 @@ export function TaskEditDialog({
           <Input
             id="title"
             {...form.register('title')}
-            placeholder="事项标题"
+            placeholder="Task title"
             autoFocus
             aria-invalid={!!form.formState.errors.title}
           />
         </Field>
 
-        <Field label="详细说明" htmlFor="desc">
+        <Field label="Details" htmlFor="desc">
           <Textarea
             id="desc"
             {...form.register('description')}
-            placeholder="可选：详细描述"
+            placeholder="Optional: add details"
             rows={2}
             className="rounded-md"
           />
@@ -243,10 +243,10 @@ export function TaskEditDialog({
 
       {/* 日期 / 时段 */}
       <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
-        <Field label="日期">
+        <Field label="Date">
           <Input type="date" {...form.register('task_date')} />
         </Field>
-        <Field label="时段">
+        <Field label="Period">
           <Controller
             name="period"
             control={form.control}
@@ -254,13 +254,13 @@ export function TaskEditDialog({
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full rounded-md">
                   <SelectValue>
-                    {{ morning: '上午', afternoon: '下午', evening: '晚上' }[field.value as string] || field.value}
+                    {{ morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' }[field.value as string] || field.value}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="morning">上午</SelectItem>
-                  <SelectItem value="afternoon">下午</SelectItem>
-                  <SelectItem value="evening">晚上</SelectItem>
+                  <SelectItem value="morning">Morning</SelectItem>
+                  <SelectItem value="afternoon">Afternoon</SelectItem>
+                  <SelectItem value="evening">Evening</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -270,21 +270,21 @@ export function TaskEditDialog({
 
       {/* 标签 / 难度 */}
       <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
-        <Field label="标签">
+        <Field label="Tags">
           <Controller
             name="tag_id"
             control={form.control}
             render={({ field }) => (
               <Select value={field.value || 'none'} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full rounded-md">
-                  <SelectValue placeholder="未分类">
+                  <SelectValue placeholder="Uncategorized">
                     {field.value && field.value !== 'none'
-                      ? (tagList.find((t) => t.id === field.value)?.name || '未分类')
-                      : '未分类'}
+                      ? (tagList.find((t) => t.id === field.value)?.name || 'Uncategorized')
+                      : 'Uncategorized'}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">未分类</SelectItem>
+                  <SelectItem value="none">Uncategorized</SelectItem>
                   {tagList.map((tag) => (
                     <SelectItem key={tag.id} value={tag.id}>
                       <span className="flex items-center gap-1.5">
@@ -301,7 +301,7 @@ export function TaskEditDialog({
             )}
           />
         </Field>
-        <Field label="难度">
+        <Field label="Difficulty">
           <Controller
             name="priority"
             control={form.control}
@@ -309,14 +309,14 @@ export function TaskEditDialog({
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full rounded-md">
                   <SelectValue>
-                    {{ low: '简单', normal: '一般', high: '困难', urgent: '极难' }[field.value as string] || '一般'}
+                    {{ low: 'Easy', normal: 'Medium', high: 'Hard', urgent: 'Very hard' }[field.value as string] || 'Medium'}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="low">简单</SelectItem>
-                  <SelectItem value="normal">一般</SelectItem>
-                  <SelectItem value="high">困难</SelectItem>
-                  <SelectItem value="urgent">极难</SelectItem>
+                  <SelectItem value="low">Easy</SelectItem>
+                  <SelectItem value="normal">Medium</SelectItem>
+                  <SelectItem value="high">Hard</SelectItem>
+                  <SelectItem value="urgent">Very hard</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -327,10 +327,10 @@ export function TaskEditDialog({
       {/* 时间 / 提醒 */}
       <div className="space-y-3 border-t border-border pt-3">
         <div className="grid grid-cols-2 gap-3">
-          <Field label="开始时间">
+          <Field label="Start time">
             <Input type="time" {...form.register('start_time')} />
           </Field>
-          <Field label="结束时间">
+          <Field label="End time">
             <Input type="time" {...form.register('end_time')} />
           </Field>
         </div>
@@ -339,10 +339,10 @@ export function TaskEditDialog({
           label={
             <span className="flex items-center gap-1.5">
               <Bell className="h-3.5 w-3.5" aria-hidden="true" />
-              提醒时间
+              Reminder time
             </span>
           }
-          hint="设置提醒时间，届时会通过浏览器通知提醒你"
+          hint="Set a reminder to receive a browser notification"
         >
           <Input type="datetime-local" {...form.register('reminder_at')} />
         </Field>
@@ -354,10 +354,10 @@ export function TaskEditDialog({
           label={
             <span className="flex items-center gap-1.5">
               <Repeat className="h-3.5 w-3.5" aria-hidden="true" />
-              重复
+              Repeat
             </span>
           }
-          hint="完成这一项时会自动生成下一次；重复规则保存在这个系列上"
+          hint="Completing this task creates the next occurrence automatically"
         >
           <Controller
             name="recurrence_rule"
@@ -375,7 +375,7 @@ export function TaskEditDialog({
 
       {isEditing && (
         <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
-          <Field label="状态">
+          <Field label="Status">
             <Controller
               name="status"
               control={form.control}
@@ -383,20 +383,20 @@ export function TaskEditDialog({
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full rounded-md">
                     <SelectValue>
-                      {{ todo: '待办', in_progress: '进行中', done: '已完成', cancelled: '已取消' }[field.value as string] || field.value}
+                      {{ todo: 'To do', in_progress: 'In progress', done: 'Completed', cancelled: 'Cancelled' }[field.value as string] || field.value}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="todo">待办</SelectItem>
-                    <SelectItem value="in_progress">进行中</SelectItem>
-                    <SelectItem value="done">已完成</SelectItem>
-                    <SelectItem value="cancelled">已取消</SelectItem>
+                    <SelectItem value="todo">To do</SelectItem>
+                    <SelectItem value="in_progress">In progress</SelectItem>
+                    <SelectItem value="done">Completed</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
           </Field>
-          <Field label="预计用时（分钟）">
+          <Field label="Estimated time (minutes)">
             <Input
               type="text"
               inputMode="numeric"
@@ -409,10 +409,10 @@ export function TaskEditDialog({
 
       <div className="flex items-center justify-end gap-2 border-t border-border pt-4">
         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-          取消
+          Cancel
         </Button>
         <Button type="submit">
-          {isEditing ? '保存修改' : '创建事项'}
+          {isEditing ? 'Save changes' : 'Create task'}
         </Button>
       </div>
     </form>
@@ -424,7 +424,7 @@ export function TaskEditDialog({
         <DialogContent className="max-h-[90vh] overflow-y-auto shadow-[var(--shadow-pop)] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-section">
-              {isEditing ? '编辑事项' : '新建事项'}
+              {isEditing ? 'Edit task' : 'New task'}
             </DialogTitle>
           </DialogHeader>
           {formContent}
@@ -438,7 +438,7 @@ export function TaskEditDialog({
       <DrawerContent className="max-h-[90vh] overflow-y-auto shadow-[var(--shadow-pop)]">
         <DrawerHeader>
           <DrawerTitle className="text-section">
-            {isEditing ? '编辑事项' : '新建事项'}
+            {isEditing ? 'Edit task' : 'New task'}
           </DrawerTitle>
         </DrawerHeader>
         <div className="px-4 pb-4">{formContent}</div>

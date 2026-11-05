@@ -1,9 +1,9 @@
-﻿'use client'
+'use client'
 
 // ============================================================
-// 主题开场页（每日一次）
+// Welcome screen页（每日一次）
 //
-// 组合：场景插画 + 角色 + 时段问候 + 每日一句 + 进入按钮。
+// 组合：场景插画 + Character + 时段问候 + 每日一句 + 进入按钮。
 // 只在当天第一次进入时出现，用户可以在设置里关掉。
 // 关闭后写 localStorage 记录当天日期，不重复打扰。
 // ============================================================
@@ -23,11 +23,11 @@ const WELCOME_KEY = 'timegrid:atmosphere:welcomed'
 
 function greeting(): { title: string; sub: string } {
   const hour = new Date().getHours()
-  if (hour < 6) return { title: '夜深了', sub: '如果还能做一件小事，就从最短的那件开始' }
-  if (hour < 11) return { title: '早上好', sub: '先决定今天最重要的一件事' }
-  if (hour < 14) return { title: '中午好', sub: '吃口东西，再回来继续' }
-  if (hour < 19) return { title: '下午好', sub: '把注意力放回手上这件事' }
-  return { title: '晚上好', sub: '收个尾，然后好好休息' }
+  if (hour < 6) return { title: 'Good night', sub: 'If you can do one more thing, start small' }
+  if (hour < 11) return { title: 'Good morning', sub: 'Pick the most important task for today' }
+  if (hour < 14) return { title: 'Good afternoon', sub: 'Take a break, then come back refreshed' }
+  if (hour < 19) return { title: 'Good afternoon', sub: 'Focus on the task at hand' }
+  return { title: 'Good evening', sub: 'Wrap up and rest well' }
 }
 
 function welcomeMood(): CharacterExpression {
@@ -94,7 +94,7 @@ export function WelcomeOverlay() {
   const g = greeting()
 
   return (
-    <div className="atmo-welcome" role="dialog" aria-modal="true" aria-label="主题开场">
+    <div className="atmo-welcome" role="dialog" aria-modal="true" aria-label="Welcome screen">
       <div className="atmo-welcome-card" data-testid="atmosphere-welcome" data-scene={scene?.id}>
         {sceneArt && <div className="atmo-welcome-art">{sceneArt}</div>}
         <div className="atmo-welcome-scrim" />
@@ -103,7 +103,7 @@ export function WelcomeOverlay() {
           type="button"
           onClick={dismiss}
           className="absolute right-3 top-3 z-10 tap-pad rounded-full p-1.5 text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
-          aria-label="关闭开场页"
+          aria-label="Close welcome screen"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -119,16 +119,16 @@ export function WelcomeOverlay() {
             <p className="flex items-center gap-1.5 text-caption text-primary">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               {state.themeId === 'anime'
-                ? '樱色 · 今日开场'
+                ? 'Sakura · Welcome'
                 : state.themeId === 'cyber'
-                  ? '霓虹终端 · 系统上线'
+                  ? 'Neon Terminal · Online'
                   : state.themeId === 'pixel'
-                    ? '像素机 · 读档完成'
+                    ? 'Retro Pixel · Ready'
                     : state.themeId === 'bento'
-                      ? '暗格 · 工作台已就绪'
+                      ? 'Dark Bento · Ready'
                       : state.themeId === 'minimal'
-                        ? '留白 · 今日留白'
-                        : '云母 · 今日概览'}
+                        ? 'Minimal · Today'
+                        : 'Mica · Today'}
             </p>
             <h1 className="mt-1 text-display text-foreground">{g.title}</h1>
             <p className="mt-1 text-body text-muted-foreground">{g.sub}</p>
@@ -145,11 +145,11 @@ export function WelcomeOverlay() {
 
             <div className="mt-5 flex flex-wrap items-center gap-2">
               <Button onClick={dismiss} className="gap-1.5">
-                开始今天
+                Start today
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
               <Button variant="ghost" size="sm" className="text-caption" onClick={dismiss}>
-                今天不再显示
+                Do not show again today
               </Button>
             </div>
           </div>

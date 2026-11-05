@@ -66,9 +66,9 @@ export function TagManager() {
       queryClient.invalidateQueries({ queryKey: ['tags'] })
       setNewTagName('')
       setShowNewForm(false)
-      toast.success('标签已创建')
+      toast.success('Tag created')
     },
-    onError: () => toast.error('创建标签失败'),
+    onError: () => toast.error('Could not create tag'),
   })
 
   const updateMutation = useMutation({
@@ -77,9 +77,9 @@ export function TagManager() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tags'] })
       setEditingTag(null)
-      toast.success('标签已更新')
+      toast.success('Tag updated')
     },
-    onError: () => toast.error('更新标签失败'),
+    onError: () => toast.error('Could not update tag'),
   })
 
   const deleteMutation = useMutation({
@@ -102,9 +102,9 @@ export function TagManager() {
       setDeletingTag(null)
       setDeleteAction(null)
       setMigrateTargetId('')
-      toast.success('标签已删除')
+      toast.success('Deleted tag')
     },
-    onError: () => toast.error('删除标签失败'),
+    onError: () => toast.error('Could not delete tag'),
   })
 
   const handleCreate = () => {
@@ -139,21 +139,21 @@ export function TagManager() {
       deleteMutation.mutate({ id: deletingTag.id })
     } else if (deleteAction === 'migrate') {
       if (!migrateTargetId) {
-        toast.error('请选择目标标签')
+        toast.error('Choose a destination tag')
         return
       }
       deleteMutation.mutate({ id: deletingTag.id, migrateToTagId: migrateTargetId })
     } else if (deleteAction === 'clear') {
       deleteMutation.mutate({ id: deletingTag.id })
     } else {
-      toast.error('请选择处理方式')
+      toast.error('Choose how to handle these tasks')
     }
   }
 
   if (isLoading) {
     return (
       <Card>
-        <CardHeader><CardTitle className="text-section">标签管理</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-section">Manage tags</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-9 w-full" />
@@ -168,10 +168,10 @@ export function TagManager() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-section">标签管理</CardTitle>
+        <CardTitle className="text-section">Manage tags</CardTitle>
         <Button variant="outline" size="sm" onClick={() => setShowNewForm(!showNewForm)}>
           <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-          新建
+          New
         </Button>
       </CardHeader>
       <CardContent className="space-y-2">
@@ -179,11 +179,11 @@ export function TagManager() {
         {showNewForm && (
           <div className="flex flex-wrap items-center gap-2 rounded-lg bg-surface-2 p-2">
             <Input
-              placeholder="标签名称"
+              placeholder="Tag name"
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
               className="min-w-32 flex-1"
-              aria-label="新标签名称"
+              aria-label="New tag name"
             />
             <div className="flex gap-1">
               {PRESET_COLORS.slice(0, 5).map((c) => (
@@ -191,7 +191,7 @@ export function TagManager() {
                   key={c}
                   type="button"
                   onClick={() => setNewTagColor(c)}
-                  aria-label={`选择颜色 ${c}`}
+                  aria-label={`Choose color ${c}`}
                   aria-pressed={newTagColor === c}
                   className={cn(
                     'h-5 w-5 rounded-full border-2 ui-transition',
@@ -202,7 +202,7 @@ export function TagManager() {
               ))}
             </div>
             <Button size="sm" onClick={handleCreate} disabled={createMutation.isPending}>
-              添加
+              Add
             </Button>
           </div>
         )}
@@ -220,7 +220,7 @@ export function TagManager() {
             />
             <span className="flex-1 truncate text-body">{tag.name}</span>
             {tag.is_default && (
-              <Badge variant="secondary" className="h-5 px-2 text-micro">默认</Badge>
+              <Badge variant="secondary" className="h-5 px-2 text-micro">Default</Badge>
             )}
             <div className="flex items-center gap-0.5 opacity-100 ui-transition focus-within:opacity-100 sm:opacity-0 sm:group-hover:opacity-100">
               <Button
@@ -228,8 +228,8 @@ export function TagManager() {
                 size="icon-sm"
                 className="text-muted-foreground hover:text-foreground"
                 onClick={() => setEditingTag({ id: tag.id, name: tag.name, color: tag.color })}
-                title="编辑标签"
-                aria-label={`编辑标签 ${tag.name}`}
+                title="Edit tag"
+                aria-label={`Edit tag ${tag.name}`}
               >
                 <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
               </Button>
@@ -238,8 +238,8 @@ export function TagManager() {
                 size="icon-sm"
                 className="text-muted-foreground hover:text-destructive"
                 onClick={() => openDeleteDialog(tag)}
-                title="删除标签"
-                aria-label={`删除标签 ${tag.name}`}
+                title="Delete tag"
+                aria-label={`Delete tag ${tag.name}`}
               >
                 <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
               </Button>
@@ -250,8 +250,8 @@ export function TagManager() {
         {tagList.length === 0 && (
           <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border px-3 py-5 text-center">
             <TagIcon className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
-            <p className="text-body text-muted-foreground">暂无标签</p>
-            <p className="text-caption text-muted-foreground/80">新建标签，给事项分类</p>
+            <p className="text-body text-muted-foreground">No tags yet</p>
+            <p className="text-caption text-muted-foreground/80">Create a tag to organize tasks</p>
           </div>
         )}
 
@@ -260,19 +260,19 @@ export function TagManager() {
           <Dialog open={!!editingTag} onOpenChange={(o) => !o && setEditingTag(null)}>
             <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-sm">
               <DialogHeader>
-                <DialogTitle className="text-section">编辑标签</DialogTitle>
+                <DialogTitle className="text-section">Edit tag</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-caption text-muted-foreground">标签名称</Label>
+                  <Label className="text-caption text-muted-foreground">Tag name</Label>
                   <Input
                     value={editingTag.name}
                     onChange={(e) => setEditingTag({ ...editingTag, name: e.target.value })}
-                    aria-label="标签名称"
+                    aria-label="Tag name"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-caption text-muted-foreground">颜色</Label>
+                  <Label className="text-caption text-muted-foreground">Color</Label>
                   <div className="flex flex-wrap gap-2">
                     {PRESET_COLORS.map((c) => (
                       <button
@@ -285,7 +285,7 @@ export function TagManager() {
                         )}
                         style={{ backgroundColor: c }}
                         title={c}
-                        aria-label={`选择颜色 ${c}`}
+                        aria-label={`Choose color ${c}`}
                         aria-pressed={editingTag.color === c}
                       />
                     ))}
@@ -293,12 +293,12 @@ export function TagManager() {
                 </div>
               </div>
               <DialogFooter className="gap-2">
-                <Button variant="outline" onClick={() => setEditingTag(null)}>取消</Button>
+                <Button variant="outline" onClick={() => setEditingTag(null)}>Cancel</Button>
                 <Button
                   onClick={() => updateMutation.mutate(editingTag)}
                   disabled={updateMutation.isPending}
                 >
-                  保存
+                  Save
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -309,23 +309,23 @@ export function TagManager() {
         <Dialog open={!!deletingTag} onOpenChange={(o) => !o && setDeletingTag(null)}>
           <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-section">删除标签</DialogTitle>
+              <DialogTitle className="text-section">Delete tag</DialogTitle>
               <DialogDescription className="text-caption text-muted-foreground">
-                确定要删除标签「{deletingTag?.name}」吗？
+                Delete the “{deletingTag?.name}” tag?
               </DialogDescription>
             </DialogHeader>
 
             {isLoadingUsage ? (
-              <div className="py-4 text-center text-body text-muted-foreground">检查标签使用情况…</div>
+              <div className="py-4 text-center text-body text-muted-foreground">Checking where this tag is used…</div>
             ) : tagUsageCount === 0 ? (
               <div className="rounded-md bg-surface-2 px-3 py-2">
-                <p className="text-caption text-muted-foreground">该标签未被任何事项使用，可以安全删除。</p>
+                <p className="text-caption text-muted-foreground">This tag is not used by any task and can be safely deleted.</p>
               </div>
             ) : (
               <div className="space-y-3">
                 <p className="text-body">
-                  该标签正被 <strong className="tabular-nums">{tagUsageCount}</strong> 个事项使用，
-                  请选择如何处理这些事项：
+                  This tag is used by <strong className="tabular-nums">{tagUsageCount}</strong> tasks,
+                  Choose how to handle these tasks:
                 </p>
 
                 <div className="space-y-2">
@@ -346,12 +346,12 @@ export function TagManager() {
                       className="mt-0.5 h-4 w-4 accent-primary"
                     />
                     <div className="flex-1">
-                      <span className="text-body font-medium">迁移到其他标签</span>
+                      <span className="text-body font-medium">Move tasks to another tag</span>
                       {deleteAction === 'migrate' && (
                         <div className="mt-2">
                           <Select value={migrateTargetId} onValueChange={(v) => setMigrateTargetId(v ?? '')}>
                             <SelectTrigger className="w-full rounded-md">
-                              <SelectValue placeholder="选择目标标签" />
+                              <SelectValue placeholder="Choose destination tag" />
                             </SelectTrigger>
                             <SelectContent>
                               {availableTargets.map((t) => (
@@ -385,20 +385,20 @@ export function TagManager() {
                       onChange={() => { setDeleteAction('clear'); setMigrateTargetId('') }}
                       className="mt-0.5 h-4 w-4 accent-primary"
                     />
-                    <span className="text-body font-medium">清除关联，保留事项</span>
+                    <span className="text-body font-medium">Remove tag but keep tasks</span>
                   </label>
                 </div>
               </div>
             )}
 
             <DialogFooter className="gap-2">
-              <Button variant="outline" onClick={() => setDeletingTag(null)}>取消</Button>
+              <Button variant="outline" onClick={() => setDeletingTag(null)}>Cancel</Button>
               <Button
                 variant="destructive"
                 onClick={handleConfirmDelete}
                 disabled={deleteMutation.isPending || (tagUsageCount > 0 && deleteAction === null)}
               >
-                {deleteMutation.isPending ? '删除中…' : '确认删除'}
+                {deleteMutation.isPending ? 'Deleting…' : 'Confirm deletion'}
               </Button>
             </DialogFooter>
           </DialogContent>

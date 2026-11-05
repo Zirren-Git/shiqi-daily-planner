@@ -16,8 +16,8 @@ import type { ThemeId } from './types'
 export type CharacterCategory = 'original' | 'custom'
 
 export const CATEGORY_LABELS: Record<CharacterCategory, string> = {
-  original: '时栖原创',
-  custom: '用户自定义',
+  original: 'ShiQi original',
+  custom: 'Custom',
 }
 
 export interface CharacterRecommendation {
@@ -48,9 +48,9 @@ export const CHARACTER_LIBRARY: CharacterEntry[] = [
   {
     id: 'pixel-pix',
     name: 'PIX',
-    work: '时栖',
+    work: 'ShiQi',
     categories: ['original'],
-    tags: ['像素', '冒险者', '原创'],
+    tags: ['Pixel', 'Adventurer', 'Original'],
     artId: 'pixel-pix',
     form: 'full',
     recommend: { themeId: 'pixel', sceneId: 'pixel-town', accent: '#d7263d' },
@@ -161,5 +161,5 @@ export function descriptionOf(id: string | null | undefined): string | undefined
 export type SeriesKey = 'original' | 'custom'
 
 export function seriesKeyOf(work: string): SeriesKey {
-  return work === '时栖' ? 'original' : 'custom'
+  return work === 'ShiQi' ? 'original' : 'custom'
 }

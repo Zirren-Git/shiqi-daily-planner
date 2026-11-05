@@ -15,7 +15,7 @@ const getBridgeSnapshot = () => getDesktopBridge()
 const getServerSnapshot = () => null
 
 /**
- * 「桌面浮窗」开关。只在 Electron 打包版里出现（网页/安卓没有 desktop bridge）。
+ * 「Desktop widget」开关。只在 Electron 打包版里出现（网页/安卓没有 desktop bridge）。
  * variant='sidebar' 放在侧边栏底部，variant='card' 放在设置页。
  */
 export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sidebar' | 'card' }) {
@@ -65,7 +65,7 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
     if (!bridge) return
     const next = await bridge.toggleWidget()
     setVisible(next)
-    toast.success(next ? '浮窗已显示' : '浮窗已隐藏', { duration: 1500 })
+    toast.success(next ? 'Widget shown' : 'Widget hidden', { duration: 1500 })
   }, [bridge])
 
   const togglePin = useCallback(async () => {
@@ -80,7 +80,7 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
       try {
         const state = await bridge.setDockEnabled(next)
         setDockEnabled(state.enabled)
-        toast.success(next ? '已开启贴边隐藏：把浮窗拖到屏幕边缘试试' : '已关闭贴边隐藏', { duration: 2200 })
+        toast.success(next ? 'Edge docking enabled. Drag the widget to a screen edge.' : 'Edge docking disabled', { duration: 2200 })
       } catch {
         setDockEnabled(!next)
       }
@@ -94,7 +94,7 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
       setPetEnabled(next)
       try {
         setPetEnabled(await bridge.setPetEnabled(next))
-        if (next) toast.success('桌宠已上桌：左键说话，按住拖动，右键换形态', { duration: 2500 })
+        if (next) toast.success('Pet opened. Click to talk, drag to move, right-click to change appearance.', { duration: 2500 })
       } catch {
         setPetEnabled(!next)
       }
@@ -112,20 +112,20 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
             <MonitorSmartphone className="h-4 w-4" />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="text-section">桌面浮窗与桌宠</h2>
+            <h2 className="text-section">Desktop widget and pet</h2>
             <p className="mt-0.5 text-caption text-muted-foreground">
-              一个常驻桌面角落的小清单，随时勾选、随手加事项；也可以变身成桌宠宝儿姐
+              A small desktop checklist for quick tasks, or turn it into a desktop pet.
             </p>
           </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <Button variant={visible ? 'outline' : 'default'} className="h-8" onClick={toggleVisible}>
             {visible ? <EyeOff className="mr-1.5 h-4 w-4" /> : <Eye className="mr-1.5 h-4 w-4" />}
-            {visible ? '隐藏浮窗' : '显示浮窗'}
+            {visible ? 'Hide widget' : 'Show widget'}
           </Button>
           <Button variant="outline" className="h-8" onClick={togglePin}>
             {pinned ? <PinOff className="mr-1.5 h-4 w-4" /> : <Pin className="mr-1.5 h-4 w-4" />}
-            {pinned ? '取消置顶' : '置顶浮窗'}
+            {pinned ? 'Unpin' : 'Pin widget'}
           </Button>
         </div>
 
@@ -133,18 +133,18 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
           <label className="flex cursor-pointer items-start gap-3" data-testid="dock-toggle-row">
             <Switch checked={dockEnabled} onCheckedChange={toggleDock} className="mt-0.5" />
             <span className="min-w-0 flex-1">
-              <span className="block text-body text-foreground">贴边隐藏</span>
+              <span className="block text-body text-foreground">Dock at screen edge</span>
               <span className="mt-0.5 block text-caption text-muted-foreground">
-                把浮窗拖到屏幕边缘时缩成一条小边条，鼠标一碰就弹回来
+                Drag the widget to a screen edge to dock it; hover to bring it back.
               </span>
             </span>
           </label>
           <label className="flex cursor-pointer items-start gap-3" data-testid="pet-toggle-row">
             <Switch checked={petEnabled} onCheckedChange={togglePet} className="mt-0.5" />
             <span className="min-w-0 flex-1">
-              <span className="block text-body text-foreground">桌宠模式（宝儿姐）</span>
+              <span className="block text-body text-foreground">Desktop pet mode</span>
               <span className="mt-0.5 block text-caption text-muted-foreground">
-                左键说话，按住人物拖动，右键换形态；人物下方的「设置」可打开浮窗或收起桌宠
+                Click to talk, drag to move, or right-click to change appearance. Use Settings below the pet to manage it.
               </span>
             </span>
           </label>
@@ -159,7 +159,7 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
       type="button"
       data-testid="sidebar-widget-toggle"
       onClick={toggleVisible}
-      title={visible ? '隐藏桌面浮窗' : '显示桌面浮窗'}
+      title={visible ? 'Hide desktop widget' : 'Show desktop widget'}
       className={`relative flex w-full items-center gap-3 rounded-md py-2 pl-3 pr-2.5 text-body ui-transition ${
         visible
           ? 'bg-primary/[0.08] font-medium text-primary'
@@ -174,13 +174,13 @@ export function DesktopWidgetControl({ variant = 'sidebar' }: { variant?: 'sideb
         )}
       />
       <MonitorSmartphone className="h-4 w-4 shrink-0" />
-      <span className="truncate">桌面浮窗</span>
+      <span className="truncate">Desktop widget</span>
       <span
         className={`ml-auto shrink-0 rounded-full px-1.5 py-0.5 text-micro ${
           visible ? 'bg-primary/10 text-primary' : 'bg-surface-2 text-muted-foreground'
         }`}
       >
-        {visible ? '显示中' : '已隐藏'}
+        {visible ? 'Visible' : 'Hidden'}
       </span>
     </button>
   )

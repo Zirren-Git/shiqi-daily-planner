@@ -8,9 +8,9 @@ import type { Period, CalendarView, WeekStartDay, TaskStatus, Difficulty, Urgenc
 // ---------- Period ----------
 
 export const PERIOD_LABELS: Record<Period, string> = {
-  morning: '上午',
-  afternoon: '下午',
-  evening: '晚上',
+  morning: 'Morning',
+  afternoon: 'Afternoon',
+  evening: 'Evening',
 }
 
 export function getPeriodLabel(period: string): string {
@@ -20,10 +20,10 @@ export function getPeriodLabel(period: string): string {
 // ---------- Task Status ----------
 
 export const STATUS_LABELS: Record<TaskStatus, string> = {
-  todo: '待办',
-  in_progress: '进行中',
-  done: '已完成',
-  cancelled: '已取消',
+  todo: 'To do',
+  in_progress: 'In progress',
+  done: 'Completed',
+  cancelled: 'Cancelled',
 }
 
 export function getStatusLabel(status: string): string {
@@ -33,10 +33,10 @@ export function getStatusLabel(status: string): string {
 // ---------- Difficulty ----------
 
 export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
-  easy: '简单',
-  medium: '一般',
-  hard: '困难',
-  very_hard: '极难',
+  easy: 'Easy',
+  medium: 'Medium',
+  hard: 'Hard',
+  very_hard: 'Very hard',
 }
 
 export function getDifficultyLabel(d: string): string {
@@ -46,51 +46,51 @@ export function getDifficultyLabel(d: string): string {
 // ---------- Urgency (auto-calculated) ----------
 
 export const URGENCY_LABELS: Record<UrgencyLevel, string> = {
-  overdue: '已逾期',
-  urgent: '紧急',
-  soon: '较紧急',
-  upcoming: '近期',
-  plenty: '时间充足',
-  none: '未设截止',
+  overdue: 'Overdue',
+  urgent: 'Urgent',
+  soon: 'Soon',
+  upcoming: 'Upcoming',
+  plenty: 'Plenty of time',
+  none: 'No deadline',
 }
 
 // ---------- Calendar View ----------
 
 export const CALENDAR_VIEW_LABELS: Record<CalendarView, string> = {
-  month: '月视图',
-  week: '周视图',
-  day: '日视图',
+  month: 'Month view',
+  week: 'Week view',
+  day: 'Day view',
 }
 
 // ---------- Week Start Day ----------
 
 export const WEEK_START_LABELS: Record<WeekStartDay, string> = {
-  0: '周日',
-  1: '周一',
-  6: '周六',
+  0: 'Sun',
+  1: 'Mon',
+  6: 'Sat',
 }
 
 // ---------- Weekday names ----------
 
-export const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'] as const
+export const WEEKDAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
 
 // ---------- Focus mode ----------
 
 export const FOCUS_MODE_LABELS = {
-  focus: '专注',
-  short_break: '短休息',
-  long_break: '长休息',
+  focus: 'Focus',
+  short_break: 'Short break',
+  long_break: 'Long break',
 } as const
 
 // ---------- Measurement Type ----------
 
 export const MEASUREMENT_TYPE_LABELS: Record<string, string> = {
-  boolean: '完成/未完成',
-  count: '次数',
-  duration: '分钟',
-  minutes: '分钟',
-  hours: '小时',
-  numeric: '自定义数值',
+  boolean: 'Done / Not done',
+  count: 'Count',
+  duration: 'minutes',
+  minutes: 'minutes',
+  hours: 'hours',
+  numeric: 'Custom value',
 }
 
 export function getMeasurementTypeLabel(type: string): string {
@@ -100,15 +100,15 @@ export function getMeasurementTypeLabel(type: string): string {
 // ---------- Select placeholder text ----------
 
 export const SELECT_PLACEHOLDER = {
-  tag: '选择标签',
-  period: '选择时段',
-  difficulty: '选择难度',
-  status: '选择状态',
-  focusCategory: '选择专注分类',
-  noTag: '未分类',
-  tagDeleted: '标签已删除',
-  calendarView: '选择视图',
-  weekStart: '选择起始日',
+  tag: 'Choose a tag',
+  period: 'Choose a period',
+  difficulty: 'Choose difficulty',
+  status: 'Choose status',
+  focusCategory: 'Choose a focus category',
+  noTag: 'Uncategorized',
+  tagDeleted: 'Deleted tag',
+  calendarView: 'Choose view',
+  weekStart: 'Choose start day',
 } as const
 
 // ---------- Tag display helpers ----------
@@ -129,9 +129,9 @@ export function findTagById(tags: TagLike[], tagId: string | undefined | null): 
 
 /**
  * Get the display name for a tag reference.
- * - tagId null/undefined → "未分类"
+ * - tagId null/undefined → "Uncategorized"
  * - tag exists → tag.name
- * - tag not found → "标签已删除"
+ * - tag not found → "Deleted tag"
  */
 export function getTagDisplayName(tags: TagLike[], tagId: string | undefined | null): string {
   if (!tagId) return SELECT_PLACEHOLDER.noTag

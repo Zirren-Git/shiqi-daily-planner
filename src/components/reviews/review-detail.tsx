@@ -92,12 +92,12 @@ export function ReviewDetail({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] })
       queryClient.invalidateQueries({ queryKey: ['dailyReview'] })
-      toast.success('评价已删除')
+      toast.success('Review deleted')
       setDeleteOpen(false)
       onOpenChange(false)
     },
     onError: () => {
-      toast.error('删除失败，请重试')
+      toast.error('Could not delete. Try again.')
     },
   })
 
@@ -110,7 +110,7 @@ export function ReviewDetail({
           <ScrollArea className="h-full p-6">
             <SheetHeader className="mb-4">
               <SheetTitle className="text-section">
-                编辑评价 — {formatDisplayDate(review.review_date)}
+                Edit review — {formatDisplayDate(review.review_date)}
               </SheetTitle>
             </SheetHeader>
             <DailyReviewForm
@@ -127,19 +127,19 @@ export function ReviewDetail({
   }
 
   const fields = [
-    { label: '评分', value: review.score, icon: Star, unit: '/10', max: 10, kind: 'blocks' as const },
-    { label: '完成度', value: review.subjective_completion, icon: TrendingUp, unit: '%', max: 100, kind: 'bar' as const },
-    { label: '心情', value: review.mood, icon: Smile, unit: '/5', max: 5, kind: 'blocks' as const },
-    { label: '精力', value: review.energy, icon: Zap, unit: '/5', max: 5, kind: 'blocks' as const },
+    { label: 'Rating', value: review.score, icon: Star, unit: '/10', max: 10, kind: 'blocks' as const },
+    { label: 'Progress', value: review.subjective_completion, icon: TrendingUp, unit: '%', max: 100, kind: 'bar' as const },
+    { label: 'Mood', value: review.mood, icon: Smile, unit: '/5', max: 5, kind: 'blocks' as const },
+    { label: 'Energy', value: review.energy, icon: Zap, unit: '/5', max: 5, kind: 'blocks' as const },
   ]
 
   const textFields = [
-    { label: '今日成果', value: review.achievement },
-    { label: '未完成事项', value: review.unfinished },
-    { label: '遇到的问题', value: review.problems },
-    { label: '今日收获', value: review.lessons },
-    { label: '明日重点', value: review.tomorrow_focus },
-    { label: '自由总结', value: review.summary },
+    { label: 'Today’s achievements', value: review.achievement },
+    { label: 'Unfinished tasks', value: review.unfinished },
+    { label: 'Challenges', value: review.problems },
+    { label: 'What I learned', value: review.lessons },
+    { label: 'Tomorrow’s priorities', value: review.tomorrow_focus },
+    { label: 'Additional notes', value: review.summary },
   ]
 
   return (
@@ -155,7 +155,7 @@ export function ReviewDetail({
                       variant="ghost"
                       size="icon-sm"
                       onClick={onPrevious}
-                      aria-label="上一条评价"
+                      aria-label="Previous review"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -168,7 +168,7 @@ export function ReviewDetail({
                       variant="ghost"
                       size="icon-sm"
                       onClick={onNext}
-                      aria-label="下一条评价"
+                      aria-label="Next review"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -223,8 +223,8 @@ export function ReviewDetail({
 
             {/* Created/Updated */}
             <div className="mt-6 space-y-1 border-t border-border pt-4 text-micro text-muted-foreground">
-              <div>创建：{new Date(review.created_at).toLocaleString('zh-CN')}</div>
-              <div>更新：{new Date(review.updated_at).toLocaleString('zh-CN')}</div>
+              <div>Created: {new Date(review.created_at).toLocaleString('zh-CN')}</div>
+              <div>Updated: {new Date(review.updated_at).toLocaleString('zh-CN')}</div>
             </div>
 
             {/* Actions */}
@@ -235,7 +235,7 @@ export function ReviewDetail({
                 onClick={() => setEditing(true)}
               >
                 <Pencil className="h-4 w-4" />
-                编辑
+                Edit
               </Button>
               <Button
                 variant="outline"
@@ -243,7 +243,7 @@ export function ReviewDetail({
                 onClick={() => setDeleteOpen(true)}
               >
                 <Trash2 className="h-4 w-4" />
-                删除
+                Delete
               </Button>
             </div>
           </ScrollArea>
@@ -254,14 +254,14 @@ export function ReviewDetail({
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>删除评价</DialogTitle>
+            <DialogTitle>Delete review</DialogTitle>
             <DialogDescription>
-              确定要删除 {formatDisplayDate(review.review_date)} 的评价吗？此操作无法撤销。
+              Delete the review for {formatDisplayDate(review.review_date)}? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteOpen(false)}>
-              取消
+              Cancel
             </Button>
             <Button
               variant="destructive"
@@ -269,7 +269,7 @@ export function ReviewDetail({
               disabled={deleteMutation.isPending}
             >
               {deleteMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-              删除
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

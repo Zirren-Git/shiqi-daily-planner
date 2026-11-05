@@ -33,7 +33,7 @@ export function TodayFocus({ tasks, tags, activeTaskId, onTaskClick }: TodayFocu
       <div className="mb-2 flex items-center gap-2 px-2">
         <Star className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
         <h3 className="text-micro font-medium uppercase tracking-wider text-muted-foreground">
-          今日焦点
+          Today’s focus
         </h3>
         <span className="text-micro tabular-nums text-muted-foreground">
           {focusTasks.length}

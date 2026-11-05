@@ -12,13 +12,13 @@ export interface FocusPreset {
   hint: string
 }
 
-/** 常用时长：番茄 25 / 深度 45 / 冲刺 60，短休 5、长休 15 */
+/** 常用时长：番茄 25 / 深度 45 / 冲刺 60，Short break 5、Long break 15 */
 export const FOCUS_PRESETS: FocusPreset[] = [
-  { label: '5', minutes: 5, kind: 'break', hint: '短休' },
-  { label: '15', minutes: 15, kind: 'break', hint: '长休' },
-  { label: '25', minutes: 25, kind: 'focus', hint: '一颗番茄' },
-  { label: '45', minutes: 45, kind: 'focus', hint: '深度专注' },
-  { label: '60', minutes: 60, kind: 'focus', hint: '整点冲刺' },
+  { label: '5', minutes: 5, kind: 'break', hint: 'Short break' },
+  { label: '15', minutes: 15, kind: 'break', hint: 'Long break' },
+  { label: '25', minutes: 25, kind: 'focus', hint: 'One Pomodoro' },
+  { label: '45', minutes: 45, kind: 'focus', hint: 'Deep focus' },
+  { label: '60', minutes: 60, kind: 'focus', hint: 'Focus sprint' },
   { label: '90', minutes: 90, kind: 'focus', hint: '超长档' },
 ]
 

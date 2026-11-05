@@ -1,9 +1,9 @@
 'use client'
 
 // ============================================================
-// 沉浸模式 ↔ 纯净工作模式 的快捷开关
+// Immersive mode ↔ 纯净工作模式 的快捷开关
 //
-// 放在侧栏底部：一键在"有角色有背景"和"最大化工作区"之间切换。
+// 放在侧栏底部：一键在"有Character有背景"和"最大化工作区"之间切换。
 // 只改氛围参数，不动主题配色，所以切回来时视觉身份不丢。
 // ============================================================
 
@@ -28,8 +28,8 @@ export function ImmersiveToggle({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         onClick={toggle}
-        title={immersive ? '切换到纯净工作模式' : '切换到沉浸模式'}
-        aria-label={immersive ? '切换到纯净工作模式' : '切换到沉浸模式'}
+        title={immersive ? 'Switch to distraction-free mode' : 'Switch to immersive mode'}
+        aria-label={immersive ? 'Switch to distraction-free mode' : 'Switch to immersive mode'}
         aria-pressed={!immersive}
         className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
       >
@@ -48,14 +48,14 @@ export function ImmersiveToggle({ compact = false }: { compact?: boolean }) {
         'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-caption ui-transition',
         'text-muted-foreground hover:bg-accent hover:text-foreground'
       )}
-      title={immersive ? '切换到纯净工作模式（隐藏角色与背景）' : '切换到沉浸模式（显示角色与背景）'}
+      title={immersive ? 'Switch to distraction-free mode (hide character and background)' : 'Switch to immersive mode (show character and background)'}
     >
       {immersive ? (
         <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
       ) : (
         <Square className="h-3.5 w-3.5" aria-hidden="true" />
       )}
-      <span className="truncate">{immersive ? '沉浸模式' : '纯净模式'}</span>
+      <span className="truncate">{immersive ? 'Immersive mode' : 'Distraction-free mode'}</span>
       <span
         className={cn(
           'ml-auto flex h-4 w-7 shrink-0 items-center rounded-full p-0.5 ui-transition',

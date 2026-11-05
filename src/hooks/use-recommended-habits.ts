@@ -12,52 +12,52 @@ import { toast } from 'sonner'
 export const RECOMMENDED_HABITS = [
   {
     template_id: 'recommended-exercise',
-    name: '运动',
-    description: '每天运动保持健康',
+    name: 'Exercise',
+    description: 'Exercise daily to stay healthy',
     icon: 'Dumbbell',
     color: '#10b981',
     measurement_type: 'duration' as const,
     target_value: 30,
-    unit: '分钟',
+    unit: 'minutes',
     schedule_rule: { frequency: 'weekdays' as const, interval: 1 },
   },
   {
     template_id: 'recommended-water',
-    name: '喝水',
-    description: '每天喝足8杯水',
+    name: 'Drink water',
+    description: 'Drink eight glasses of water each day',
     icon: 'Droplets',
     color: '#06b6d4',
     measurement_type: 'count' as const,
     target_value: 8,
-    unit: '杯',
+    unit: 'glasses',
     schedule_rule: { frequency: 'daily' as const, interval: 1 },
   },
   {
     template_id: 'recommended-sleep',
-    name: '睡眠',
-    description: '每天保证充足睡眠',
+    name: 'Sleep',
+    description: 'Get enough sleep each night',
     icon: 'Moon',
     color: '#8b5cf6',
     measurement_type: 'duration' as const,
     target_value: 8,
-    unit: '小时',
+    unit: 'hours',
     schedule_rule: { frequency: 'daily' as const, interval: 1 },
   },
   {
     template_id: 'recommended-reading',
-    name: '阅读',
-    description: '每天阅读30分钟',
+    name: 'Read',
+    description: 'Read for 30 minutes daily',
     icon: 'BookOpen',
     color: '#f59e0b',
     measurement_type: 'duration' as const,
     target_value: 30,
-    unit: '分钟',
+    unit: 'minutes',
     schedule_rule: { frequency: 'daily' as const, interval: 1 },
   },
   {
     template_id: 'recommended-early-rise',
-    name: '早起',
-    description: '每天早上7点前起床',
+    name: 'Wake up early',
+    description: 'Wake up before 7 a.m.',
     icon: 'Sunrise',
     color: '#f97316',
     measurement_type: 'boolean' as const,
@@ -141,7 +141,7 @@ export function useRecommendedHabits() {
         // Non-critical
       }
       queryClient.invalidateQueries({ queryKey: ['habits'] })
-      toast.success(`已添加 ${added} 个推荐习惯`)
+      toast.success(`Added ${added} recommended habits`)
     }
   }, [user, addRecommended, userRepo, queryClient])
 
@@ -150,9 +150,9 @@ export function useRecommendedHabits() {
       const result = await addRecommended(habit)
       if (result) {
         queryClient.invalidateQueries({ queryKey: ['habits'] })
-        toast.success(`已添加「${habit.name}」`)
+        toast.success(`Added “${habit.name}”`)
       } else {
-        toast('该习惯已存在')
+        toast('This habit already exists')
       }
     },
     [addRecommended, queryClient]

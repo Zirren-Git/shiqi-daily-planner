@@ -89,7 +89,7 @@ test.describe('App Smoke Tests', () => {
 
     await page.getByTestId('enter-demo-mode').click()
     await expect(page).toHaveURL(/\/calendar/, { timeout: 15000 })
-    await expect(page.getByRole('link', { name: '日历', exact: true })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('link', { name: 'Calendar', exact: true })).toBeVisible({ timeout: 15000 })
 
     await page.goto('/schedule')
     await expect(page).toHaveURL(/\/schedule/, { timeout: 15000 })

@@ -17,4 +17,4 @@ export const HAS_CLOUD =
   !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 /** 本地模式下的数据载体描述，用于设置页文案 */
-export const LOCAL_STORAGE_LABEL = '本机数据库（IndexedDB）'
+export const LOCAL_STORAGE_LABEL = 'Local database (IndexedDB)'

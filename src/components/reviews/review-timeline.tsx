@@ -53,11 +53,11 @@ function CompletionMeter({ value }: { value: number }) {
   const pct = Math.round(Math.min(Math.max(value, 0), 100))
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span className="text-micro text-muted-foreground">完成度</span>
+      <span className="text-micro text-muted-foreground">Progress</span>
       <span
         className="h-1.5 w-14 overflow-hidden rounded-full bg-muted"
         role="img"
-        aria-label={`完成度 ${pct}%`}
+        aria-label={`Progress ${pct}%`}
       >
         <span
           className="block h-full rounded-full bg-primary ui-transition"
@@ -112,12 +112,12 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
           onClick={() => setShowFilters(!showFilters)}
         >
           <Filter className="h-3.5 w-3.5" />
-          筛选
+          Filter
         </Button>
         {hasFilters && (
           <Button variant="ghost" size="sm" className="text-caption" onClick={clearFilters}>
             <X className="h-3.5 w-3.5" />
-            清除
+            Clear
           </Button>
         )}
       </div>
@@ -125,7 +125,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
       {showFilters && (
         <div className="grid grid-cols-2 gap-3 rounded-lg bg-surface-2 p-3 sm:grid-cols-4">
           <div className="space-y-1">
-            <Label className="text-micro text-muted-foreground">月份</Label>
+            <Label className="text-micro text-muted-foreground">Month</Label>
             <Select
               value={filters.month ?? ''}
               onValueChange={(v) =>
@@ -133,10 +133,10 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
               }
             >
               <SelectTrigger className="h-8 text-caption">
-                <SelectValue placeholder="全部" />
+                <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">全部</SelectItem>
+                <SelectItem value="">All</SelectItem>
                 {monthOptions.map((m) => (
                   <SelectItem key={m} value={m}>
                     {m}
@@ -147,7 +147,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
           </div>
 
           <div className="space-y-1">
-            <Label className="text-micro text-muted-foreground">最低评分</Label>
+            <Label className="text-micro text-muted-foreground">Minimum rating</Label>
             <Select
               value={filters.scoreMin?.toString() ?? ''}
               onValueChange={(v) =>
@@ -155,10 +155,10 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
               }
             >
               <SelectTrigger className="h-8 text-caption">
-                <SelectValue placeholder="不限" />
+                <SelectValue placeholder="Any" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">不限</SelectItem>
+                <SelectItem value="">Any</SelectItem>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                   <SelectItem key={n} value={n.toString()}>
                     ≥ {n}
@@ -169,7 +169,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
           </div>
 
           <div className="space-y-1">
-            <Label className="text-micro text-muted-foreground">心情</Label>
+            <Label className="text-micro text-muted-foreground">Mood</Label>
             <Select
               value={filters.mood?.toString() ?? ''}
               onValueChange={(v) =>
@@ -177,10 +177,10 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
               }
             >
               <SelectTrigger className="h-8 text-caption">
-                <SelectValue placeholder="全部" />
+                <SelectValue placeholder="All" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">全部</SelectItem>
+                <SelectItem value="">All</SelectItem>
                 {[1, 2, 3, 4, 5].map((n) => (
                   <SelectItem key={n} value={n.toString()}>
                     {'😔😐🙂😊🤩'[n - 1]} {n}
@@ -200,7 +200,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
                 }
               />
               <Label htmlFor="has-text" className="text-caption">
-                仅有总结
+                With notes only
               </Label>
             </div>
           </div>
@@ -210,10 +210,10 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
       {filtered.length === 0 ? (
         <div className="surface flex flex-col items-center gap-2 px-4 py-12 text-center">
           <Filter className="h-6 w-6 text-muted-foreground/60" />
-          <p className="text-body">当前筛选没有匹配记录</p>
+          <p className="text-body">No reviews match these filters</p>
           {hasFilters && (
             <Button variant="link" size="sm" className="text-caption" onClick={clearFilters}>
-              清除筛选
+              Clear filters
             </Button>
           )}
         </div>
@@ -244,13 +244,13 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                         {review.score != null && (
-                          <BlockMeter label="评分" value={review.score} max={10} />
+                          <BlockMeter label="Rating" value={review.score} max={10} />
                         )}
                         {review.mood != null && (
-                          <BlockMeter label="心情" value={review.mood} max={5} />
+                          <BlockMeter label="Mood" value={review.mood} max={5} />
                         )}
                         {review.energy != null && (
-                          <BlockMeter label="精力" value={review.energy} max={5} />
+                          <BlockMeter label="Energy" value={review.energy} max={5} />
                         )}
                         {review.subjective_completion != null && (
                           <CompletionMeter value={review.subjective_completion} />
@@ -261,7 +261,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
 
                     {review.achievement && (
                       <p className="line-clamp-1 text-caption text-muted-foreground">
-                        <span className="text-foreground/70">成果 · </span>
+                        <span className="text-foreground/70">Achievements · </span>
                         {review.achievement}
                       </p>
                     )}
@@ -287,7 +287,7 @@ export function ReviewTimeline({ reviews, onSelect }: ReviewTimelineProps) {
                 className="text-caption"
                 onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
               >
-                加载更多（{filtered.length - visibleCount} 条）
+                Load more ({filtered.length - visibleCount})
               </Button>
             </div>
           )}

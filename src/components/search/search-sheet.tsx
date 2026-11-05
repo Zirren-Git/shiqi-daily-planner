@@ -19,8 +19,8 @@ interface SearchSheetProps {
 
 /**
  * 搜索面板：桌面用对话框，手机用底部抽屉。
- * 把已有的 SearchFilter（关键词 + 状态/优先级/标签/日期 + 过期/重复）接进主流程，
- * 之前它没有任何入口，README 里的"搜索筛选"其实是空的。
+ * 把已有的 SearchFilter（关键词 + 状态/Priority/标签/日期 + 过期/重复）接进主流程，
+ * 之前它没有任何入口，README 里的"搜索Filter"其实是空的。
  */
 export function SearchSheet({ open, onOpenChange, onSelectTask }: SearchSheetProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -39,7 +39,7 @@ export function SearchSheet({ open, onOpenChange, onSelectTask }: SearchSheetPro
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-h-[80vh] overflow-y-auto shadow-[var(--shadow-pop)] sm:max-w-xl">
           <DialogHeader>
-            <DialogTitle className="text-section">搜索事项</DialogTitle>
+            <DialogTitle className="text-section">Search tasks</DialogTitle>
           </DialogHeader>
           {body}
         </DialogContent>
@@ -51,7 +51,7 @@ export function SearchSheet({ open, onOpenChange, onSelectTask }: SearchSheetPro
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="max-h-[88vh] shadow-[var(--shadow-pop)]">
         <DrawerHeader>
-          <DrawerTitle className="text-section">搜索事项</DrawerTitle>
+          <DrawerTitle className="text-section">Search tasks</DrawerTitle>
         </DrawerHeader>
         <div className="overflow-y-auto px-4 pb-6">{body}</div>
       </DrawerContent>

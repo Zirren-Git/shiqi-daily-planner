@@ -65,11 +65,11 @@ export function formatDate(date: string | Date, fmt = 'yyyy-MM-dd'): string {
 
 export function formatDisplayDate(date: string): string {
   const d = parseISO(date)
-  return format(d, 'yyyy年M月d日')
+  return format(d, 'MMM d, yyyy')
 }
 
 export function formatWeekday(date: string): string {
-  const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const d = parseISO(date)
   return weekdays[parseInt(format(d, 'i')) % 7]
 }
@@ -135,9 +135,9 @@ export function navigateDate(date: string, view: 'month' | 'week' | 'day', direc
 // ---------- Period time ranges (for display) ----------
 
 export const PERIOD_RANGES = {
-  morning: { start: '06:00', end: '12:00', label: '上午' },
-  afternoon: { start: '12:00', end: '18:00', label: '下午' },
-  evening: { start: '18:00', end: '23:59', label: '晚上' },
+  morning: { start: '06:00', end: '12:00', label: 'Morning' },
+  afternoon: { start: '12:00', end: '18:00', label: 'Afternoon' },
+  evening: { start: '18:00', end: '23:59', label: 'Evening' },
 } as const
 
 // Re-export commonly used functions

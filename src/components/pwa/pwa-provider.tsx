@@ -50,13 +50,13 @@ export function PwaProvider({ children }: PwaProviderProps) {
     const handleOnline = () => {
       setIsOnline(true)
       setShowOfflineBanner(false)
-      toast.success('已恢复网络连接')
+      toast.success('Back online')
     }
 
     const handleOffline = () => {
       setIsOnline(false)
       setShowOfflineBanner(true)
-      toast.warning('网络连接已断开，离线模式下仍可查看数据')
+      toast.warning('Offline. Your saved data is still available.')
     }
 
     window.addEventListener('online', handleOnline)
@@ -74,9 +74,9 @@ export function PwaProvider({ children }: PwaProviderProps) {
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 // New version available
-                toast.info('有新版本可用，刷新页面以更新', {
+                toast.info('An update is available. Refresh to install.', {
                   action: {
-                    label: '刷新',
+                    label: 'Refresh',
                     onClick: () => window.location.reload(),
                   },
                 })
@@ -112,7 +112,7 @@ export function PwaProvider({ children }: PwaProviderProps) {
     const installedHandler = () => {
       setIsInstallable(false)
       setInstallPrompt(null)
-      toast.success('应用已安装')
+      toast.success('App installed')
     }
     window.addEventListener('appinstalled', installedHandler)
 
@@ -129,7 +129,7 @@ export function PwaProvider({ children }: PwaProviderProps) {
       setInstallPrompt(null)
       setIsInstallable(false)
     } else {
-      toast.info('安装功能仅在支持的浏览器中可用')
+      toast.info('Installation is not supported in this browser')
     }
   }, [installPrompt])
 
@@ -155,7 +155,7 @@ export function PwaProvider({ children }: PwaProviderProps) {
       >
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-destructive text-destructive-foreground text-sm shadow-lg">
           <WifiOff className="h-3.5 w-3.5" />
-          <span>离线模式</span>
+          <span>Offline mode</span>
         </div>
       </div>
     </PwaContext.Provider>

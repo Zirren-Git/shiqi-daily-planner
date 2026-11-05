@@ -48,51 +48,51 @@ export function ReviewSummary({ reviews, year, month }: ReviewSummaryProps) {
 
   const stats = [
     {
-      label: '已评价',
+      label: 'Reviewed',
       value: `${summary.reviewedDays}/${summary.totalDays}`,
-      sub: '天',
+      sub: 'days',
       icon: CalendarCheck,
       meter: (
         <BarMeter
           value={summary.reviewedDays}
           max={Math.max(summary.totalDays, 1)}
-          label="已评价天数"
+          label="Days reviewed"
         />
       ),
     },
     {
-      label: '平均评分',
+      label: 'Average rating',
       value: summary.avgScore != null ? summary.avgScore.toFixed(1) : '—',
       sub: '/10',
       icon: Star,
       meter: (
-        <SegmentMeter value={summary.avgScore ?? 0} max={10} label="平均评分" />
+        <SegmentMeter value={summary.avgScore ?? 0} max={10} label="Average rating" />
       ),
     },
     {
-      label: '平均完成度',
+      label: 'Average progress',
       value: summary.avgCompletion != null ? `${Math.round(summary.avgCompletion)}%` : '—',
       sub: '',
       icon: TrendingUp,
-      meter: <BarMeter value={summary.avgCompletion ?? 0} max={100} label="平均完成度" />,
+      meter: <BarMeter value={summary.avgCompletion ?? 0} max={100} label="Average progress" />,
     },
     {
-      label: '平均心情',
+      label: 'Average mood',
       value: summary.avgMood != null ? summary.avgMood.toFixed(1) : '—',
       sub: '/5',
       icon: Smile,
-      meter: <SegmentMeter value={summary.avgMood ?? 0} max={5} label="平均心情" />,
+      meter: <SegmentMeter value={summary.avgMood ?? 0} max={5} label="Average mood" />,
     },
   ]
 
   const streakStats = [
     {
-      label: '当前连续',
+      label: 'Current streak',
       value: summary.currentStreak,
       icon: Flame,
     },
     {
-      label: '最长连续',
+      label: 'Longest streak',
       value: summary.longestStreak,
       icon: Zap,
     },
@@ -122,7 +122,7 @@ export function ReviewSummary({ reviews, year, month }: ReviewSummaryProps) {
             <s.icon className="h-3.5 w-3.5 text-primary/70" />
             <span className="text-caption text-foreground/70">{s.label}</span>
             <span className="text-caption font-semibold tabular-nums text-foreground">{s.value}</span>
-            <span className="text-caption text-foreground/60">天</span>
+            <span className="text-caption text-foreground/60">days</span>
           </div>
         ))}
       </div>

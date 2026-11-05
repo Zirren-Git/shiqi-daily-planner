@@ -107,7 +107,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
         await taskRepo.update(user.id, task.id, update)
         queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
       } catch {
-        toast.error('保存失败')
+        toast.error('Could not save')
       } finally {
         setSaving(null)
       }
@@ -128,17 +128,17 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
     try {
       await taskRepo.softDelete(user.id, task.id)
       queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
-      toast.success('已删除')
+      toast.success('Deleted')
       onClose()
     } catch {
-      toast.error('删除失败')
+      toast.error('Could not delete')
     }
   }
 
   if (!task || !open) return null
 
   // Computed display labels for SelectValue children
-  const tagDisplay = tagId ? getTagDisplayName(tagList, tagId) : '未分类'
+  const tagDisplay = tagId ? getTagDisplayName(tagList, tagId) : 'Uncategorized'
   const tagColor = tagId ? getTagColor(tagList, tagId) : undefined
   const urgency = calcUrgency(task)
 
@@ -154,13 +154,13 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
             debouncedSave('title', e.target.value)
           }}
           className="h-auto border-none px-0 text-body font-medium focus-visible:ring-0"
-          placeholder="任务标题"
+          placeholder="Task title"
         />
       </div>
 
       {/* Status */}
       <div className="flex items-center gap-2">
-        <span className="w-14 shrink-0 text-caption text-muted-foreground">状态</span>
+        <span className="w-14 shrink-0 text-caption text-muted-foreground">Status</span>
         <Select
           value={status}
           onValueChange={(v) => {
@@ -173,10 +173,10 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
           </SelectTrigger>
           <SelectContent>
             {(Object.entries({
-              todo: '待办',
-              in_progress: '进行中',
-              done: '已完成',
-              cancelled: '已取消',
+              todo: 'To do',
+              in_progress: 'In progress',
+              done: 'Completed',
+              cancelled: 'Cancelled',
             }) as [TaskStatus, string][]).map(([k, v]) => (
               <SelectItem key={k} value={k}>{v}</SelectItem>
             ))}
@@ -186,7 +186,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
 
       {/* Difficulty */}
       <div className="flex items-center gap-2">
-        <span className="w-14 shrink-0 text-caption text-muted-foreground">难度</span>
+        <span className="w-14 shrink-0 text-caption text-muted-foreground">Difficulty</span>
         <Select
           value={difficulty}
           onValueChange={(v) => {
@@ -199,10 +199,10 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
           </SelectTrigger>
           <SelectContent>
             {(Object.entries({
-              easy: '简单',
-              medium: '一般',
-              hard: '困难',
-              very_hard: '极难',
+              easy: 'Easy',
+              medium: 'Medium',
+              hard: 'Hard',
+              very_hard: 'Very hard',
             }) as [Difficulty, string][]).map(([k, v]) => (
               <SelectItem key={k} value={k}>{v}</SelectItem>
             ))}
@@ -226,7 +226,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
           />
           {task.due_at && (
             <span className="text-micro text-muted-foreground">
-              紧迫度：{URGENCY_LABELS[urgency]}
+              Urgency: {URGENCY_LABELS[urgency]}
             </span>
           )}
         </div>
@@ -261,9 +261,9 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
             <SelectValue>{getPeriodLabel(period)}</SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="morning">上午</SelectItem>
-            <SelectItem value="afternoon">下午</SelectItem>
-            <SelectItem value="evening">晚上</SelectItem>
+            <SelectItem value="morning">Morning</SelectItem>
+            <SelectItem value="afternoon">Afternoon</SelectItem>
+            <SelectItem value="evening">Evening</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -289,12 +289,12 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
                   <span>{tagDisplay}</span>
                 </span>
               ) : (
-                '未分类'
+                'Uncategorized'
               )}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="none">未分类</SelectItem>
+            <SelectItem value="none">Uncategorized</SelectItem>
             {tagList.map((t) => (
               <SelectItem key={t.id} value={t.id}>
                 <span className="flex items-center gap-2">
@@ -317,21 +317,21 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
             setEstimatedMinutes(e.target.value)
             debouncedSave('estimated_minutes', e.target.value ? Number(e.target.value) : null)
           }}
-          placeholder="预计用时（分钟）"
+          placeholder="Estimated time (minutes)"
           className="h-8 text-caption flex-1"
         />
       </div>
 
       {/* Description */}
       <div className="space-y-1">
-        <span className="text-caption text-muted-foreground">说明</span>
+        <span className="text-caption text-muted-foreground">Notes</span>
         <Textarea
           value={description}
           onChange={(e) => {
             setDescription(e.target.value)
             debouncedSave('description', e.target.value)
           }}
-          placeholder="添加说明..."
+          placeholder="Add notes…"
           rows={3}
           className="resize-none text-caption"
         />
@@ -339,8 +339,8 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
 
       {/* Meta info */}
       <div className="space-y-1 border-t border-border pt-2 text-micro text-muted-foreground">
-        <div>创建：{task.created_at ? new Date(task.created_at).toLocaleString('zh-CN') : '—'}</div>
-        <div>更新：{task.updated_at ? new Date(task.updated_at).toLocaleString('zh-CN') : '—'}</div>
+        <div>Created: {task.created_at ? new Date(task.created_at).toLocaleString('en-US') : '—'}</div>
+        <div>Updated: {task.updated_at ? new Date(task.updated_at).toLocaleString('en-US') : '—'}</div>
       </div>
 
       {/* Footer */}
@@ -353,7 +353,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
           onClick={handleDelete}
         >
           <Trash2 className="h-4 w-4 mr-1" />
-          删除
+          Delete
         </Button>
       </div>
     </div>
@@ -365,7 +365,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
       <Dialog open={open} onOpenChange={(o) => { if (!o) onClose() }}>
         <DialogContent className="sm:max-w-lg max-h-[88vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="sr-only text-section">任务详情</DialogTitle>
+            <DialogTitle className="sr-only text-section">Task details</DialogTitle>
           </DialogHeader>
           {formContent}
         </DialogContent>
@@ -378,7 +378,7 @@ export function TaskDetailPanel({ task, open, onClose }: TaskDetailPanelProps) {
     <Drawer open={open} onOpenChange={(o) => { if (!o) onClose() }}>
       <DrawerContent className="max-h-[92vh]">
         <DrawerHeader>
-          <DrawerTitle>任务详情</DrawerTitle>
+          <DrawerTitle>Task details</DrawerTitle>
         </DrawerHeader>
         {/* min-h-0 flex-1 是关键：抽屉是 flex 列，只写 overflow-y-auto 的话
             这个 div 会被内容撑到自然高度，把底部的「删除」顶出屏幕且滚不到 */}

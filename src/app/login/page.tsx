@@ -15,16 +15,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 const loginSchema = z.object({
-  email: z.string().email('请输入有效的邮箱地址'),
-  password: z.string().min(6, '密码至少6位'),
+  email: z.string().email('Enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
 const registerSchema = z.object({
-  email: z.string().email('请输入有效的邮箱地址'),
-  password: z.string().min(6, '密码至少6位'),
+  email: z.string().email('Enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string(),
 }).refine((d) => d.password === d.confirmPassword, {
-  message: '两次密码不一致',
+  message: 'Passwords do not match',
   path: ['confirmPassword'],
 })
 
@@ -92,14 +92,14 @@ export default function LoginPage() {
           </div>
           <h1 className="mt-3 text-display">{APP_NAME}</h1>
           <p className="mt-1 text-caption text-muted-foreground">
-            {isDemoMode ? '本地演示模式' : '个人计划管理'}
+            {isDemoMode ? 'Local demo mode' : 'Personal planner'}
           </p>
         </div>
 
         {isDemoMode && (
           <div className="surface-2 flex items-start gap-2 p-3 text-caption text-muted-foreground">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-            <span>本地演示模式：点击登录即可使用，数据保存在浏览器中。配置 Supabase 后可跨设备同步。</span>
+            <span>Local demo: sign in to start. Your data stays in this browser. Configure Supabase to sync across devices.</span>
           </div>
         )}
 
@@ -109,21 +109,21 @@ export default function LoginPage() {
               value="login"
               className="rounded-sm text-caption data-active:bg-primary data-active:text-primary-foreground dark:data-active:bg-primary dark:data-active:text-primary-foreground"
             >
-              登录
+              Sign in
             </TabsTrigger>
             <TabsTrigger
               value="register"
               className="rounded-sm text-caption data-active:bg-primary data-active:text-primary-foreground dark:data-active:bg-primary dark:data-active:text-primary-foreground"
             >
-              注册
+              Sign up
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
             <section className="surface p-4">
               <div className="mb-4">
-                <h2 className="text-section">登录</h2>
-                <p className="mt-0.5 text-caption text-muted-foreground">使用邮箱和密码登录你的账户</p>
+                <h2 className="text-section">Sign in</h2>
+                <p className="mt-0.5 text-caption text-muted-foreground">Sign in with your email and password</p>
               </div>
               <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-3">
                 {error && (
@@ -133,7 +133,7 @@ export default function LoginPage() {
                   </div>
                 )}
                 <div className="space-y-2">
-                  <Label htmlFor="login-email" className="text-caption text-muted-foreground">邮箱</Label>
+                  <Label htmlFor="login-email" className="text-caption text-muted-foreground">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
@@ -149,7 +149,7 @@ export default function LoginPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="login-password" className="text-caption text-muted-foreground">密码</Label>
+                  <Label htmlFor="login-password" className="text-caption text-muted-foreground">Password</Label>
                   <div className="relative">
                     <Key className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
@@ -166,7 +166,7 @@ export default function LoginPage() {
                 </div>
                 <Button type="submit" className="h-9 w-full" disabled={submitting}>
                   {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  登录
+                  Sign in
                 </Button>
               </form>
             </section>
@@ -175,8 +175,8 @@ export default function LoginPage() {
           <TabsContent value="register">
             <section className="surface p-4">
               <div className="mb-4">
-                <h2 className="text-section">注册</h2>
-                <p className="mt-0.5 text-caption text-muted-foreground">创建新账户开始使用</p>
+                <h2 className="text-section">Sign up</h2>
+                <p className="mt-0.5 text-caption text-muted-foreground">Create an account to get started</p>
               </div>
               <form onSubmit={registerForm.handleSubmit(handleRegister)} className="space-y-3">
                 {error && (
@@ -186,7 +186,7 @@ export default function LoginPage() {
                   </div>
                 )}
                 <div className="space-y-2">
-                  <Label htmlFor="reg-email" className="text-caption text-muted-foreground">邮箱</Label>
+                  <Label htmlFor="reg-email" className="text-caption text-muted-foreground">Email</Label>
                   <Input
                     id="reg-email"
                     type="email"
@@ -199,11 +199,11 @@ export default function LoginPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reg-password" className="text-caption text-muted-foreground">密码</Label>
+                  <Label htmlFor="reg-password" className="text-caption text-muted-foreground">Password</Label>
                   <Input
                     id="reg-password"
                     type="password"
-                    placeholder="至少6位"
+                    placeholder="At least 6 characters"
                     className="h-9"
                     {...registerForm.register('password')}
                   />
@@ -212,11 +212,11 @@ export default function LoginPage() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reg-confirm" className="text-caption text-muted-foreground">确认密码</Label>
+                  <Label htmlFor="reg-confirm" className="text-caption text-muted-foreground">Confirm password</Label>
                   <Input
                     id="reg-confirm"
                     type="password"
-                    placeholder="再次输入密码"
+                    placeholder="Enter password again"
                     className="h-9"
                     {...registerForm.register('confirmPassword')}
                   />
@@ -226,7 +226,7 @@ export default function LoginPage() {
                 </div>
                 <Button type="submit" className="h-9 w-full" disabled={submitting}>
                   {submitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  注册
+                  Sign up
                 </Button>
               </form>
             </section>
@@ -241,7 +241,7 @@ export default function LoginPage() {
           onClick={enterDemoMode}
           disabled={submitting}
         >
-          使用本地演示模式
+          Try local demo
         </Button>
       </div>
     </div>
