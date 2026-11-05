@@ -75,6 +75,20 @@ function buildResponse(file, status = 200) {
 function registerProtocolHandler() {
   protocol.handle(APP_SCHEME, async (request) => {
     const { pathname } = new URL(request.url)
+    if (pathname === '/api/gtc') {
+      try {
+        const upstream = await fetch('https://www.gtc.com/provschema/kalender.asp?v=45&klass=T1cs', {
+          signal: AbortSignal.timeout(10000),
+          cache: 'no-store',
+        })
+        if (!upstream.ok) throw new Error('GTC unavailable')
+        return new Response(await upstream.arrayBuffer(), {
+          headers: { 'content-type': upstream.headers.get('content-type') || 'text/html; charset=windows-1252', 'cache-control': 'no-store' },
+        })
+      } catch {
+        return new Response('GTC unavailable', { status: 502 })
+      }
+    }
     const file = resolveAsset(DIST_DIR, pathname)
     if (file) return buildResponse(file)
 

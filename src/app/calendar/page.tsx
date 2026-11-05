@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useAuth } from '@/providers/auth-provider'
+import { GtcSync } from '@/components/calendar/gtc-sync'
 import { CalendarHeader } from '@/components/calendar/calendar-header'
 import { MonthView } from '@/components/calendar/month-view'
 import { WeekView } from '@/components/calendar/week-view'
@@ -89,6 +90,7 @@ export default function CalendarPage() {
   return (
     <div className="flex h-full bg-background">
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <GtcSync key={user.id} />
         <CalendarHeader
           currentView={currentView}
           currentDate={currentDate}
