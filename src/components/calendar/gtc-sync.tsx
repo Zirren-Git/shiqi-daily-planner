@@ -39,10 +39,7 @@ export function GtcSync() {
       } else {
         const response = await fetch('/api/gtc', { cache: 'no-store' })
         if (!response.ok) throw new Error('fetch failed')
-        const contentType = response.headers.get('content-type') ?? ''
-        events = contentType.includes('text/html')
-          ? parseGtcCalendar(await response.text(), schoolYear()) // Electron app:// handler
-          : await response.json() as GtcEvent[]
+        events = parseGtcCalendar(await response.text(), schoolYear())
       }
       if (!Array.isArray(events) || !events.length) throw new Error('empty feed')
       const existing = await tasks.filter(user.id, { dateFrom: events[0].date, dateTo: events[events.length - 1].date, maxResults: 10000 })

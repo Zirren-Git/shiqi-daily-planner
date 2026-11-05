@@ -43,6 +43,9 @@ const nextConfig: NextConfig = {
         trailingSlash: true,
       }
     : {
+        async rewrites() {
+          return [{ source: '/api/gtc', destination: 'https://www.gtc.com/provschema/kalender.asp?v=45&klass=T1cs' }];
+        },
         async headers() {
           return [
             {
