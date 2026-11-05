@@ -31,40 +31,40 @@ export interface NavGroup {
 export const navGroups: NavGroup[] = [
   {
     id: 'flow',
-    title: '主流程',
+    title: 'Plan',
     items: [
-      { href: '/schedule', label: '日程', icon: ListTodo },
-      { href: '/calendar', label: '日历', icon: Calendar },
-      { href: '/focus', label: '专注', icon: Timer },
-      { href: '/habits', label: '习惯', icon: CheckSquare },
+      { href: '/schedule', label: 'Schedule', icon: ListTodo },
+      { href: '/calendar', label: 'Calendar', icon: Calendar },
+      { href: '/focus', label: 'Focus', icon: Timer },
+      { href: '/habits', label: 'Habits', icon: CheckSquare },
     ],
   },
   {
     id: 'record',
-    title: '记录',
+    title: 'History',
     items: [
-      { href: '/reviews/today', label: '每日总结', icon: FileText },
-      { href: '/reviews', label: '复盘', icon: ClipboardList },
-      { href: '/insights', label: '统计', icon: BarChart3 },
+      { href: '/reviews/today', label: 'Daily review', icon: FileText },
+      { href: '/reviews', label: 'Reviews', icon: ClipboardList },
+      { href: '/insights', label: 'Insights', icon: BarChart3 },
     ],
   },
   {
     id: 'system',
-    title: '系统',
+    title: 'System',
     items: [
-      { href: '/settings', label: '设置', icon: Settings },
-      { href: '/inbox', label: '收集箱', icon: Inbox },
+      { href: '/settings', label: 'Settings', icon: Settings },
+      { href: '/inbox', label: 'Inbox', icon: Inbox },
     ],
   },
 ]
 
 // Mobile bottom nav: 5 main items + 「更多」抽屉，保证手机端能进到每一个页面
 export const mobileNavItems: NavItem[] = [
-  { href: '/schedule', label: '日程', icon: ListTodo },
-  { href: '/calendar', label: '日历', icon: Calendar },
-  { href: '/focus', label: '专注', icon: Timer },
-  { href: '/habits', label: '习惯', icon: CheckSquare },
-  { href: '/settings', label: '设置', icon: Settings },
+  { href: '/schedule', label: 'Schedule', icon: ListTodo },
+  { href: '/calendar', label: 'Calendar', icon: Calendar },
+  { href: '/focus', label: 'Focus', icon: Timer },
+  { href: '/habits', label: 'Habits', icon: CheckSquare },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
 /**
@@ -73,9 +73,9 @@ export const mobileNavItems: NavItem[] = [
  * 就只能手打 URL 才能打开 —— 等于不存在。
  */
 export const moreNavItems: NavItem[] = [
-  { href: '/insights', label: '统计', icon: BarChart3 },
-  { href: '/reviews', label: '复盘', icon: ClipboardList },
-  { href: '/reviews/today', label: '每日总结', icon: FileText },
-  { href: '/inbox', label: '收集箱', icon: Inbox },
-  { href: '/countdowns', label: '倒数日', icon: CalendarClock },
+  { href: '/insights', label: 'Insights', icon: BarChart3 },
+  { href: '/reviews', label: 'Reviews', icon: ClipboardList },
+  { href: '/reviews/today', label: 'Daily review', icon: FileText },
+  { href: '/inbox', label: 'Inbox', icon: Inbox },
+  { href: '/countdowns', label: 'Countdowns', icon: CalendarClock },
 ]

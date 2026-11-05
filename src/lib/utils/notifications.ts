@@ -109,7 +109,7 @@ export function notifyTaskReminder(
   const body = options?.body || [timeInfo, options?.taskDate].filter(Boolean).join(' · ')
 
   return showBrowserNotification(`📌 ${taskTitle}`, {
-    body: body || '该开始啦',
+    body: body || 'Time to start!',
     tag: `task-reminder`,
     requireInteraction: true,
     data: { type: 'task-reminder', taskTitle: options?.taskDate },
@@ -126,7 +126,7 @@ export function notifyHabitReminder(
     body?: string
   }
 ): boolean {
-  const body = options?.body || (options?.targetValue ? `今日目标：${options.targetValue}` : '别忘了打卡哦')
+  const body = options?.body || (options?.targetValue ? `Today’s target: ${options.targetValue}` : 'Remember to check in')
 
   return showBrowserNotification(`✅ ${habitName}`, {
     body,
@@ -144,11 +144,11 @@ export function notifyOverdueTask(
   count?: number
 ): boolean {
   const title = count && count > 1
-    ? `${count} 个事项已过期`
-    : `事项已过期：${taskTitle}`
+    ? `${count} tasks are overdue`
+    : `Overdue task: ${taskTitle}`
 
   return showBrowserNotification(`⚠️ ${title}`, {
-    body: '请及时处理或重新安排',
+    body: 'Please complete or reschedule',
     tag: 'overdue-task',
     requireInteraction: true,
     data: { type: 'overdue-task' },
@@ -159,8 +159,8 @@ export function notifyOverdueTask(
  * Show a daily review reminder notification.
  */
 export function notifyDailyReview(): boolean {
-  return showBrowserNotification('📝 今日总结', {
-    body: '花两分钟记录今天的完成情况吧',
+  return showBrowserNotification('📝 Daily review', {
+    body: 'Take two minutes to reflect on what you accomplished today',
     tag: 'daily-review',
     data: { type: 'daily-review' },
   })

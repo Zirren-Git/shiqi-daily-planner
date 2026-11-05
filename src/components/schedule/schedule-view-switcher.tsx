@@ -7,9 +7,9 @@ import { Sun, CalendarRange, ListFilter, LayoutGrid } from 'lucide-react'
 export type ScheduleView = 'today' | 'week' | 'all'
 
 const TIME_VIEWS: { value: ScheduleView; label: string; icon: typeof Sun; shortLabel: string }[] = [
-  { value: 'today', label: '今天', icon: Sun, shortLabel: '今天' },
-  { value: 'week', label: '未来7天', icon: CalendarRange, shortLabel: '7天' },
-  { value: 'all', label: '全部', icon: ListFilter, shortLabel: '全部' },
+  { value: 'today', label: 'Today', icon: Sun, shortLabel: 'Today' },
+  { value: 'week', label: 'Next 7 days', icon: CalendarRange, shortLabel: '7 days' },
+  { value: 'all', label: 'All', icon: ListFilter, shortLabel: 'All' },
 ]
 
 interface ScheduleViewSwitcherProps {
@@ -56,7 +56,7 @@ export function ScheduleViewSwitcher({
         data-testid="schedule-group-category"
         variant="ghost"
         size="sm"
-        aria-label="按分类分组"
+        aria-label="Group by category"
         aria-pressed={groupBy === 'category'}
         className={cn(
           'h-7 gap-1 rounded-full px-2.5 font-normal ui-transition',
@@ -69,7 +69,7 @@ export function ScheduleViewSwitcher({
         }
       >
         <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
-        <span className="hidden text-caption sm:inline">按分类</span>
+        <span className="hidden text-caption sm:inline">By category</span>
       </Button>
     </div>
   )

@@ -109,7 +109,7 @@ describe('导入角色包', () => {
       makeFile('characters/broken/preview.png', 'p'),
     ])
     expect(result.ok).toBe(false)
-    expect(result.skipped.some((s) => s.includes('解析失败'))).toBe(true)
+    expect(result.skipped.some((s) => s.includes('could not parse'))).toBe(true)
   })
 
   it('不认识的图片名会被当作兜底展示图', async () => {

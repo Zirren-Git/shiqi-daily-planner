@@ -37,11 +37,11 @@ const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'
 const ICONS = ['Target', 'Star', 'Heart', 'GraduationCap', 'Briefcase', 'Plane', 'Gift', 'Calendar']
 
 const FILTERS = [
-  { value: 'all', label: '全部' },
-  { value: 'upcoming', label: '即将到来' },
-  { value: 'past', label: '已过去' },
-  { value: 'yearly', label: '每年重复' },
-  { value: 'archived', label: '已归档' },
+  { value: 'all', label: 'All' },
+  { value: 'upcoming', label: 'Upcoming' },
+  { value: 'past', label: 'Past' },
+  { value: 'yearly', label: 'Repeat yearly' },
+  { value: 'archived', label: 'Archived' },
 ] as const
 
 const DAYS_TONE = (days?: number) => {
@@ -135,7 +135,7 @@ export default function CountdownsPage() {
           description: description || undefined,
           show_on_home: showOnHome,
         } as Partial<Countdown>)
-        toast.success('已更新')
+        toast.success('Updated')
         setEditingId(null)
       } else {
         await cdRepo.create(user.id, {
@@ -149,13 +149,13 @@ export default function CountdownsPage() {
           is_pinned: false,
           sort_order: rawList.length,
         })
-        toast.success('已创建')
+        toast.success('Created')
         setShowCreate(false)
       }
       queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       resetForm()
     } catch {
-      toast.error('保存失败')
+      toast.error('Could not save')
     }
   }, [title, targetDate, isYearly, color, icon, description, showOnHome, editingId, user, cdRepo, queryClient, rawList.length])
 
@@ -165,7 +165,7 @@ export default function CountdownsPage() {
         await cdRepo.update(user!.id, c.id, { is_pinned: !c.is_pinned } as Partial<Countdown>)
         queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       }
     },
     [user, cdRepo, queryClient]
@@ -181,7 +181,7 @@ export default function CountdownsPage() {
         }
         queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       }
     },
     [user, cdRepo, queryClient]
@@ -193,26 +193,26 @@ export default function CountdownsPage() {
       await cdRepo.delete(user.id, deleteTarget.id)
       queryClient.invalidateQueries({ queryKey: ['countdowns'] })
       setDeleteTarget(null)
-      toast.success('已删除')
+      toast.success('Deleted')
     } catch {
-      toast.error('删除失败')
+      toast.error('Could not delete')
     }
   }, [deleteTarget, user, cdRepo, queryClient])
 
   const formContent = (
     <div className="space-y-3">
       <div className="space-y-2">
-        <Label className="text-caption text-muted-foreground">标题</Label>
+        <Label className="text-caption text-muted-foreground">Title</Label>
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="倒数日标题"
+          placeholder="Countdown title"
           autoFocus
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label className="text-caption text-muted-foreground">目标日期</Label>
+          <Label className="text-caption text-muted-foreground">Target date</Label>
           <Input
             type="date"
             value={targetDate}
@@ -221,11 +221,11 @@ export default function CountdownsPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label className="text-caption text-muted-foreground">描述（可选）</Label>
+          <Label className="text-caption text-muted-foreground">Description (optional)</Label>
           <Input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="描述"
+            placeholder="Description"
           />
         </div>
       </div>
@@ -236,7 +236,7 @@ export default function CountdownsPage() {
           aria-pressed={isYearly}
           className={togglePillClass(isYearly)}
         >
-          每年重复
+          Repeat yearly
         </button>
         <button
           type="button"
@@ -244,7 +244,7 @@ export default function CountdownsPage() {
           aria-pressed={showOnHome}
           className={togglePillClass(showOnHome)}
         >
-          显示在首页
+          Show on home
         </button>
       </div>
       <div className="flex flex-wrap gap-1.5">
@@ -253,7 +253,7 @@ export default function CountdownsPage() {
             key={c}
             type="button"
             onClick={() => setColor(c)}
-            aria-label={`选择颜色 ${c}`}
+            aria-label={`Choose color ${c}`}
             aria-pressed={color === c}
             className={cn(
               'h-6 w-6 rounded-full border-2 ui-transition',
@@ -272,10 +272,10 @@ export default function CountdownsPage() {
             resetForm()
           }}
         >
-          取消
+          Cancel
         </Button>
         <Button onClick={handleSave} disabled={!title.trim() || !targetDate}>
-          {editingId ? '保存修改' : '创建'}
+          {editingId ? 'Save changes' : 'Create'}
         </Button>
       </div>
     </div>
@@ -287,15 +287,15 @@ export default function CountdownsPage() {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Link href="/schedule">
-            <Button variant="ghost" size="icon" aria-label="返回">
+            <Button variant="ghost" size="icon" aria-label="Back">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </Button>
           </Link>
-          <h1 className="text-display">倒数日</h1>
+          <h1 className="text-display">Countdowns</h1>
         </div>
         <Button size="sm" onClick={() => { resetForm(); setShowCreate(true); }}>
           <Plus className="h-4 w-4" aria-hidden="true" />
-          新建
+          New
         </Button>
       </div>
 
@@ -322,7 +322,7 @@ export default function CountdownsPage() {
       {/* Create/Edit form */}
       {(showCreate || editingId) && (
         <div className="surface p-4">
-          {editingId && <h3 className="mb-3 text-section">编辑倒数日</h3>}
+          {editingId && <h3 className="mb-3 text-section">Edit countdown</h3>}
           {formContent}
         </div>
       )}
@@ -331,8 +331,8 @@ export default function CountdownsPage() {
       {sorted.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-12 text-center">
           <Target className="h-8 w-8 text-muted-foreground/60" aria-hidden="true" />
-          <p className="text-body text-muted-foreground">暂无倒数日</p>
-          <p className="text-caption text-muted-foreground/80">点击上方「新建」添加纪念日或目标</p>
+          <p className="text-body text-muted-foreground">No countdowns yet</p>
+          <p className="text-caption text-muted-foreground/80">Click New above to add a milestone or anniversary</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -353,12 +353,12 @@ export default function CountdownsPage() {
                     {c.is_pinned && <Pin className="h-3 w-3 shrink-0 text-warning" aria-hidden="true" />}
                     {c.is_yearly && (
                       <span className="rounded-full bg-secondary px-2 py-0.5 text-micro text-secondary-foreground">
-                        每年
+                        Yearly
                       </span>
                     )}
                     {c.archived_at && (
                       <span className="rounded-full border border-border px-2 py-0.5 text-micro text-muted-foreground">
-                        已归档
+                        Archived
                       </span>
                     )}
                   </div>
@@ -384,7 +384,7 @@ export default function CountdownsPage() {
                     size="icon-sm"
                     className="text-muted-foreground"
                     onClick={() => startEdit(c)}
-                    aria-label={`编辑 ${c.title}`}
+                    aria-label={`Edit ${c.title}`}
                   >
                     <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                   </Button>
@@ -393,7 +393,7 @@ export default function CountdownsPage() {
                     size="icon-sm"
                     className="text-muted-foreground"
                     onClick={() => handleTogglePin(c)}
-                    aria-label={c.is_pinned ? '取消置顶' : '置顶'}
+                    aria-label={c.is_pinned ? 'Unpin' : 'Pin'}
                   >
                     {c.is_pinned ? (
                       <PinOff className="h-3.5 w-3.5" aria-hidden="true" />
@@ -406,7 +406,7 @@ export default function CountdownsPage() {
                     size="icon-sm"
                     className="text-muted-foreground"
                     onClick={() => handleArchive(c)}
-                    aria-label={c.archived_at ? '取消归档' : '归档'}
+                    aria-label={c.archived_at ? 'Unarchive' : 'Archive'}
                   >
                     <Archive className="h-3.5 w-3.5" aria-hidden="true" />
                   </Button>
@@ -415,7 +415,7 @@ export default function CountdownsPage() {
                     size="icon-sm"
                     className="text-muted-foreground hover:text-destructive"
                     onClick={() => setDeleteTarget(c)}
-                    aria-label={`删除 ${c.title}`}
+                    aria-label={`Delete ${c.title}`}
                   >
                     <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                   </Button>
@@ -430,14 +430,14 @@ export default function CountdownsPage() {
       <Dialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-section">删除倒数日</DialogTitle>
+            <DialogTitle className="text-section">Delete countdown</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
-              确定要删除「{deleteTarget?.title}」吗？此操作无法撤销。
+              Delete “{deleteTarget?.title}”? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDeleteTarget(null)}>取消</Button>
-            <Button variant="destructive" onClick={handleDelete}>删除</Button>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

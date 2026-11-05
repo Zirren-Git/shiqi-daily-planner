@@ -37,7 +37,7 @@ export class HabitCheckinErrorWrapper extends Component<Props, State> {
         <div className="surface space-y-3 border-destructive/30 p-6 text-center">
           <AlertTriangle className="mx-auto h-7 w-7 text-destructive/60" />
           <div>
-            <p className="text-body font-medium text-destructive">习惯组件渲染失败</p>
+            <p className="text-body font-medium text-destructive">Could not display habits</p>
             <p className="mx-auto mt-1 max-w-md break-all text-micro text-muted-foreground">
               {this.state.error.message.slice(0, 200)}
             </p>
@@ -47,7 +47,7 @@ export class HabitCheckinErrorWrapper extends Component<Props, State> {
             size="sm"
             onClick={() => this.setState({ error: null })}
           >
-            重试
+            Retry
           </Button>
         </div>
       )

@@ -19,7 +19,7 @@ test.describe('Habit Management', () => {
     // The demo banner appears when isDemoMode is true
     const bodyText = await page.locator('body').textContent()
     // Either demo mode or Supabase mode - both should show the login form
-    expect(bodyText).toContain('登录')
+    expect(bodyText).toContain('Sign in')
   })
 
   test('no internal enum values leak to login page', async ({ page }) => {

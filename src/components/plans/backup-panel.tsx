@@ -27,14 +27,14 @@ import {
 
 function statsLines(stats: BackupStats): { label: string; value: number }[] {
   return [
-    { label: '事项', value: stats.tasks },
-    { label: '标签', value: stats.tags },
-    { label: '习惯', value: stats.habits },
-    { label: '打卡记录', value: stats.habit_logs },
-    { label: '每日评价', value: stats.reviews },
-    { label: '倒数日', value: stats.countdowns },
-    { label: '模板', value: stats.templates },
-    { label: '专注记录', value: stats.focus_sessions },
+    { label: 'Tasks', value: stats.tasks },
+    { label: 'Tags', value: stats.tags },
+    { label: 'Habits', value: stats.habits },
+    { label: 'Check-ins', value: stats.habit_logs },
+    { label: 'Daily rating', value: stats.reviews },
+    { label: 'Countdowns', value: stats.countdowns },
+    { label: 'Templates', value: stats.templates },
+    { label: 'Focus sessions', value: stats.focus_sessions },
   ]
 }
 
@@ -66,9 +66,9 @@ export function BackupPanel() {
       a.remove()
       URL.revokeObjectURL(url)
       const stats = countBackup(payload)
-      toast.success(`已导出备份（${stats.tasks} 个事项 / ${stats.habits} 个习惯）`)
+      toast.success(`Backup exported (${stats.tasks} tasks / ${stats.habits} habits)`)
     } catch {
-      toast.error('导出失败，请重试')
+      toast.error('Export failed. Try again.')
     } finally {
       setExporting(false)
     }
@@ -88,8 +88,8 @@ export function BackupPanel() {
         const payload = parseBackup(JSON.parse(text))
         setPending(payload)
       } catch (err) {
-        const message = err instanceof Error ? err.message : '文件无法读取'
-        toast.error(`备份文件无效：${message}`)
+        const message = err instanceof Error ? err.message : 'Could not read file'
+        toast.error(`Invalid backup: ${message}`)
       }
     },
     []
@@ -103,13 +103,13 @@ export function BackupPanel() {
       queryClient.invalidateQueries()
       const total = Object.values(result.restored).reduce((a, b) => a + b, 0)
       if (result.skipped > 0) {
-        toast.warning(`已恢复 ${total} 条记录，${result.skipped} 条被跳过`)
+        toast.warning(`Restored ${total} records; skipped ${result.skipped}`)
       } else {
-        toast.success(`已恢复 ${total} 条记录`)
+        toast.success(`Restored ${total} records`)
       }
       setPending(null)
     } catch {
-      toast.error('恢复失败，请重试')
+      toast.error('Restore failed. Try again.')
     } finally {
       setRestoring(false)
     }
@@ -120,9 +120,9 @@ export function BackupPanel() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-section">完整备份</CardTitle>
+        <CardTitle className="text-section">Full backup</CardTitle>
         <CardDescription className="text-caption text-muted-foreground">
-          导出全部数据为 JSON（含事项、习惯、打卡、评价、倒数日、模板、专注记录），换设备或重装前先备份
+          Export all your data as JSON before switching devices or reinstalling
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -133,7 +133,7 @@ export function BackupPanel() {
             ) : (
               <Download className="h-4 w-4 mr-2" />
             )}
-            导出完整备份
+            Export full backup
           </Button>
           <Button
             variant="outline"
@@ -142,7 +142,7 @@ export function BackupPanel() {
             data-testid="backup-import"
           >
             <Upload className="h-4 w-4 mr-2" />
-            从备份恢复
+            Restore backup
           </Button>
           <input
             ref={fileRef}
@@ -154,18 +154,18 @@ export function BackupPanel() {
         </div>
         <p className="flex items-start gap-1.5 text-caption text-muted-foreground">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          恢复是「补写」而不是覆盖：已有记录会保留，重复的评价按日期更新。
+          Restoring adds records without replacing existing ones; reviews with the same date are updated.
         </p>
       </CardContent>
 
       <Dialog open={!!pending} onOpenChange={(open) => !open && setPending(null)}>
         <DialogContent className="shadow-[var(--shadow-pop)] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-section">确认恢复这份备份？</DialogTitle>
+            <DialogTitle className="text-section">Restore this backup?</DialogTitle>
             <DialogDescription className="text-caption text-muted-foreground">
               {pending?.exported_at
-                ? `备份时间：${format(new Date(pending.exported_at), 'yyyy年M月d日 HH:mm')}`
-                : '备份文件没有记录导出时间'}
+                ? `Backup date: ${format(new Date(pending.exported_at), 'MMM d, yyyy HH:mm')}`
+                : 'The backup has no export date'}
             </DialogDescription>
           </DialogHeader>
 
@@ -185,16 +185,16 @@ export function BackupPanel() {
 
           <p className="flex items-start gap-1.5 text-caption text-muted-foreground">
             <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" aria-hidden="true" />
-            建议先导出一份当前数据，避免恢复后重复记录不好清理。
+            Export your current data first to avoid duplicate records.
           </p>
 
           <div className="flex items-center justify-end gap-2 border-t border-border pt-4">
             <Button variant="outline" onClick={() => setPending(null)} disabled={restoring}>
-              取消
+              Cancel
             </Button>
             <Button onClick={handleConfirmRestore} disabled={restoring} data-testid="backup-restore-confirm">
               {restoring ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-              恢复
+              Restore
             </Button>
           </div>
         </DialogContent>

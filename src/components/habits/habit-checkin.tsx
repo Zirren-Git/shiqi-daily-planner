@@ -137,9 +137,9 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
           })
         }
         invalidateLogs()
-        toast.success(existing?.is_completed ? '已取消打卡' : '打卡成功')
+        toast.success(existing?.is_completed ? 'Check-in cancelled' : 'Checked in')
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       } finally {
         setSavingIds((prev) => {
           const next = new Set(prev)
@@ -293,7 +293,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
       if (raw === undefined || raw === '') return
       const val = parseFloat(raw)
       if (isNaN(val) || val < 0) {
-        toast.error('请输入有效数值')
+        toast.error('Enter a valid number')
         return
       }
       // Clear any pending debounced save for this habit
@@ -323,7 +323,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
         }, 1500)
       } catch {
         setSaveStates((prev) => ({ ...prev, [habit.id]: 'error' }))
-        toast.error('保存失败')
+        toast.error('Could not save')
       }
     },
     [user, saveValue, clearDraftIfMatch, inputValues, today]
@@ -339,7 +339,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
     if (!user || !editLog) return
     const val = parseFloat(editValue)
     if (isNaN(val) || val < 0) {
-      toast.error('请输入有效数值')
+      toast.error('Enter a valid number')
       return
     }
     try {
@@ -348,9 +348,9 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
       await habitLogs.update(user.id, editLog.id, { value: val, is_completed: isCompleted })
       setEditLog(null)
       invalidateLogs()
-      toast.success('已更新')
+      toast.success('Updated')
     } catch {
-      toast.error('更新失败')
+      toast.error('Could not update')
     }
   }, [user, habitLogs, editLog, editValue, habitList])
 
@@ -360,9 +360,9 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
       await habitLogs.delete(user.id, deleteLog.id)
       setDeleteLog(null)
       invalidateLogs()
-      toast.success('已删除')
+      toast.success('Deleted')
     } catch {
-      toast.error('删除失败')
+      toast.error('Could not delete')
     }
   }, [user, habitLogs, deleteLog])
 
@@ -399,18 +399,18 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
   if (habitsError) {
     return (
       <div className="surface space-y-2 border-destructive/30 p-6 text-center">
-        <p className="text-body text-destructive">加载习惯数据失败</p>
+        <p className="text-body text-destructive">Could not load habits</p>
         <p className="text-micro text-muted-foreground">
           {habitsQueryError instanceof Error
             ? habitsQueryError.message.slice(0, 100)
-            : '请检查网络连接后刷新重试'}
+            : 'Check your connection and try again'}
         </p>
         <Button
           variant="outline"
           size="sm"
           onClick={() => queryClient.invalidateQueries({ queryKey: ['habits'] })}
         >
-          重试
+          Retry
         </Button>
       </div>
     )
@@ -421,8 +421,8 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
     return (
       <div className="surface flex flex-col items-center gap-2 px-4 py-10 text-center">
         <Flame className="h-6 w-6 text-muted-foreground/60" />
-        <p className="text-body">还没有习惯</p>
-        <p className="text-caption text-muted-foreground">去创建第一个，从今天开始</p>
+        <p className="text-body">No habits yet</p>
+        <p className="text-caption text-muted-foreground">Create your first habit today</p>
       </div>
     )
   }
@@ -441,9 +441,9 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
           )}
         >
           <div className="flex items-baseline gap-2">
-            <span className={compact ? 'text-caption font-medium' : 'text-section'}>今日习惯</span>
+            <span className={compact ? 'text-caption font-medium' : 'text-section'}>Today’s habits</span>
             <span className="text-micro tabular-nums text-muted-foreground">
-              {completedCount}/{activeHabits.length} 已完成
+              {completedCount}/{activeHabits.length} completed
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -507,7 +507,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
                             isChecked ? 'text-primary' : 'text-muted-foreground'
                           )}
                         >
-                          {isChecked ? '今日已完成' : '今日未完成'}
+                          {isChecked ? 'Done today' : 'Not done today'}
                         </span>
                       ) : (
                         <>
@@ -522,7 +522,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
                             />
                           </span>
                           {displayValue >= habit.target_value && habit.target_value > 0 && (
-                            <span className="text-micro text-primary">已达标</span>
+                            <span className="text-micro text-primary">Target met</span>
                           )}
                         </>
                       )}
@@ -552,7 +552,7 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
                       ) : (
                         <Circle className="h-3.5 w-3.5" />
                       )}
-                      <span>{isChecked ? '已完成' : '打卡'}</span>
+                      <span>{isChecked ? 'Completed' : 'Check in'}</span>
                     </Button>
                   ) : (
                     <div className="flex items-center gap-1">
@@ -576,14 +576,14 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
                             <Button
                               variant="ghost" size="icon-sm" className="tap-pad"
                               onClick={() => handleEditLog(log)}
-                              aria-label="编辑打卡记录"
+                              aria-label="Edit check-in"
                             >
                               <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
                             </Button>
                             <Button
                               variant="ghost" size="icon-sm" className="tap-pad"
                               onClick={() => setDeleteLog(log)}
-                              aria-label="删除打卡记录"
+                              aria-label="Delete check-in"
                             >
                               <Trash2 className="h-3.5 w-3.5 text-destructive/60" />
                             </Button>
@@ -603,9 +603,9 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
       <Dialog open={!!editLog} onOpenChange={() => setEditLog(null)}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>修改打卡记录</DialogTitle>
+            <DialogTitle>Edit check-in</DialogTitle>
             <DialogDescription>
-              修改 {editLog?.log_date} 的记录值
+              Edit entry for {editLog?.log_date}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
@@ -614,15 +614,15 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
               inputMode="decimal"
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
-              placeholder="输入数值"
+              placeholder="Enter value"
               autoFocus
               className="w-full"
               onKeyDown={(e) => { if (e.key === 'Enter') saveEditLog() }}
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditLog(null)}>取消</Button>
-            <Button onClick={saveEditLog}>保存</Button>
+            <Button variant="outline" onClick={() => setEditLog(null)}>Cancel</Button>
+            <Button onClick={saveEditLog}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -631,14 +631,14 @@ export function HabitCheckin({ compact = false }: HabitCheckinProps) {
       <Dialog open={!!deleteLog} onOpenChange={() => setDeleteLog(null)}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>删除打卡记录</DialogTitle>
+            <DialogTitle>Delete check-in</DialogTitle>
             <DialogDescription>
-              确定要删除 {deleteLog?.log_date} 的打卡记录吗？此操作无法撤销。
+              Delete the check-in for {deleteLog?.log_date}? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteLog(null)}>取消</Button>
-            <Button variant="destructive" onClick={confirmDeleteLog}>删除</Button>
+            <Button variant="outline" onClick={() => setDeleteLog(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmDeleteLog}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -662,7 +662,7 @@ function SaveStatus({
     return (
       <span className="inline-flex shrink-0 items-center gap-1 text-micro text-muted-foreground">
         <Loader2 className="h-3 w-3 animate-spin" />
-        保存中
+        Saving…
       </span>
     )
   }
@@ -670,7 +670,7 @@ function SaveStatus({
     return (
       <span className="inline-flex shrink-0 items-center gap-1 text-micro text-success">
         <Check className="h-3 w-3" />
-        已保存
+        Saved
       </span>
     )
   }
@@ -678,12 +678,12 @@ function SaveStatus({
     return (
       <span className="inline-flex shrink-0 items-center gap-1 text-micro text-destructive">
         <AlertCircle className="h-3 w-3" />
-        保存失败
+        Could not save
       </span>
     )
   }
   if (hasDraft) {
-    return <span className="inline-flex shrink-0 items-center gap-1 text-micro text-muted-foreground">待保存</span>
+    return <span className="inline-flex shrink-0 items-center gap-1 text-micro text-muted-foreground">Not saved</span>
   }
   return null
 }
@@ -764,7 +764,7 @@ function MinuteControl({
         className="tap-pad-sm h-9 w-9 sm:h-8 sm:w-8"
         onClick={() => onAdjust(-step)}
         disabled={displayValue <= 0}
-        aria-label={`减少 ${step}`}
+        aria-label={`Decrease ${step}`}
       >
         <Minus className="h-3.5 w-3.5" />
       </Button>
@@ -787,7 +787,7 @@ function MinuteControl({
               'h-8 w-full rounded-md border bg-background text-center text-body font-medium tabular-nums outline-none',
               saveState === 'error' ? 'border-destructive' : 'border-ring'
             )}
-            aria-label="输入数值"
+            aria-label="Enter value"
           />
         ) : (
           <button
@@ -807,8 +807,8 @@ function MinuteControl({
                 ? 'border-destructive text-destructive hover:border-destructive/80'
                 : 'border-border hover:bg-surface-2'
             )}
-            aria-label={`当前值 ${showValue}${hasDraft ? '（未保存）' : ''}，点击编辑`}
-            title={saveState === 'error' ? '保存失败，点击重试' : hasDraft ? '未保存的更改' : undefined}
+            aria-label={`Current value ${showValue}${hasDraft ? ' (unsaved)' : ''}, click to edit`}
+            title={saveState === 'error' ? 'Could not save. Click to retry.' : hasDraft ? 'Unsaved changes' : undefined}
           >
             {showValue}
           </button>
@@ -820,7 +820,7 @@ function MinuteControl({
         size="icon-sm"
         className="tap-pad-sm h-9 w-9 sm:h-8 sm:w-8"
         onClick={() => onAdjust(step)}
-        aria-label={`增加 ${step}`}
+        aria-label={`Increase ${step}`}
       >
         <Plus className="h-3.5 w-3.5" />
       </Button>
@@ -844,7 +844,7 @@ function getStepForType(effectiveType: string, habit: Habit): number {
     case 'count':
       return 1
     case 'numeric':
-      if (habit.unit === '小时' || habit.unit === 'h') return 0.5
+      if (habit.unit === 'hours' || habit.unit === 'h') return 0.5
       if (habit.target_value <= 10) return 1
       if (habit.target_value <= 100) return 5
       return 10
@@ -856,11 +856,11 @@ function getStepForType(effectiveType: string, habit: Habit): number {
 function getUnitForType(effectiveType: string, habit: Habit): string | undefined {
   switch (effectiveType) {
     case 'minutes':
-      return '分钟'
+      return 'minutes'
     case 'hours':
-      return '小时'
+      return 'hours'
     case 'count':
-      return '次'
+      return 'times'
     case 'numeric':
       return habit.unit || undefined
     default:

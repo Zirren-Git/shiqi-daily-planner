@@ -62,9 +62,9 @@ export default function InboxPage() {
       } as Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>)
       setDraft('')
       refresh()
-      toast.success('已放入收集箱')
+      toast.success('Added to inbox')
     } catch {
-      toast.error('添加失败，请重试')
+      toast.error('Could not add. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -77,9 +77,9 @@ export default function InboxPage() {
       try {
         await taskRepo.update(user.id, task.id, { task_date: target } as Partial<Task>)
         refresh()
-        toast.success(`已安排到${label}`)
+        toast.success(`Scheduled for ${label}`)
       } catch {
-        toast.error('操作失败')
+        toast.error('Action failed')
       } finally {
         setMovingId(null)
       }
@@ -95,14 +95,14 @@ export default function InboxPage() {
     <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6 sm:px-6">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-display">收集箱</h1>
+          <h1 className="text-display">Inbox</h1>
           <p className="mt-1 text-caption text-muted-foreground">
-            先记下来，再决定什么时候做
+            Capture it now; schedule it later
           </p>
         </div>
         {inboxTasks.length > 0 && (
           <span className="mt-1 shrink-0 rounded-full border border-border bg-surface-2 px-2 py-0.5 text-caption text-muted-foreground tabular-nums">
-            {inboxTasks.length} 项待安排
+            {inboxTasks.length} to schedule
           </span>
         )}
       </div>
@@ -120,7 +120,7 @@ export default function InboxPage() {
               handleCapture()
             }
           }}
-          placeholder="随手记一条，稍后再安排……"
+          placeholder="Capture a thought to schedule later…"
           className="h-8 min-w-0 flex-1 border-0 bg-transparent px-0 text-body shadow-none dark:bg-transparent"
         />
         <Button
@@ -129,7 +129,7 @@ export default function InboxPage() {
           disabled={!draft.trim() || saving}
           className="h-8 shrink-0 px-3"
         >
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : '记录'}
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'History'}
         </Button>
       </div>
 
@@ -142,9 +142,9 @@ export default function InboxPage() {
       ) : inboxTasks.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card px-6 py-12 text-center">
           <Inbox className="h-7 w-7 text-muted-foreground/60" />
-          <p className="text-body text-foreground">收集箱是空的</p>
+          <p className="text-body text-foreground">Your inbox is empty</p>
           <p className="max-w-xs text-caption text-muted-foreground">
-            在上方输入框记下想法，之后再安排到今天或明天
+            Capture an idea above, then schedule it for today or tomorrow
           </p>
         </div>
       ) : (
@@ -158,26 +158,26 @@ export default function InboxPage() {
                 onClick={() => setActiveTaskId(task.id)}
               />
               <div className="flex items-center gap-1.5 border-t border-border px-3 py-1.5">
-                <span className="mr-auto text-micro text-muted-foreground">未安排</span>
+                <span className="mr-auto text-micro text-muted-foreground">Unscheduled</span>
                 <Button
                   variant="outline"
                   size="sm"
                   className="h-7 gap-1 px-2 text-caption"
                   disabled={movingId === task.id}
-                  onClick={() => handleSchedule(task, today, '今天')}
+                  onClick={() => handleSchedule(task, today, 'Today')}
                 >
                   <ArrowRight className="h-3 w-3" />
-                  安排到今天
+                  Schedule for today
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   className="h-7 gap-1 px-2 text-caption"
                   disabled={movingId === task.id}
-                  onClick={() => handleSchedule(task, tomorrowStr(today), '明天')}
+                  onClick={() => handleSchedule(task, tomorrowStr(today), 'Tomorrow')}
                 >
                   <Calendar className="h-3 w-3" />
-                  安排到明天
+                  Schedule for tomorrow
                 </Button>
               </div>
             </div>

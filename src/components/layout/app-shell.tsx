@@ -24,10 +24,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   useInitializeDefaultTags()
   // 掉帧时自动降级装饰效果（不影响功能）
   usePerformanceMode()
-  // 本地角色包：任何页面都能取到（首页陪伴位、主视觉都要用）
+  // 本地Character包：任何页面都能取到（首页陪伴位、主视觉都要用）
   useLoadPacks()
 
-  // 随包分发的角色包：首次启动自动装进本地，新用户开箱就有
+  // 随包分发的Character包：首次启动自动装进本地，新用户开箱就有
   useSeedBundledPacks()
 
   // 桌面版：自动扫描 <userData>/characters，拷进去就能用
@@ -42,7 +42,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       cancelled = true
     }
   }, [])
-  // 主窗口与桌面浮窗同时打开时保持数据一致
+  // 主窗口与Desktop widget同时打开时保持数据一致
   useCrossWindowSync()
 
   // Redirect to login if not authenticated and not already on login page
@@ -61,7 +61,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (isLoading) {
     return (
       <div className="app-viewport flex items-center justify-center bg-background">
-        <p className="text-body text-muted-foreground">加载中…</p>
+        <p className="text-body text-muted-foreground">Loading…</p>
       </div>
     )
   }
@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <MobileNav />
       </div>
 
-      {/* 角色陪伴与庆祝层（固定定位，不占据布局） */}
+      {/* Character陪伴与庆祝层（固定定位，不占据布局） */}
       <CharacterCompanion />
       <CelebrationLayer />
       <WelcomeOverlay />

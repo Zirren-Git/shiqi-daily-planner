@@ -38,9 +38,9 @@ function formatDateChinese(dateStr: string): string {
   const year = d.getFullYear()
   const month = d.getMonth() + 1
   const day = d.getDate()
-  const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const weekday = weekdays[d.getDay()]
-  return `${year}年${month}月${day}日 ${weekday}`
+  return `${weekday}, ${month}/${day}/${year}`
 }
 
 export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddTaskProps) {
@@ -90,11 +90,11 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
         order_index: 0,
       } as Omit<Task, 'id' | 'user_id' | 'created_at' | 'updated_at'>)
       queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
-      toast.success('已添加')
+      toast.success('Added')
       reset()
       inputRef.current?.focus()
     } catch {
-      toast.error('添加失败，请重试')
+      toast.error('Could not add. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -134,8 +134,8 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
   const isTomorrow = date === tomorrowStr()
 
   const getDateLabel = () => {
-    if (isToday) return '今天'
-    if (isTomorrow) return '明天'
+    if (isToday) return 'Today'
+    if (isTomorrow) return 'Tomorrow'
     return formatDateChinese(date)
   }
 
@@ -165,7 +165,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
             onChange={(e) => setTitle(e.target.value)}
             onFocus={() => setExpanded(true)}
             onKeyDown={handleKeyDown}
-            placeholder="添加一项计划……"
+            placeholder="Add a plan…"
             className="min-w-0 flex-1 border-none bg-transparent text-body outline-none placeholder:text-muted-foreground"
           />
           {title && (
@@ -179,7 +179,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
               {saving ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <span className="text-caption">保存</span>
+                <span className="text-caption">Save</span>
               )}
             </Button>
           )}
@@ -187,7 +187,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
             <Button
               variant="ghost"
               size="icon"
-              aria-label="取消添加"
+              aria-label="Cancel adding"
               className="h-7 w-7 text-muted-foreground hover:text-foreground"
               onClick={reset}
             >
@@ -224,7 +224,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
                         className="h-7"
                         onClick={() => { setDate(todayStr()); setCalendarOpen(false) }}
                       >
-                        <span className="text-caption">今天</span>
+                        <span className="text-caption">Today</span>
                       </Button>
                       <Button
                         variant={isTomorrow ? 'default' : 'outline'}
@@ -232,7 +232,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
                         className="h-7"
                         onClick={() => { setDate(tomorrowStr()); setCalendarOpen(false) }}
                       >
-                        <span className="text-caption">明天</span>
+                        <span className="text-caption">Tomorrow</span>
                       </Button>
                       <Button
                         variant="outline"
@@ -240,7 +240,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
                         className="h-7"
                         onClick={() => { setDate(thisWeekendStr()); setCalendarOpen(false) }}
                       >
-                        <span className="text-caption">本周末</span>
+                        <span className="text-caption">This weekend</span>
                       </Button>
                       <Button
                         variant="outline"
@@ -248,12 +248,12 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
                         className="h-7"
                         onClick={() => { setDate(nextWeekStr()); setCalendarOpen(false) }}
                       >
-                        <span className="text-caption">下周</span>
+                        <span className="text-caption">Next week</span>
                       </Button>
                     </div>
                     {/* Calendar date input */}
                     <div className="border-t border-border pt-2">
-                      <p className="mb-1 text-micro text-muted-foreground">选择日期</p>
+                      <p className="mb-1 text-micro text-muted-foreground">Choose date</p>
                       <Input
                         type="date"
                         value={date}
@@ -274,13 +274,13 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
               <Select value={period || ''} onValueChange={(v) => setPeriod((v as Period) || '')}>
                 <SelectTrigger className="h-8 text-caption">
                   <SelectValue>
-                    {period ? getPeriodLabel(period) : '选择时段'}
+                    {period ? getPeriodLabel(period) : 'Choose a period'}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="morning">上午</SelectItem>
-                  <SelectItem value="afternoon">下午</SelectItem>
-                  <SelectItem value="evening">晚上</SelectItem>
+                  <SelectItem value="morning">Morning</SelectItem>
+                  <SelectItem value="afternoon">Afternoon</SelectItem>
+                  <SelectItem value="evening">Evening</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -289,7 +289,7 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
             <div>
               <Select value={tagId || 'none'} onValueChange={(v) => setTagId(v && v !== 'none' ? v : '')}>
                 <SelectTrigger className="h-8 text-caption">
-                  <SelectValue placeholder="选择标签">
+                  <SelectValue placeholder="Choose a tag">
                     {tagId ? (
                       <span className="flex items-center gap-1.5">
                         {(() => {
@@ -304,12 +304,12 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
                         })()}
                       </span>
                     ) : (
-                      '未分类'
+                      'Uncategorized'
                     )}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">未分类</SelectItem>
+                  <SelectItem value="none">Uncategorized</SelectItem>
                   {tagList.map((tag) => (
                     <SelectItem key={tag.id} value={tag.id}>
                       <span className="flex items-center gap-2">
@@ -327,14 +327,14 @@ export function QuickAddTask({ defaultDate, defaultTagId, className }: QuickAddT
               <Select value={difficulty || ''} onValueChange={(v) => setDifficulty((v as Difficulty) || '')}>
                 <SelectTrigger className="h-8 text-caption">
                   <SelectValue>
-                    {difficulty ? getDifficultyLabel(difficulty) : '选择难度'}
+                    {difficulty ? getDifficultyLabel(difficulty) : 'Choose difficulty'}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="easy">简单</SelectItem>
-                  <SelectItem value="medium">一般</SelectItem>
-                  <SelectItem value="hard">困难</SelectItem>
-                  <SelectItem value="very_hard">极难</SelectItem>
+                  <SelectItem value="easy">Easy</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="hard">Hard</SelectItem>
+                  <SelectItem value="very_hard">Very hard</SelectItem>
                 </SelectContent>
               </Select>
             </div>

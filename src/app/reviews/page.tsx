@@ -118,12 +118,12 @@ export default function ReviewsPage() {
       {/* Page header */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-display">复盘记录</h1>
-          <p className="mt-1 text-caption text-muted-foreground">回顾过去的每一天</p>
+          <h1 className="text-display">Review history</h1>
+          <p className="mt-1 text-caption text-muted-foreground">Look back on each day</p>
         </div>
         <Button className="shrink-0" onClick={() => router.push('/today')}>
           <PenLine className="h-4 w-4" />
-          写今日评价
+          Write today’s review
         </Button>
       </div>
 
@@ -141,7 +141,7 @@ export default function ReviewsPage() {
       {/* View switch */}
       {!isLoading && reviews.length > 0 && (
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-section">评价记录</h2>
+          <h2 className="text-section">Reviews</h2>
           <div className="flex items-center gap-0.5 rounded-full bg-surface-2 p-0.5">
             <Button
               variant="ghost"
@@ -153,7 +153,7 @@ export default function ReviewsPage() {
               onClick={() => handleModeChange('calendar')}
             >
               <CalendarDays className="h-3.5 w-3.5" />
-              月历
+              Calendar
             </Button>
             <Button
               variant="ghost"
@@ -165,7 +165,7 @@ export default function ReviewsPage() {
               onClick={() => handleModeChange('timeline')}
             >
               <List className="h-3.5 w-3.5" />
-              时间线
+              Timeline
             </Button>
           </div>
         </div>
@@ -178,9 +178,9 @@ export default function ReviewsPage() {
         <div className="surface flex flex-col items-center gap-3 px-4 py-14 text-center">
           <ClipboardList className="h-7 w-7 text-muted-foreground/60" />
           <div>
-            <p className="text-body">还没有评价记录</p>
+            <p className="text-body">No reviews yet</p>
             <p className="mt-1 text-caption text-muted-foreground">
-              每天结束时写下一份评价，记录自己的成长
+              Write a review at the end of each day
             </p>
           </div>
         </div>

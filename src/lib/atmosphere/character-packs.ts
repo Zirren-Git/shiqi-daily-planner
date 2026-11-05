@@ -211,7 +211,7 @@ export interface ImportResult {
 /** 解析一组文件（来自 <input webkitdirectory>），按子目录分组 */
 export async function importPackFiles(files: FileList | File[]): Promise<ImportResult> {
   const list = Array.from(files)
-  if (list.length === 0) return { ok: false, imported: [], skipped: [], error: '没有选择文件' }
+  if (list.length === 0) return { ok: false, imported: [], skipped: [], error: 'No files selected' }
 
   const groups = new Map<string, File[]>()
   for (const file of list) {
@@ -228,7 +228,7 @@ export async function importPackFiles(files: FileList | File[]): Promise<ImportR
       ok: false,
       imported: [],
       skipped: [],
-      error: '没找到角色文件夹。请选择包含「角色名/manifest.json」的 characters 目录',
+      error: 'No character folder found. Select a characters directory containing character-name/manifest.json',
     }
   }
 
@@ -238,14 +238,14 @@ export async function importPackFiles(files: FileList | File[]): Promise<ImportR
   for (const [dir, group] of groups) {
     const manifestFile = group.find((f) => baseName(f.name).toLowerCase() === 'manifest')
     if (!manifestFile) {
-      skipped.push(`${dir}（缺少 manifest.json）`)
+      skipped.push(`${dir} (missing manifest.json)`)
       continue
     }
     let manifest: PackManifest = {}
     try {
       manifest = JSON.parse(await manifestFile.text()) as PackManifest
     } catch {
-      skipped.push(`${dir}（manifest.json 解析失败）`)
+      skipped.push(`${dir} (could not parse manifest.json)`)
       continue
     }
 
@@ -274,7 +274,7 @@ export async function importPackFiles(files: FileList | File[]): Promise<ImportR
     const displayKind = KIND_PRIORITY.find((k) => byKind.has(k))
     const displayFile = displayKind ? byKind.get(displayKind) : biggest
     if (!displayFile) {
-      skipped.push(`${dir}（没有可用图片）`)
+      skipped.push(`${dir} (no usable images)`)
       continue
     }
 
@@ -302,7 +302,7 @@ export async function importPackFiles(files: FileList | File[]): Promise<ImportR
     ok: imported.length > 0,
     imported,
     skipped,
-    error: imported.length === 0 ? '没有导入任何角色包' : undefined,
+    error: imported.length === 0 ? 'No character packs were imported' : undefined,
   }
 }
 
@@ -399,18 +399,18 @@ async function blobFromImageElement(url: string): Promise<Blob> {
   img.crossOrigin = 'anonymous'
   await new Promise<void>((resolve, reject) => {
     img.onload = () => resolve()
-    img.onerror = () => reject(new Error('图片加载失败'))
+    img.onerror = () => reject(new Error('Image could not be loaded'))
     img.src = url
   })
   const canvas = document.createElement('canvas')
   canvas.width = img.naturalWidth
   canvas.height = img.naturalHeight
   const ctx = canvas.getContext('2d')
-  if (!ctx) throw new Error('无法读取图片')
+  if (!ctx) throw new Error('Could not read image')
   ctx.drawImage(img, 0, 0)
   // 跨域图未授权时会在这里抛 SecurityError
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
-  if (!blob) throw new Error('无法转换图片')
+  if (!blob) throw new Error('Could not convert image')
   return blob
 }
 
@@ -420,7 +420,7 @@ export async function importPackFromUrl(
 ): Promise<ImportResult> {
   const url = rawUrl.trim()
   if (!/^https?:\/\//i.test(url)) {
-    return { ok: false, imported: [], skipped: [], error: '请填以 http(s):// 开头的图片链接' }
+    return { ok: false, imported: [], skipped: [], error: 'Enter an image URL starting with http:// or https://' }
   }
 
   let blob: Blob | null = null
@@ -438,21 +438,21 @@ export async function importPackFromUrl(
         ok: false,
         imported: [],
         skipped: [],
-        error: '这个链接不允许跨域读取。请把图片存到本地，再用「导入角色包」',
+        error: 'This image cannot be accessed across origins. Download it and import it locally instead.',
       }
     }
   }
   if (!blob.type.startsWith('image/')) {
-    return { ok: false, imported: [], skipped: [], error: '这个链接不是图片' }
+    return { ok: false, imported: [], skipped: [], error: 'This URL is not an image' }
   }
   if (blob.size > MAX_URL_BYTES) {
-    return { ok: false, imported: [], skipped: [], error: '图片超过 8MB' }
+    return { ok: false, imported: [], skipped: [], error: 'Image exceeds 8 MB' }
   }
 
   const guessed = decodeURIComponent(url.split('/').pop() ?? '')
     .replace(/\.[^.]+$/, '')
     .slice(0, 40)
-  const name = (displayName || guessed || '网络图片').slice(0, 40)
+  const name = (displayName || guessed || 'Online image').slice(0, 40)
   const slug = name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -461,7 +461,7 @@ export async function importPackFromUrl(
 
   await savePack({
     id,
-    manifest: { name, series: '网络素材', tags: ['网络'] },
+    manifest: { name, series: 'Online artwork', tags: ['Online'] },
     display: blob,
     displayKind: blob.type === 'image/gif' ? 'preview' : 'portrait',
     states: {},

@@ -145,7 +145,7 @@ export function HomeHabitsSummary() {
         }
         invalidateLogs()
       } catch {
-        toast.error('打卡失败')
+        toast.error('Could not check in')
       } finally {
         setTogglingIds((prev) => {
           const next = new Set(prev)
@@ -271,15 +271,15 @@ export function HomeHabitsSummary() {
   const saveEditLog = useCallback(async () => {
     if (!user || !editLog) return
     const val = parseFloat(editValue)
-    if (isNaN(val) || val < 0) { toast.error('请输入有效数值'); return }
+    if (isNaN(val) || val < 0) { toast.error('Enter a valid number'); return }
     try {
       const habit = habits.find((h) => h.id === editLog.habit_id)
       const isCompleted = habit ? val >= habit.target_value : editLog.is_completed
       await logRepo.update(user.id, editLog.id, { value: val, is_completed: isCompleted })
       setEditLog(null)
       invalidateLogs()
-      toast.success('已更新')
-    } catch { toast.error('更新失败') }
+      toast.success('Updated')
+    } catch { toast.error('Could not update') }
   }, [user, logRepo, editLog, editValue, habits])
 
   const confirmDeleteLog = useCallback(async () => {
@@ -288,8 +288,8 @@ export function HomeHabitsSummary() {
       await logRepo.delete(user.id, deleteLog.id)
       setDeleteLog(null)
       invalidateLogs()
-      toast.success('已删除')
-    } catch { toast.error('删除失败') }
+      toast.success('Deleted')
+    } catch { toast.error('Could not delete') }
   }, [user, logRepo, deleteLog])
 
   // Cleanup
@@ -303,8 +303,8 @@ export function HomeHabitsSummary() {
     return (
       <div className="surface border-destructive/20 p-3">
         <div className="flex items-center justify-between">
-          <span className="text-caption font-medium text-muted-foreground">今日习惯</span>
-          <span className="text-micro text-destructive">加载失败</span>
+          <span className="text-caption font-medium text-muted-foreground">Today’s habits</span>
+          <span className="text-micro text-destructive">Could not load</span>
         </div>
       </div>
     )
@@ -314,15 +314,15 @@ export function HomeHabitsSummary() {
     return (
       <div className="surface p-3">
         <div className="flex items-center justify-between">
-          <span className="text-caption font-medium text-muted-foreground">今日习惯</span>
+          <span className="text-caption font-medium text-muted-foreground">Today’s habits</span>
           <Link
             href="/habits"
             className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-6 text-caption')}
           >
-            添加
+            Add
           </Link>
         </div>
-        <p className="py-2 text-center text-caption text-muted-foreground">暂无习惯，去添加吧</p>
+        <p className="py-2 text-center text-caption text-muted-foreground">No habits yet. Add one to get started.</p>
       </div>
     )
   }
@@ -344,7 +344,7 @@ export function HomeHabitsSummary() {
               className="flex items-center gap-1.5 text-caption font-medium text-muted-foreground ui-transition hover:text-foreground"
             >
               <CheckSquare className="h-3.5 w-3.5" />
-              今日习惯
+              Today’s habits
               <span className="text-micro tabular-nums text-muted-foreground">
                 {completedCount}/{activeHabits.length}
               </span>
@@ -354,7 +354,7 @@ export function HomeHabitsSummary() {
                 href="/habits"
                 className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-6 text-caption')}
               >
-                全部
+                All
               </Link>
               <ChevronRight className={cn('h-3 w-3 text-muted-foreground transition-transform', !collapsed && 'rotate-90')} />
             </div>
@@ -410,8 +410,8 @@ export function HomeHabitsSummary() {
       <Dialog open={!!editLog} onOpenChange={() => setEditLog(null)}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>修改打卡记录</DialogTitle>
-            <DialogDescription>修改 {editLog?.log_date} 的记录值</DialogDescription>
+            <DialogTitle>Edit check-in</DialogTitle>
+            <DialogDescription>Edit entry for {editLog?.log_date}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <input
@@ -419,15 +419,15 @@ export function HomeHabitsSummary() {
               inputMode="decimal"
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
-              placeholder="输入数值"
+              placeholder="Enter value"
               autoFocus
               className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-body"
               onKeyDown={(e) => { if (e.key === 'Enter') saveEditLog() }}
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditLog(null)}>取消</Button>
-            <Button onClick={saveEditLog}>保存</Button>
+            <Button variant="outline" onClick={() => setEditLog(null)}>Cancel</Button>
+            <Button onClick={saveEditLog}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -436,14 +436,14 @@ export function HomeHabitsSummary() {
       <Dialog open={!!deleteLog} onOpenChange={() => setDeleteLog(null)}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>删除打卡记录</DialogTitle>
+            <DialogTitle>Delete check-in</DialogTitle>
             <DialogDescription>
-              确定要删除 {deleteLog?.log_date} 的打卡记录吗？此操作无法撤销。
+              Delete the check-in for {deleteLog?.log_date}? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteLog(null)}>取消</Button>
-            <Button variant="destructive" onClick={confirmDeleteLog}>删除</Button>
+            <Button variant="outline" onClick={() => setDeleteLog(null)}>Cancel</Button>
+            <Button variant="destructive" onClick={confirmDeleteLog}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -515,7 +515,7 @@ function HomeHabitRow({
             </>
           ) : (
             <span className={cn('text-micro', isDone ? 'text-primary' : 'text-muted-foreground')}>
-              {isDone ? '今日已完成' : '今日未完成'}
+              {isDone ? 'Done today' : 'Not done today'}
             </span>
           )}
           <MiniSaveState state={saveState} hasDraft={hasDraft} />
@@ -534,7 +534,7 @@ function HomeHabitRow({
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'border-border-strong hover:border-primary'
             )}
-            aria-label={isDone ? '取消打卡' : '打卡'}
+            aria-label={isDone ? 'Undo check-in' : 'Check in'}
           >
             {togglingIds.has(habit.id) ? (
               <Loader2 className="h-3 w-3 animate-spin" />
@@ -550,7 +550,7 @@ function HomeHabitRow({
                 variant="ghost" size="icon-sm"
                 onClick={() => onAdjust(habit, -step)}
                 disabled={displayValue <= 0}
-                aria-label={`减少 ${step}`}
+                aria-label={`Decrease ${step}`}
               >
                 <Minus className="h-3 w-3" />
               </Button>
@@ -570,7 +570,7 @@ function HomeHabitRow({
                         ? 'border-warning/50 bg-warning/10'
                         : 'border-border'
                   )}
-                  title={saveState === 'error' ? '保存失败，点击重试' : hasDraft ? '未保存的更改' : undefined}
+                  title={saveState === 'error' ? 'Could not save. Click to retry.' : hasDraft ? 'Unsaved changes' : undefined}
                 >
                   {displayValue}
                 </button>
@@ -579,7 +579,7 @@ function HomeHabitRow({
               <Button
                 variant="ghost" size="icon-sm"
                 onClick={() => onAdjust(habit, step)}
-                aria-label={`增加 ${step}`}
+                aria-label={`Increase ${step}`}
               >
                 <Plus className="h-3 w-3" />
               </Button>
@@ -593,10 +593,10 @@ function HomeHabitRow({
             <div className="flex shrink-0 items-center">
               {log && (
                 <>
-                  <Button variant="ghost" size="icon-sm" className="h-6 w-6" onClick={() => onEditLog(log)} aria-label="编辑打卡记录">
+                  <Button variant="ghost" size="icon-sm" className="h-6 w-6" onClick={() => onEditLog(log)} aria-label="Edit check-in">
                     <Pencil className="h-3 w-3 text-muted-foreground" />
                   </Button>
-                  <Button variant="ghost" size="icon-sm" className="h-6 w-6" onClick={() => onDeleteLog(log)} aria-label="删除打卡记录">
+                  <Button variant="ghost" size="icon-sm" className="h-6 w-6" onClick={() => onDeleteLog(log)} aria-label="Delete check-in">
                     <Trash2 className="h-3 w-3 text-destructive/60" />
                   </Button>
                 </>
@@ -620,7 +620,7 @@ function MiniSaveState({
     return (
       <span className="inline-flex items-center gap-1 text-micro text-muted-foreground">
         <Loader2 className="h-2.5 w-2.5 animate-spin" />
-        保存中
+        Saving…
       </span>
     )
   }
@@ -628,7 +628,7 @@ function MiniSaveState({
     return (
       <span className="inline-flex items-center gap-1 text-micro text-success">
         <Check className="h-2.5 w-2.5" />
-        已保存
+        Saved
       </span>
     )
   }
@@ -636,12 +636,12 @@ function MiniSaveState({
     return (
       <span className="inline-flex items-center gap-1 text-micro text-destructive">
         <AlertCircle className="h-2.5 w-2.5" />
-        保存失败
+        Could not save
       </span>
     )
   }
   if (hasDraft) {
-    return <span className="text-micro text-muted-foreground">待保存</span>
+    return <span className="text-micro text-muted-foreground">Not saved</span>
   }
   return null
 }
@@ -655,7 +655,7 @@ function getHomeStep(habit: Habit): number {
     case 'hours': return 0.5
     case 'count': return 1
     case 'numeric':
-      if (habit.unit === '小时' || habit.unit === 'h') return 0.5
+      if (habit.unit === 'hours' || habit.unit === 'h') return 0.5
       if (habit.target_value <= 10) return 1
       if (habit.target_value <= 100) return 5
       return 10
@@ -665,9 +665,9 @@ function getHomeStep(habit: Habit): number {
 
 function getHomeUnit(effectiveType: string, habit: Habit): string | undefined {
   switch (effectiveType) {
-    case 'minutes': return '分钟'
-    case 'hours': return '小时'
-    case 'count': return '次'
+    case 'minutes': return 'minutes'
+    case 'hours': return 'hours'
+    case 'count': return 'times'
     case 'numeric': return habit.unit || undefined
     default: return undefined
   }

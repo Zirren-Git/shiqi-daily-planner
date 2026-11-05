@@ -30,9 +30,9 @@ export function OverdueSection({ tasks, tags, activeTaskId, onTaskClick }: Overd
     try {
       await taskRepo.update(user.id, task.id, { task_date: today } as Partial<Task>)
       queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
-      toast.success('已移至今天')
+      toast.success('Moved to today')
     } catch {
-      toast.error('操作失败')
+      toast.error('Action failed')
     }
   }
 
@@ -42,9 +42,9 @@ export function OverdueSection({ tasks, tags, activeTaskId, onTaskClick }: Overd
     try {
       await taskRepo.update(user.id, task.id, { task_date: target } as Partial<Task>)
       queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
-      toast.success('已移至明天')
+      toast.success('Moved to tomorrow')
     } catch {
-      toast.error('操作失败')
+      toast.error('Action failed')
     }
   }
 
@@ -64,7 +64,7 @@ export function OverdueSection({ tasks, tags, activeTaskId, onTaskClick }: Overd
           <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
         )}
         <AlertCircle className="h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
-        <span className="text-section">待处理延期</span>
+        <span className="text-section">Overdue tasks</span>
         <span className="text-micro tabular-nums text-muted-foreground">{tasks.length}</span>
       </button>
 
@@ -86,7 +86,7 @@ export function OverdueSection({ tasks, tags, activeTaskId, onTaskClick }: Overd
                   onClick={() => handleMoveToToday(task)}
                 >
                   <ArrowRight className="mr-0.5 h-3 w-3" aria-hidden="true" />
-                  <span className="text-caption">今天</span>
+                  <span className="text-caption">Today</span>
                 </Button>
                 <Button
                   variant="ghost"
@@ -95,7 +95,7 @@ export function OverdueSection({ tasks, tags, activeTaskId, onTaskClick }: Overd
                   onClick={() => handleMoveToTomorrow(task)}
                 >
                   <Calendar className="mr-0.5 h-3 w-3" aria-hidden="true" />
-                  <span className="text-caption">明天</span>
+                  <span className="text-caption">Tomorrow</span>
                 </Button>
               </div>
             </div>

@@ -16,9 +16,9 @@ import { History, Sun, Moon, Sunrise, AlertCircle, CheckCircle2, CalendarPlus } 
 
 function getGreeting(): { text: string; icon: typeof Sun; period: 'morning' | 'afternoon' | 'evening' } {
   const hour = new Date().getHours()
-  if (hour < 12) return { text: '早上好', icon: Sunrise, period: 'morning' }
-  if (hour < 18) return { text: '下午好', icon: Sun, period: 'afternoon' }
-  return { text: '晚上好', icon: Moon, period: 'evening' }
+  if (hour < 12) return { text: 'Good morning', icon: Sunrise, period: 'morning' }
+  if (hour < 18) return { text: 'Good afternoon', icon: Sun, period: 'afternoon' }
+  return { text: 'Good evening', icon: Moon, period: 'evening' }
 }
 
 export default function TodayPage() {
@@ -63,30 +63,30 @@ export default function TodayPage() {
                 {greeting.text}
               </p>
               <h1 className="mt-0.5 truncate text-title text-foreground">
-                {format(new Date(), 'yyyy年M月d日')}
+                {format(new Date(), 'MMM d, yyyy')}
                 <span className="ml-1.5 text-caption font-normal text-muted-foreground">
                   {formatWeekday(currentDate)}
                 </span>
               </h1>
             </div>
             <span className="shrink-0 rounded-full bg-surface-2 px-2 py-1 text-micro tabular-nums text-muted-foreground">
-              今日 {taskStats.total} 项
+              {taskStats.total} tasks today
             </span>
           </div>
 
-          {/* 主卡：完成度 + 优先级最高的事项 */}
+          {/* 主卡：完成度 + Top priority的事项 */}
           <div className="surface p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
                 <span className="text-section tabular-nums text-primary">{taskStats.rate}%</span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-caption text-muted-foreground">今日完成度</p>
+                <p className="text-caption text-muted-foreground">Today’s progress</p>
                 <p className="text-body font-medium tabular-nums text-foreground">
                   {taskStats.done}
                   <span className="text-muted-foreground"> / {taskStats.total}</span>
                   <span className="ml-1 text-caption font-normal text-muted-foreground">
-                    项已完成
+                    completed
                   </span>
                 </p>
               </div>
@@ -105,7 +105,7 @@ export default function TodayPage() {
                   <AlertCircle
                     className={cn('h-3.5 w-3.5 shrink-0', PRIORITY_COLORS[topTask.priority])}
                   />
-                  <span>优先级最高</span>
+                  <span>Top priority</span>
                   <span className={cn('font-medium', PRIORITY_COLORS[topTask.priority])}>
                     {PRIORITY_LABELS[topTask.priority]}
                   </span>
@@ -127,10 +127,10 @@ export default function TodayPage() {
                 )}
                 <div className="min-w-0">
                   <p className="text-body text-muted-foreground">
-                    {taskStats.total > 0 ? '今天的安排都完成了' : '今天还没有待办'}
+                    {taskStats.total > 0 ? 'Everything is done for today' : 'Nothing planned for today'}
                   </p>
                   <p className="text-caption text-muted-foreground/70">
-                    {taskStats.total > 0 ? '留一点时间给自己' : '从日历或日程添加第一件事'}
+                    {taskStats.total > 0 ? 'Take some time for yourself' : 'Add your first task from Calendar or Schedule'}
                   </p>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function TodayPage() {
               className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
             >
               <History className="h-3.5 w-3.5" />
-              查看历史评价
+              View past reviews
             </Link>
           </div>
         </div>

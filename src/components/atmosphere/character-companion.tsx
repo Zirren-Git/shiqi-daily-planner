@@ -1,11 +1,11 @@
 ﻿'use client'
 
 // ============================================================
-// 角色陪伴
+// Character陪伴
 //
-// - 内置角色（樱色小葵 / 霓虹 NOVA / 像素 PIX）为原创 SVG，自带多表情
+// - 内置Character（樱色小葵 / 霓虹 NOVA / 像素 PIX）为原创 SVG，自带多表情
 // - 也可以挂自定义图片（用户导入的 PNG/GIF），此时只有一张图，不切表情
-// - 左键说话、右键切换；自动状态可跟随真实事件，纯净模式或关闭角色时退场
+// - 左键说话、右键切换；自动状态可跟随真实事件，Distraction-free mode或关闭Character时退场
 // - 位置/尺寸/不透明度/待机动画都由设置控制
 // ============================================================
 
@@ -46,7 +46,7 @@ export function CharacterCompanion({ placement = 'dock' }: { placement?: 'dock' 
 function Companion({ placement }: { placement: 'dock' | 'hero' }) {
   const { state } = useAppearance()
   const atmo = useMemo(() => resolveAtmosphere(state.atmosphere), [state.atmosphere])
-  // 位置选「主视觉」时角色由首页 Hero 卡承担，dock 退场，避免同一角色出现两次
+  // 位置选「主视觉」时Character由首页 Hero 卡承担，dock 退场，避免同一Character出现两次
   const visibleHere = (atmo.characterPosition === 'hero') === (placement === 'hero')
   const character = useCurrentCharacter()
   const assets = useCustomAssets()
@@ -59,7 +59,7 @@ function Companion({ placement }: { placement: 'dock' | 'hero' }) {
     const pool = packLinesFor(activePack?.manifest.dialogue, expression)
     return pool.length
       ? pool[Math.floor(Math.random() * pool.length)]
-      : (character ? pickLine(character.id, expression) : null) ?? '我在这里。'
+      : (character ? pickLine(character.id, expression) : null) ?? "I'm here."
   }, [activePack, character])
 
   const [mood, setMood] = useState<CharacterExpression>('idle')
@@ -204,8 +204,8 @@ function Companion({ placement }: { placement: 'dock' | 'hero' }) {
           if (event.key === 'ArrowRight') { event.preventDefault(); cycleState() }
         }}
         className="atmo-character-figure bg-transparent p-0"
-        title={`${activePack?.manifest.name ?? customAsset?.name ?? character?.name ?? '角色'}：左键说话，右键切换状态（键盘右方向键）`}
-        aria-label={`${activePack?.manifest.name ?? customAsset?.name ?? character?.name ?? '角色'}，当前状态：${EXPRESSION_LABELS[mood]}`}
+        title={`${activePack?.manifest.name ?? customAsset?.name ?? character?.name ?? 'Character'} — Left-click to talk; right-click to change expression`}
+        aria-label={`${activePack?.manifest.name ?? customAsset?.name ?? character?.name ?? 'Character'} — Current state: ${EXPRESSION_LABELS[mood]}`}
         data-reacting={reacting ? 'true' : 'false'}
       >
         {art}

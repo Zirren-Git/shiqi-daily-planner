@@ -1,44 +1,44 @@
 {
-  "generatedAt": "2026-10-23T13:28:11.613Z",
+  "generatedAt": "2026-11-05T18:54:52.494Z",
   "packs": [
     {
       "id": "feng_baobao",
-      "version": "1",
+      "version": "2",
       "manifest": {
         "id": "feng_baobao",
-        "name": "冯宝宝",
-        "series": "一人之下",
+        "name": "Feng Baobao",
+        "series": "The Outcast",
         "tags": [
-          "宝儿姐",
-          "黑长直",
-          "菜刀",
-          "国漫"
+          "Baobao",
+          "Long black hair",
+          "Cleaver",
+          "Chinese animation"
         ],
         "preferred_theme": "minimal",
         "preferred_accent": "#3f7a6a",
         "preferred_background": "minimal-lake",
-        "description": "一人之下的女主角，表情极少，手里常拎一把菜刀。六态透明立绘：待机、开心、思考、工作、出错、困倦。",
+        "description": "A quiet, expressive companion with six poses: idle, happy, thinking, working, error and sleepy.",
         "dialogue": {
           "idle": [
-            "看啥看？",
-            "天真无邪的我"
+            "What are you looking at?",
+            "Here I am."
           ],
           "happy": [
-            "哦哦哦～"
+            "Hooray!"
           ],
           "thinking": [
-            "认真思考中",
-            "啥呢？",
-            "？？？？？"
+            "Thinking carefully…",
+            "What now?",
+            "Hmm…"
           ],
           "working": [
-            "先做眼前这件事。"
+            "Focus on what is in front of you."
           ],
           "error": [
-            "这回弄错了……"
+            "That did not work…"
           ],
           "sleepy": [
-            "乖乖睡吧"
+            "Sleep well."
           ]
         },
         "redistribution_allowed": true

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -87,7 +87,7 @@ export function MonthView({ currentDate, onDateClick, onViewChange, onTaskClick 
     <div className="scroll-thin flex h-full flex-col overflow-auto">
       {/* Day headers */}
       <div className="sticky top-0 z-10 grid grid-cols-7 border-b border-border bg-background">
-        {['日', '一', '二', '三', '四', '五', '六'].map((day) => (
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div
             key={day}
             className="py-2 text-center text-caption font-medium text-muted-foreground"
@@ -98,7 +98,7 @@ export function MonthView({ currentDate, onDateClick, onViewChange, onTaskClick 
       </div>
 
       {/* Calendar grid：单元格只留底色，网格线由 gap + 容器底色提供（1px）
-          min-h-0 让栅格被上下空间约束，行高固定；超出的日程在格子内部滚动，
+          min-h-0 让栅格被上下空间约束，行高固定；Overtime: 的日程在格子内部滚动，
           而不是把整行撑高、把月历推出视口 */}
       <div className="grid min-h-0 flex-1 auto-rows-fr grid-cols-7 gap-px bg-border">
         {days.map((day) => {
@@ -114,7 +114,7 @@ export function MonthView({ currentDate, onDateClick, onViewChange, onTaskClick 
               key={dateStr}
               role="button"
               tabIndex={0}
-              aria-label={`${format(day, 'M月d日')}，${dayTasks.length} 项日程，打开日视图`}
+              aria-label={`${format(day, 'MMM d')}, ${dayTasks.length} tasks; open day view`}
               onClick={() => {
                 onDateClick(dateStr)
                 onViewChange('day')
@@ -163,7 +163,7 @@ export function MonthView({ currentDate, onDateClick, onViewChange, onTaskClick 
               </div>
 
               {/* Task indicators：桌面上全部渲染，格子内可滚轮滚动 / 拖动滚动条；
-                  手机上格子太窄（约 55px），只显示前两条 + 剩余条数，点格子进日视图看全部 */}
+                  手机上格子太窄（约 55px），只显示前两条 + Remaining条数，点格子进日视图看全部 */}
               <div className="cal-cell-list scroll-thin min-h-0 flex-1 space-y-0.5 overflow-y-auto">
                 {dayTasks.map((task) => (
                   <div
@@ -199,7 +199,7 @@ export function MonthView({ currentDate, onDateClick, onViewChange, onTaskClick 
                 ))}
               </div>
 
-              {/* 手机专用：剩余条数（桌面隐藏，见 globals.css 的 .cal-cell-more） */}
+              {/* 手机专用：Remaining条数（桌面隐藏，见 globals.css 的 .cal-cell-more） */}
               {dayTasks.length > 2 && (
                 <div className="cal-cell-more shrink-0 px-1.5 text-micro leading-4 text-muted-foreground">
                   +{dayTasks.length - 2}

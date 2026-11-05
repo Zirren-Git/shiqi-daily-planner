@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { cn } from '@/lib/utils'
 import { formatDisplayDate, formatWeekday, todayStr } from '@/lib/utils/date'
@@ -63,7 +63,7 @@ export function CategoryTaskCard({ task, onClick, showMoveMenu = false }: Catego
                 task.status === 'todo' && 'bg-muted text-muted-foreground'
               )}
             >
-              {task.status === 'todo' ? '待办' : task.status === 'in_progress' ? '进行中' : '完成'}
+              {task.status === 'todo' ? 'To do' : task.status === 'in_progress' ? 'In progress' : 'Complete'}
             </span>
           </div>
 
@@ -88,7 +88,7 @@ export function CategoryTaskCard({ task, onClick, showMoveMenu = false }: Catego
             {task.estimated_minutes != null && (
               <span className="inline-flex items-center gap-0.5 tabular-nums">
                 <Clock className="h-3 w-3" />
-                {task.estimated_minutes}分钟
+                {task.estimated_minutes} min
               </span>
             )}
           </div>
@@ -108,7 +108,7 @@ export function CategoryTaskCard({ task, onClick, showMoveMenu = false }: Catego
 
             {/* Overdue indicator */}
             {isOverdue && (
-              <span className="font-medium text-red-500">已延期</span>
+              <span className="font-medium text-red-500">Overdue</span>
             )}
 
             {/* Recurrence */}

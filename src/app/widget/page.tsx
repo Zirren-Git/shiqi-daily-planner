@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '@/providers/auth-provider'
@@ -228,7 +228,7 @@ export default function WidgetPage() {
   if (!user) {
     return (
       <div className="flex h-screen items-center justify-center bg-card text-caption text-muted-foreground">
-        加载中…
+        Loading…
       </div>
     )
   }
@@ -245,8 +245,8 @@ export default function WidgetPage() {
       <button
         type="button"
         data-testid="widget-dock-tab"
-        title="展开浮窗"
-        aria-label="展开浮窗"
+        title="Expand widget"
+        aria-label="Expand widget"
         onClick={() => bridge?.undockWidget().catch(() => {})}
         onMouseEnter={() => {
           // 刚停靠的 1.2 秒缓冲期内悬停不展开（松手时光标往往就落在小条上）
@@ -263,7 +263,7 @@ export default function WidgetPage() {
           className="text-micro font-medium tracking-[0.3em] text-primary-foreground"
           style={vertical ? { writingMode: 'vertical-rl' } : undefined}
         >
-          时栖
+          ShiQi
         </span>
         <Chevron className="h-3.5 w-3.5 shrink-0 opacity-80" />
       </button>
@@ -275,15 +275,15 @@ export default function WidgetPage() {
       <div className="relative flex h-full w-full flex-col overflow-hidden bg-card ring-1 ring-inset ring-border">
         {/* 标题栏（可拖拽） */}
         <header className="app-drag flex h-11 shrink-0 items-center gap-2 border-b border-border bg-surface-2/50 px-3 select-none">
-          <span className="shrink-0 text-section">时栖</span>
+          <span className="shrink-0 text-section">ShiQi</span>
           <span className="min-w-0 flex-1 truncate text-micro text-muted-foreground tabular-nums">
-            {format(parseISO(today), 'M月d日')} {formatWeekday(today)}
+            {format(parseISO(today), 'MMM d')} {formatWeekday(today)}
           </span>
           <div className="app-no-drag flex shrink-0 items-center gap-0.5">
             <button
               type="button"
-              title="变身桌宠（宝儿姐）"
-              aria-label="变身桌宠"
+              title="Switch to desktop pet"
+              aria-label="Switch to desktop pet"
               onClick={() => bridge?.setPetEnabled(true).catch(() => {})}
               className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
             >
@@ -291,8 +291,8 @@ export default function WidgetPage() {
             </button>
             <button
               type="button"
-              title={pinned ? '取消置顶' : '置顶'}
-              aria-label={pinned ? '取消置顶' : '置顶'}
+              title={pinned ? 'Unpin' : 'Pin'}
+              aria-label={pinned ? 'Unpin' : 'Pin'}
               onClick={async () => {
                 if (!bridge) return
                 setPinned(await bridge.togglePin())
@@ -306,8 +306,8 @@ export default function WidgetPage() {
             </button>
             <button
               type="button"
-              title="打开主窗口"
-              aria-label="打开主窗口"
+              title="Open main window"
+              aria-label="Open main window"
               onClick={() => bridge?.openMain()}
               className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
             >
@@ -315,8 +315,8 @@ export default function WidgetPage() {
             </button>
             <button
               type="button"
-              title="关闭浮窗"
-              aria-label="关闭浮窗"
+              title="Close widget"
+              aria-label="Close widget"
               onClick={() => bridge?.hideWidget()}
               className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground ui-transition hover:bg-destructive/10 hover:text-destructive"
             >
@@ -329,8 +329,8 @@ export default function WidgetPage() {
         <div className="grid shrink-0 grid-cols-2 gap-1 px-3 pt-3">
           {(
             [
-              { key: 'list', label: '清单', icon: ListTodo },
-              { key: 'focus', label: '专注', icon: Sparkles },
+              { key: 'list', label: 'List', icon: ListTodo },
+              { key: 'focus', label: 'Focus', icon: Sparkles },
             ] as const
           ).map((item) => (
             <button
@@ -361,7 +361,7 @@ export default function WidgetPage() {
               <MiniProgress rate={rate} />
               <div className="min-w-0 flex-1">
                 <p className="text-caption text-muted-foreground">
-                  今日完成{' '}
+                  Completed today{' '}
                   <span className="font-medium text-foreground tabular-nums">{doneCount}</span>
                   <span className="tabular-nums"> / {totalCount}</span>
                 </p>
@@ -389,7 +389,7 @@ export default function WidgetPage() {
                 <button
                   type="submit"
                   data-testid="widget-quick-add"
-                  aria-label="添加事项"
+                  aria-label="Add task"
                   disabled={!draft.trim() || saving}
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-primary ui-transition hover:bg-accent disabled:opacity-40"
                 >
@@ -399,7 +399,7 @@ export default function WidgetPage() {
                   data-testid="widget-add-input"
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
-                  placeholder="加一件今天的事，回车即可"
+                  placeholder="Add something for today and press Enter"
                   className="min-w-0 flex-1 bg-transparent text-caption outline-none placeholder:text-muted-foreground/80"
                 />
               </form>
@@ -407,12 +407,12 @@ export default function WidgetPage() {
                 type="button"
                 data-testid="widget-add-detail"
                 onClick={() => setForm({ mode: 'create' })}
-                title="新建事项（可选时段、标签、时间）"
-                aria-label="新建事项"
+                title="New task (optional period, tag and time)"
+                aria-label="New task"
                 className="flex h-9 shrink-0 items-center gap-0.5 rounded-md border border-border px-2 text-caption text-foreground ui-transition hover:border-border-strong hover:bg-accent"
               >
                 <Plus className="h-3 w-3" />
-                新建
+                New
               </button>
             </div>
 
@@ -428,8 +428,8 @@ export default function WidgetPage() {
                 <div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
                   <Sparkles className="h-6 w-6 text-muted-foreground/60" />
                   <div className="space-y-0.5">
-                    <p className="text-body text-foreground">今天还是空白页</p>
-                    <p className="text-caption text-muted-foreground">写下一件小事，就从它开始</p>
+                    <p className="text-body text-foreground">Nothing planned yet</p>
+                    <p className="text-caption text-muted-foreground">Start by writing down one small thing</p>
                   </div>
                 </div>
               ) : (
@@ -466,7 +466,7 @@ export default function WidgetPage() {
                               type="button"
                               onClick={() => handleToggle(task)}
                               disabled={busyId === task.id}
-                              aria-label={isDone ? '标记为未完成' : '标记为完成'}
+                              aria-label={isDone ? 'Mark as incomplete' : 'Mark as complete'}
                               className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full disabled:cursor-default"
                             >
                               <span
@@ -485,7 +485,7 @@ export default function WidgetPage() {
                               type="button"
                               data-testid="widget-task-row"
                               onClick={() => setForm({ mode: 'edit', task })}
-                              title="点击编辑"
+                              title="Click to edit"
                               className="min-w-0 flex-1 text-left"
                             >
                               <span
@@ -526,17 +526,17 @@ export default function WidgetPage() {
         <footer className="flex shrink-0 items-center justify-between gap-2 border-t border-border bg-surface-2/50 px-3 py-2">
           <span className="min-w-0 truncate text-micro text-muted-foreground">
             {totalCount === 0
-              ? '空的一天'
+              ? 'An empty day'
               : doneCount === totalCount
-                ? '今天全部完成 🎉'
-                : `还有 ${totalCount - doneCount} 项`}
+                ? 'Everything done today 🎉'
+                : `${totalCount - doneCount} remaining`}
           </span>
           <button
             type="button"
             onClick={() => bridge?.openMain()}
             className="shrink-0 text-caption font-medium text-foreground ui-transition hover:text-primary hover:underline"
           >
-            打开主窗口
+            Open main window
           </button>
         </footer>
 

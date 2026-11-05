@@ -13,7 +13,7 @@ const APP_HOST = 'local'
 const APP_ORIGIN = `${APP_SCHEME}://${APP_HOST}`
 const DIST_DIR = path.join(__dirname, '..', 'out')
 const DEV_URL = process.env.ELECTRON_START_URL || ''
-const APP_TITLE = '时栖'
+const APP_TITLE = 'ShiQi'
 
 const WIDGET_WIDTH = 340
 const WIDGET_HEIGHT = 460
@@ -255,7 +255,7 @@ function createWidgetWindow() {
     show: false,
     hasShadow: true,
     backgroundColor: '#ffffff',
-    title: `${APP_TITLE} 浮窗`,
+    title: `${APP_TITLE} widget`,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -507,7 +507,7 @@ function createPetWindow() {
     skipTaskbar: true,
     show: false,
     hasShadow: false,
-    title: `${APP_TITLE} 桌宠`,
+    title: `${APP_TITLE} pet`,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -603,35 +603,35 @@ function showMainWindow() {
 function buildMenu() {
   const isDev = !!DEV_URL
   const template = [
-    { label: '文件', submenu: [{ role: 'quit', label: '退出' }] },
+    { label: 'File', submenu: [{ role: 'quit', label: 'Quit' }] },
     {
-      label: '编辑',
+      label: 'Edit',
       submenu: [
-        { role: 'undo', label: '撤销' },
-        { role: 'redo', label: '重做' },
+        { role: 'undo', label: 'Undo' },
+        { role: 'redo', label: 'Redo' },
         { type: 'separator' },
-        { role: 'cut', label: '剪切' },
-        { role: 'copy', label: '复制' },
-        { role: 'paste', label: '粘贴' },
-        { role: 'selectAll', label: '全选' },
+        { role: 'cut', label: 'Cut' },
+        { role: 'copy', label: 'Copy' },
+        { role: 'paste', label: 'Paste' },
+        { role: 'selectAll', label: 'Select all' },
       ],
     },
     {
-      label: '视图',
+      label: 'View',
       submenu: [
-        { role: 'reload', label: '重新加载' },
+        { role: 'reload', label: 'Reload' },
         { type: 'separator' },
         {
-          label: '桌面浮窗',
+          label: 'Desktop widget',
           click: () => toggleWidgetVisible(),
         },
         { type: 'separator' },
-        { role: 'resetZoom', label: '实际大小' },
-        { role: 'zoomIn', label: '放大' },
-        { role: 'zoomOut', label: '缩小' },
+        { role: 'resetZoom', label: 'Actual size' },
+        { role: 'zoomIn', label: 'Zoom in' },
+        { role: 'zoomOut', label: 'Zoom out' },
         { type: 'separator' },
-        { role: 'togglefullscreen', label: '全屏' },
-        ...(isDev ? [{ role: 'toggleDevTools', label: '开发者工具' }] : []),
+        { role: 'togglefullscreen', label: 'Fullscreen' },
+        ...(isDev ? [{ role: 'toggleDevTools', label: 'Developer tools' }] : []),
       ],
     },
   ]
@@ -650,13 +650,13 @@ function createTray() {
     const petVisible = isPetVisible()
     tray.setContextMenu(
       Menu.buildFromTemplate([
-        { label: `打开${APP_TITLE}`, click: () => showMainWindow() },
+        { label: `Open ${APP_TITLE}`, click: () => showMainWindow() },
         {
-          label: widgetVisible ? '隐藏桌面浮窗' : '显示桌面浮窗',
+          label: widgetVisible ? 'Hide desktop widget' : 'Show desktop widget',
           click: () => toggleWidgetVisible(),
         },
         {
-          label: '浮窗置顶',
+          label: 'Always on top',
           type: 'checkbox',
           checked: pinned,
           click: () => {
@@ -671,7 +671,7 @@ function createTray() {
           },
         },
         {
-          label: '桌宠（宝儿姐）',
+          label: 'Desktop pet',
           type: 'checkbox',
           checked: petVisible,
           click: () => {
@@ -681,7 +681,7 @@ function createTray() {
         },
         { type: 'separator' },
         {
-          label: '退出',
+          label: 'Quit',
           click: () => {
             isQuitting = true
             app.quit()

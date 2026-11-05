@@ -43,11 +43,11 @@ export function MoveToCategoryMenu({ task, className }: MoveToCategoryMenuProps)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success('已移动事项')
+      toast.success('Task moved')
       setOpen(false)
     },
     onError: () => {
-      toast.error('移动失败，请重试')
+      toast.error('Could not move task. Try again.')
     },
   })
 
@@ -68,11 +68,11 @@ export function MoveToCategoryMenu({ task, className }: MoveToCategoryMenuProps)
           ) : (
             <MoveHorizontal className="h-3.5 w-3.5 mr-1" />
           )}
-          移动到
+          Move to
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel className="text-micro">选择分类</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-micro">Choose category</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {tags.map((tag) => (
           <DropdownMenuItem
@@ -87,7 +87,7 @@ export function MoveToCategoryMenu({ task, className }: MoveToCategoryMenuProps)
             />
             <span>{tag.name}</span>
             {tag.id === currentTagId && (
-              <span className="ml-auto text-micro text-muted-foreground">当前</span>
+              <span className="ml-auto text-micro text-muted-foreground">Current</span>
             )}
           </DropdownMenuItem>
         ))}
@@ -98,9 +98,9 @@ export function MoveToCategoryMenu({ task, className }: MoveToCategoryMenuProps)
           className="flex items-center gap-2 text-body"
         >
           <TagIcon className="h-3.5 w-3.5 text-muted-foreground" />
-          <span>未分类</span>
+          <span>Uncategorized</span>
           {currentTagId === null && (
-            <span className="ml-auto text-micro text-muted-foreground">当前</span>
+            <span className="ml-auto text-micro text-muted-foreground">Current</span>
           )}
         </DropdownMenuItem>
       </DropdownMenuContent>

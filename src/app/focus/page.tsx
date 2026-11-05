@@ -127,8 +127,8 @@ export default function FocusPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4 sm:p-6">
       <div className="min-w-0">
-        <h1 className="text-display">专注</h1>
-        <p className="mt-1 text-caption text-muted-foreground">番茄钟计时与专注统计</p>
+        <h1 className="text-display">Focus</h1>
+        <p className="mt-1 text-caption text-muted-foreground">Pomodoro timer and focus statistics</p>
       </div>
 
       {/* Timer section */}
@@ -148,42 +148,42 @@ export default function FocusPage() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <StatCard
               icon={Timer}
-              label="今日专注"
-              value={`${stats.todayMinutes} 分钟`}
-              sub={`${stats.todayCount} 次`}
+              label="Focus today"
+              value={`${stats.todayMinutes} minutes`}
+              sub={`${stats.todayCount} sessions`}
             />
             <StatCard
               icon={Flame}
-              label="连续天数"
-              value={`${stats.streak} 天`}
+              label="Day streak"
+              value={`${stats.streak} days`}
             />
             <StatCard
               icon={Target}
-              label="本周专注"
-              value={`${stats.weekMinutes} 分钟`}
+              label="Focus this week"
+              value={`${stats.weekMinutes} minutes`}
             />
             <StatCard
               icon={TrendingUp}
-              label="平均时长"
-              value={`${stats.avgMinutes} 分钟`}
-              sub={`最长 ${stats.maxMinutes} 分钟`}
+              label="Average duration"
+              value={`${stats.avgMinutes} minutes`}
+              sub={`Longest: ${stats.maxMinutes} minutes`}
             />
           </div>
 
           {/* 7-day trend */}
           <div className="surface p-4">
             <div className="flex items-baseline justify-between gap-2">
-              <h2 className="text-section">最近 7 天趋势</h2>
+              <h2 className="text-section">Last 7 days</h2>
               <span className="text-micro tabular-nums text-muted-foreground">
-                {weekTrendTotal} 分钟
+                {weekTrendTotal} minutes
               </span>
             </div>
 
             {weekTrendTotal === 0 ? (
               <EmptyState
                 icon={Timer}
-                title="最近 7 天还没有专注"
-                hint="完成一次专注后，这里会出现趋势"
+                title="No focus sessions in the last 7 days"
+                hint="Complete a focus session to see your trend"
               />
             ) : (
               <div className="mt-4 flex h-32 items-end gap-2">
@@ -194,13 +194,13 @@ export default function FocusPage() {
                   return (
                     <div key={day.date} className="flex h-full flex-1 flex-col items-center gap-1">
                       <span className="text-micro tabular-nums text-muted-foreground">
-                        {day.minutes > 0 ? `${day.minutes}分` : ''}
+                        {day.minutes > 0 ? `${day.minutes} min` : ''}
                       </span>
                       <div className="flex w-full flex-1 items-end">
                         <div
                           className="w-full min-h-1 rounded-t-sm bg-gradient-to-t from-primary/70 via-primary/50 to-period-afternoon/40 ui-transition"
                           style={{ height: `${Math.max(height, 4)}%` }}
-                          title={`${day.date}：${day.minutes} 分钟`}
+                          title={`${day.date}：${day.minutes} minutes`}
                         />
                       </div>
                       <span className="text-micro tabular-nums text-muted-foreground">
@@ -216,17 +216,17 @@ export default function FocusPage() {
           {/* Recent sessions */}
           <div className="surface p-4">
             <div className="flex items-baseline justify-between gap-2">
-              <h2 className="text-section">最近专注记录</h2>
+              <h2 className="text-section">Recent focus sessions</h2>
               <span className="text-micro tabular-nums text-muted-foreground">
-                累计 {stats.totalCount} 次 · {stats.totalMinutes} 分钟
+                Total: {stats.totalCount} sessions · {stats.totalMinutes} minutes
               </span>
             </div>
 
             {completedList.length === 0 ? (
               <EmptyState
                 icon={Clock}
-                title="还没有专注记录"
-                hint="开始第一次专注，记录你的时间"
+                title="No focus sessions yet"
+                hint="Start your first focus session"
               />
             ) : (
               <div className="mt-3 space-y-1.5">
@@ -238,11 +238,11 @@ export default function FocusPage() {
                     <div className="flex min-w-0 items-center gap-2">
                       <Timer className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                       <span className="truncate text-caption">
-                        {s.title || (s.mode === 'short_break' ? '短休息' : s.mode === 'long_break' ? '长休息' : '专注')}
+                        {s.title || (s.mode === 'short_break' ? 'Short break' : s.mode === 'long_break' ? 'Long break' : 'Focus')}
                       </span>
                     </div>
                     <div className="flex shrink-0 items-center gap-3 text-micro tabular-nums text-muted-foreground">
-                      <span>{Math.floor(s.actual_seconds / 60)} 分钟</span>
+                      <span>{Math.floor(s.actual_seconds / 60)} minutes</span>
                       <span>{s.completed_at ? new Date(s.completed_at).toLocaleDateString('zh-CN') : ''}</span>
                     </div>
                   </div>

@@ -260,7 +260,7 @@ export default function PetPage() {
   useEffect(() => {
     if (!pack || greetedRef.current) return
     greetedRef.current = true
-    const timer = setTimeout(() => showBubble('宝儿姐来咯～\n点我说话，按住拖动，右键换形态'), 300)
+    const timer = setTimeout(() => showBubble('Hello!\nClick to talk, drag to move, right-click to change appearance'), 300)
     return () => clearTimeout(timer)
   }, [pack, showBubble])
 
@@ -381,7 +381,7 @@ export default function PetPage() {
           data-expression={expression}
           role="button"
           tabIndex={0}
-          aria-label={`宝儿姐，${PET_EXPRESSION_LABELS[expression]}`}
+          aria-label={`Desktop pet: ${PET_EXPRESSION_LABELS[expression]}`}
           onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advanceBubble() } }}
           className="pointer-events-auto flex cursor-grab touch-none items-end justify-center select-none active:cursor-grabbing"
           onPointerDown={onPointerDown}
@@ -393,7 +393,7 @@ export default function PetPage() {
             e.preventDefault()
             cycleExpression()
           }}
-          title="左键说话 · 按住拖动 · 右键换形态"
+          title="Click to talk · drag to move · right-click to change appearance"
         >
           {imageUrl ? (
             // 本地素材是运行时 object URL，next/image 无法优化
@@ -402,7 +402,7 @@ export default function PetPage() {
               key={`${expression}-${reaction}`}
               ref={imgRef}
               src={imageUrl}
-              alt="桌宠"
+              alt="Desktop pet"
               draggable={false}
               style={{ maxHeight: preferences.size, maxWidth: 248, width: 'auto', height: 'auto' }}
               className={cn("drop-shadow-2xl", preferences.motion && reaction > 0 && "pet-react")}
@@ -410,7 +410,7 @@ export default function PetPage() {
           ) : ready ? (
             <div className="flex h-[240px] w-[170px] flex-col items-center justify-center gap-2 rounded-2xl bg-card/90 text-caption text-muted-foreground shadow-lg ring-1 ring-border">
               <Cat className="h-8 w-8" />
-              <span className="px-3 text-center">角色包还没就绪{'\n'}稍等片刻或重启应用</span>
+              <span className="px-3 text-center">Character pack not ready{'\n'}Please wait or restart the app</span>
             </div>
           ) : (
             <div className="flex h-[240px] w-[170px] items-center justify-center">
@@ -418,10 +418,10 @@ export default function PetPage() {
             </div>
           )}
         </div>
-        <button type="button" data-pet-control aria-label="桌宠设置" aria-expanded={!!menu}
+        <button type="button" data-pet-control aria-label="Pet settings" aria-expanded={!!menu}
           className="pointer-events-auto mt-1 flex items-center gap-1 rounded-full bg-card/95 px-3 py-1 text-xs text-foreground shadow-sm"
           onClick={() => { menuOpenRef.current = true; applyIgnore(false); setMenu({ x: 8, y: 8 }) }}>
-          <Settings2 className="h-3 w-3" />{PET_EXPRESSION_LABELS[expression]} · 设置
+          <Settings2 className="h-3 w-3" />{PET_EXPRESSION_LABELS[expression]} · Settings
         </button>
       </div>
 
@@ -431,20 +431,20 @@ export default function PetPage() {
           <div className="absolute inset-0 z-30" onPointerDown={closeMenu} onContextMenu={(e) => { e.preventDefault(); closeMenu() }} />
           <div
             data-pet-control
-            role="dialog" aria-label="桌宠设置面板"
+            role="dialog" aria-label="Pet settings panel"
             className="pointer-events-auto absolute z-40 max-h-[calc(100vh-16px)] w-[248px] overflow-y-auto rounded-xl bg-card py-1 shadow-[var(--shadow-pop)] ring-1 ring-border"
             style={{ left: menu.x, top: menu.y }}
           >
-            <div className="flex items-center justify-between px-3 pt-2 text-caption"><strong>桌宠设置</strong><button type="button" onClick={closeMenu} aria-label="关闭桌宠设置">收起</button></div>
+            <div className="flex items-center justify-between px-3 pt-2 text-caption"><strong>Pet settings</strong><button type="button" onClick={closeMenu} aria-label="Close pet settings">Collapse</button></div>
             <PetPreferencesControl />
             {(
               [
-                { icon: MonitorSmartphone, label: '打开浮窗', action: () => bridge?.showWidget() },
-                { icon: Maximize2, label: '打开主窗口', action: () => bridge?.openMain() },
-                { icon: ArrowRightLeft, label: '切换形态', action: cycleExpression },
+                { icon: MonitorSmartphone, label: 'Open widget', action: () => bridge?.showWidget() },
+                { icon: Maximize2, label: 'Open main window', action: () => bridge?.openMain() },
+                { icon: ArrowRightLeft, label: 'Change appearance', action: cycleExpression },
                 {
                   icon: Power,
-                  label: '关闭桌宠',
+                  label: 'Close pet',
                   action: () => bridge?.setPetEnabled(false),
                   danger: true,
                 },
@@ -456,7 +456,7 @@ export default function PetPage() {
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={async () => {
                   closeMenu()
-                  try { await item.action() } catch { showBubble('暂时没能完成操作，请再试一次') }
+                  try { await item.action() } catch { showBubble('Could not complete this action. Please try again.') }
                 }}
                 className={cn(
                   'flex w-full items-center gap-2 px-3 py-2 text-left text-caption ui-transition hover:bg-accent',

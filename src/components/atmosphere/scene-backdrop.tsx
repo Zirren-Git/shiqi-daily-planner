@@ -5,7 +5,7 @@
 //
 // 固定铺满视口、pointer-events: none，位于内容之下（内容层 z-10）。
 // 支持：内置 SVG 场景 / 自定义图片、可见度、模糊、压暗、色相、亮度、遮罩强度。
-// 纯净模式（pure）由 resolveAtmosphere 折算成"极淡背景"，无需在这里分支。
+// Distraction-free mode（pure）由 resolveAtmosphere 折算成"极淡背景"，无需在这里分支。
 // ============================================================
 
 import { useEffect, useMemo, useState } from 'react'

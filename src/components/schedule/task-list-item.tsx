@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { cn } from '@/lib/utils'
 import { PERIOD_LABELS, PRIORITY_LABELS } from '@/lib/constants'
@@ -47,10 +47,10 @@ export function TaskListItem({ task, tags, isActive, isFocus, onClick }: TaskLis
       const { spawned } = await setTaskCompletion(repos, user.id, task, nextDone)
       queryClient.invalidateQueries({ queryKey: ['tasks', user.id] })
       if (nextDone) {
-        toast.success(spawned ? '已完成，下一次已排好' : '已完成', { duration: 1500 })
+        toast.success(spawned ? 'Completed; next occurrence scheduled' : 'Completed', { duration: 1500 })
       }
     } catch {
-      toast.error('操作失败')
+      toast.error('Action failed')
     } finally {
       setToggling(false)
     }
@@ -74,7 +74,7 @@ export function TaskListItem({ task, tags, isActive, isFocus, onClick }: TaskLis
         data-testid="task-toggle-complete"
         onClick={handleToggle}
         disabled={toggling}
-        aria-label={isDone ? '标记为未完成' : '标记为已完成'}
+        aria-label={isDone ? 'Mark as incomplete' : 'Mark as complete'}
         className={cn(
           'relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ui-transition',
           'after:absolute after:-inset-1.5 after:content-[""]',
@@ -129,7 +129,7 @@ export function TaskListItem({ task, tags, isActive, isFocus, onClick }: TaskLis
           {task.estimated_minutes != null && !task.start_time && (
             <span className="inline-flex items-center gap-0.5 tabular-nums">
               <Clock className="h-3 w-3" aria-hidden="true" />
-              {task.estimated_minutes}分钟
+              {task.estimated_minutes} min
             </span>
           )}
 
@@ -150,8 +150,8 @@ export function TaskListItem({ task, tags, isActive, isFocus, onClick }: TaskLis
         {/* Indicators row */}
         {(task.recurrence_rule || task.reminder_at || totalSubitems > 0) && (
           <div className="flex items-center gap-2 text-caption text-muted-foreground">
-            {task.recurrence_rule && <Repeat className="h-3 w-3" aria-label="重复" />}
-            {task.reminder_at && <Bell className="h-3 w-3" aria-label="提醒" />}
+            {task.recurrence_rule && <Repeat className="h-3 w-3" aria-label="Repeat" />}
+            {task.reminder_at && <Bell className="h-3 w-3" aria-label="Reminders" />}
             {totalSubitems > 0 && (
               <span className="inline-flex items-center gap-0.5 tabular-nums">
                 <ListChecks className="h-3 w-3" aria-hidden="true" />

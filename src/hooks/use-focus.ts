@@ -116,20 +116,20 @@ export function useFocus() {
       notifyDataChanged('focus')
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       queryClient.invalidateQueries({ queryKey: ['focus', 'stats'] })
-      toast.success('专注完成！', { duration: 3000 })
+      toast.success('Focus session complete!', { duration: 3000 })
       // 系统级提醒：浮窗里开的番茄钟，主窗口不看得到这里也照样提醒
       showBrowserNotification(
-        mode === 'stopwatch' ? '⏱ 专注结束' : '🍅 番茄完成',
+        mode === 'stopwatch' ? '⏱ Focus ended' : '🍅 Pomodoro complete',
         {
           body:
             mode === 'stopwatch'
-              ? `这段专注持续了 ${formatClock(Math.max(0, elapsed))}，休息一下吧`
-              : `${mins} 分钟的专注结束啦，起来走两步吧`,
+              ? `You focused for ${formatClock(Math.max(0, elapsed))}. Take a break!`
+              : `Your ${mins}-minute session is over. Take a short break!`,
           tag: 'focus-complete',
         }
       )
     } catch {
-      toast.error('保存专注记录失败')
+      toast.error('Could not save focus session')
     }
   }, [fsRepo, taskRepo, queryClient])
 
@@ -202,11 +202,11 @@ export function useFocus() {
         // 正计时：每满 30 分钟系统提醒一次（用区间判断，丢拍也不会漏提醒）
         const prevElapsed = latestRef.current.elapsedSeconds
         if (crossedStopwatchReminder(prevElapsed, prevElapsed + 1)) {
-          showBrowserNotification('⏱ 专注提醒', {
-            body: `已经专注 ${Math.round((prevElapsed + 1) / 60)} 分钟啦，起来喝口水休息一下`,
+          showBrowserNotification('⏱ Focus reminder', {
+            body: `You have focused for ${Math.round((prevElapsed + 1) / 60)} minutes. Take a water break.`,
             tag: 'focus-stopwatch',
           })
-          toast.info(`已专注 ${Math.round((prevElapsed + 1) / 60)} 分钟`, { duration: 3000 })
+          toast.info(`Focused for ${Math.round((prevElapsed + 1) / 60)} minutes`, { duration: 3000 })
         }
         // Stopwatch: increment elapsed
         setElapsedSeconds((prev) => {
@@ -246,7 +246,7 @@ export function useFocus() {
     async (data: FocusSessionFormData) => {
       if (!user) return
       if (isRunning) {
-        toast.error('当前已有专注正在进行')
+        toast.error('A focus session is already running')
         return
       }
 
@@ -291,9 +291,9 @@ export function useFocus() {
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(stateRef.current))
 
-        toast.success(data.mode === 'short_break' ? '休息开始' : '专注开始', { duration: 1500 })
+        toast.success(data.mode === 'short_break' ? 'Break started' : 'Focus started', { duration: 1500 })
       } catch {
-        toast.error('开始专注失败')
+        toast.error('Could not start focus session')
       }
     },
     [user, fsRepo, isRunning]
@@ -320,7 +320,7 @@ export function useFocus() {
       queryClient.invalidateQueries({ queryKey: ['focus', 'active'] })
       notifyDataChanged('focus')
     } catch {
-      toast.error('暂停失败')
+      toast.error('Could not pause')
     }
   }, [user, fsRepo, sessionId, isRunning, plannedMinutes, remainingSeconds, timerMode, elapsedSeconds, activeSession, queryClient])
 
@@ -340,7 +340,7 @@ export function useFocus() {
       queryClient.invalidateQueries({ queryKey: ['focus', 'active'] })
       notifyDataChanged('focus')
     } catch {
-      toast.error('恢复失败')
+      toast.error('Could not resume')
     }
   }, [user, fsRepo, sessionId, queryClient])
 
@@ -357,7 +357,7 @@ export function useFocus() {
         queryClient.invalidateQueries({ queryKey: ['focus', 'active'] })
         notifyDataChanged('focus')
       } catch {
-        toast.error('加时失败')
+        toast.error('Could not extend time')
       }
     },
     [user, fsRepo, sessionId, timerMode, plannedMinutes, queryClient]
@@ -383,9 +383,9 @@ export function useFocus() {
       stateRef.current = null
       queryClient.invalidateQueries({ queryKey: ['focus', 'active'] })
       notifyDataChanged('focus')
-      toast('专注已取消')
+      toast('Focus session cancelled')
     } catch {
-      toast.error('取消失败')
+      toast.error('Could not cancel')
     }
   }, [user, fsRepo, sessionId, plannedMinutes, remainingSeconds, timerMode, elapsedSeconds, queryClient])
 

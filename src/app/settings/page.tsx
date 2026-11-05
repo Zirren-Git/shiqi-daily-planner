@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useAuth } from '@/providers/auth-provider'
 import { useRepos } from '@/providers/repo-provider'
@@ -32,13 +32,13 @@ import { CALENDAR_VIEW_LABELS, WEEK_START_LABELS } from '@/lib/constants'
 type SettingsSection = 'appearance' | 'calendar' | 'focus' | 'notifications' | 'tags' | 'data' | 'account'
 
 const SECTION_ITEMS: { id: SettingsSection; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: 'appearance', label: '外观与个性化', icon: Palette },
-  { id: 'calendar', label: '日历', icon: CalendarDays },
-  { id: 'focus', label: '专注', icon: Timer },
-  { id: 'notifications', label: '提醒', icon: Bell },
-  { id: 'tags', label: '标签', icon: Tag },
-  { id: 'data', label: '数据', icon: Database },
-  { id: 'account', label: '账户', icon: User },
+  { id: 'appearance', label: 'Appearance', icon: Palette },
+  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
+  { id: 'focus', label: 'Focus', icon: Timer },
+  { id: 'notifications', label: 'Reminders', icon: Bell },
+  { id: 'tags', label: 'Tags', icon: Tag },
+  { id: 'data', label: 'Data', icon: Database },
+  { id: 'account', label: 'Account', icon: User },
 ]
 
 /** 设置区卡片：统一 surface + text-section 标题 + text-caption 描述 */
@@ -122,22 +122,22 @@ export default function SettingsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userPreferences'] })
     },
-    onError: () => toast.error('保存失败'),
+    onError: () => toast.error('Could not save'),
   })
 
   const handleNotificationToggle = async (checked: boolean) => {
     if (checked && permission !== 'granted') {
       const state = await requestPermission()
       if (state === 'denied') {
-        toast.error('通知权限被拒绝，请在浏览器设置中开启')
+        toast.error('Notification permission denied. Enable it in browser settings.')
         return
       }
       if (state === 'unsupported') {
-        toast.error('您的浏览器不支持通知功能')
+        toast.error('Your browser does not support notifications')
         return
       }
       if (state === 'granted') {
-        toast.success('通知已开启')
+        toast.success('Notifications enabled')
       }
     }
     upsertMutation.mutate({ notification_enabled: checked })
@@ -170,20 +170,20 @@ export default function SettingsPage() {
   const compactMode = prefs?.compact_mode ?? false
   const defaultView = prefs?.default_calendar_view || 'month'
   const weekStartsOn = prefs?.week_starts_on ?? 0
-  const accountLabel = isDemoMode ? '本地演示模式' : (user.email ?? '')
+  const accountLabel = isDemoMode ? 'Local demo mode' : (user.email ?? '')
 
   return (
     <div className="flex h-full flex-col lg:flex-row">
       {/* Desktop secondary nav */}
       <aside className="hidden w-56 shrink-0 flex-col border-b border-border bg-card/40 lg:flex lg:border-b-0 lg:border-r">
         <div className="px-4 pt-6 pb-4">
-          <h1 className="text-display">设置</h1>
+          <h1 className="text-display">Settings</h1>
           <p className="mt-1 truncate text-caption text-muted-foreground" title={accountLabel}>
             {accountLabel}
           </p>
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto px-2 pb-4">
-          <p className="px-3 pb-1 text-micro text-muted-foreground">设置分区</p>
+          <p className="px-3 pb-1 text-micro text-muted-foreground">Settings sections</p>
           {SECTION_ITEMS.map((item) => (
             <button
               key={item.id}
@@ -209,7 +209,7 @@ export default function SettingsPage() {
 
       {/* Mobile page header */}
       <div className="px-4 pt-6 pb-3 lg:hidden">
-        <h1 className="text-display">设置</h1>
+        <h1 className="text-display">Settings</h1>
         <p className="mt-1 truncate text-caption text-muted-foreground" title={accountLabel}>
           {accountLabel}
         </p>
@@ -241,14 +241,14 @@ export default function SettingsPage() {
           {isInstallable && (
             <SectionCard
               icon={MonitorDown}
-              title="安装应用"
-              description="将应用安装到桌面或主屏幕，像原生 App 一样使用"
+              title="Install app"
+              description="Install the app to your desktop or home screen"
             >
               <Button
                 className="h-8"
-                onClick={() => { promptInstall(); toast.success('请在弹出的安装窗口中确认') }}
+                onClick={() => { promptInstall(); toast.success('Confirm in the installation prompt') }}
               >
-                <MonitorDown className="mr-1.5 h-4 w-4" />添加到主屏幕
+                <MonitorDown className="mr-1.5 h-4 w-4" />Add to home screen
               </Button>
             </SectionCard>
           )}
@@ -258,8 +258,8 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <AppearancePanel />
 
-              <SectionCard icon={Monitor} title="界面偏好" description="调整列表与页面的疏密">
-                <SettingRow label="紧凑模式" description="使用更紧凑的界面布局">
+              <SectionCard icon={Monitor} title="Interface preferences" description="Adjust the density of lists and pages">
+                <SettingRow label="Compact mode" description="Use a more compact layout">
                   <Switch checked={compactMode} onCheckedChange={handleCompactMode} />
                 </SettingRow>
               </SectionCard>
@@ -271,12 +271,12 @@ export default function SettingsPage() {
 
           {/* Calendar */}
           {activeSection === 'calendar' && (
-            <SectionCard icon={CalendarDays} title="日历偏好" description="设置默认视图和每周起始日">
+            <SectionCard icon={CalendarDays} title="Calendar preferences" description="Choose a default view and first day of the week">
               <div className="space-y-2">
-                <SettingRow label="默认视图">
+                <SettingRow label="Default view">
                   <Select value={defaultView} onValueChange={handleDefaultView}>
                     <SelectTrigger className="h-8 w-28">
-                      <SelectValue placeholder="请选择">
+                      <SelectValue placeholder="Please select">
                         {CALENDAR_VIEW_LABELS[defaultView as CalendarView] || defaultView}
                       </SelectValue>
                     </SelectTrigger>
@@ -287,10 +287,10 @@ export default function SettingsPage() {
                     </SelectContent>
                   </Select>
                 </SettingRow>
-                <SettingRow label="每周起始日">
+                <SettingRow label="First day of the week">
                   <Select value={String(weekStartsOn)} onValueChange={handleWeekStart}>
                     <SelectTrigger className="h-8 w-28">
-                      <SelectValue placeholder="请选择">
+                      <SelectValue placeholder="Please select">
                         {WEEK_START_LABELS[weekStartsOn as WeekStartDay] || String(weekStartsOn)}
                       </SelectValue>
                     </SelectTrigger>
@@ -307,10 +307,10 @@ export default function SettingsPage() {
 
           {/* Focus */}
           {activeSection === 'focus' && (
-            <SectionCard icon={Timer} title="专注设置" description="设置专注计时的默认参数">
+            <SectionCard icon={Timer} title="Focus settings" description="Configure your focus timer">
               <p className="text-body text-muted-foreground">
-                专注功能使用番茄钟计时法。默认专注时长为 25 分钟，
-                短休息 5 分钟，长休息 15 分钟。可在专注页面中自定义每次时长。
+                Focus uses the Pomodoro technique: 25 minutes of focus,
+                a 5-minute short break and a 15-minute long break. Adjust these on the Focus page.
               </p>
             </SectionCard>
           )}
@@ -318,17 +318,17 @@ export default function SettingsPage() {
           {/* Notifications */}
           {activeSection === 'notifications' && (
             <div className="space-y-4">
-              <SectionCard icon={Bell} title="浏览器通知" description="管理通知权限与提醒方式">
+              <SectionCard icon={Bell} title="Browser notifications" description="Manage notifications and reminders">
                 <SettingRow
-                  label="通知开关"
+                  label="Notifications"
                   description={
                     !notifSupported
-                      ? '当前浏览器不支持通知'
+                      ? 'Notifications are not supported here'
                       : permission === 'granted'
-                        ? '通知已开启'
+                        ? 'Notifications enabled'
                         : permission === 'denied'
-                          ? '通知已被浏览器阻止'
-                          : '点击开启通知权限'
+                          ? 'Notifications blocked by browser'
+                          : 'Click to enable notifications'
                   }
                 >
                   {permission === 'granted' ? (
@@ -368,9 +368,9 @@ export default function SettingsPage() {
                 <TemplateManager />
               </section>
 
-              <SectionCard icon={Download} title="导入导出事项" description="按事项导入 / 导出（CSV 或 JSON）">
+              <SectionCard icon={Download} title="Import and export tasks" description="Import or export tasks as CSV or JSON">
                 <Button variant="outline" className="h-8" onClick={() => setShowImportExport(true)}>
-                  <Download className="mr-1.5 h-4 w-4" />导入 / 导出
+                  <Download className="mr-1.5 h-4 w-4" />Import / Export
                 </Button>
               </SectionCard>
             </div>
@@ -380,27 +380,27 @@ export default function SettingsPage() {
           {activeSection === 'account' && (
             <SectionCard
               icon={User}
-              title="账户"
+              title="Account"
               description={
                 IS_LOCAL_ONLY
-                  ? `本地模式 — 数据保存在${LOCAL_STORAGE_LABEL}，不上传到任何服务器`
+                  ? `Local mode — data stays in ${LOCAL_STORAGE_LABEL} and is never uploaded`
                   : isDemoMode
-                    ? '本地演示模式 — 数据保存在浏览器中'
-                    : `登录账号：${user.email}`
+                    ? 'Local demo — data stays in this browser'
+                    : `Signed in as: ${user.email}`
               }
             >
               {IS_LOCAL_ONLY ? (
                 <div className="space-y-3">
                   <p className="text-body text-muted-foreground">
-                    建议定期到「数据」里导出 JSON 备份；卸载应用或清除应用数据会导致记录丢失。
+                    Export a JSON backup regularly from Data. Uninstalling the app or clearing its data will erase your records.
                   </p>
                   <Button variant="outline" className="h-8" onClick={() => setActiveSection('data')}>
-                    <Database className="mr-1.5 h-4 w-4" />前往数据备份
+                    <Database className="mr-1.5 h-4 w-4" />Open data backup
                   </Button>
                 </div>
               ) : (
                 <Button variant="destructive" className="h-8" onClick={handleSignOut}>
-                  <LogOut className="mr-1.5 h-4 w-4" />退出登录
+                  <LogOut className="mr-1.5 h-4 w-4" />Sign out
                 </Button>
               )}
             </SectionCard>

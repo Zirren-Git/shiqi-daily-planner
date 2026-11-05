@@ -128,7 +128,7 @@ export default function CalendarPage() {
           )}
         </div>
 
-        {/* Keep TaskEditDialog for mobile and explicit "新建" */}
+        {/* Keep TaskEditDialog for mobile and explicit "New" */}
         <TaskEditDialog
           task={editingTask}
           open={dialogOpen}

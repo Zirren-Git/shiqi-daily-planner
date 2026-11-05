@@ -22,7 +22,7 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <head>
         <style>{`
           :root {
@@ -106,9 +106,9 @@ export default function GlobalError({
       </head>
       <body>
         <div className="card">
-          <h1>界面出了点问题</h1>
+          <h1>Something went wrong</h1>
           <p>
-            数据都还在本机，没有丢失。可以先点「重新加载」；如果反复出现，把下面的错误信息发给我。
+            Your local data is safe. Try Reload. If the error continues, share the details below.
           </p>
 
           <pre>
@@ -118,10 +118,10 @@ export default function GlobalError({
 
           <div className="actions">
             <button type="button" className="primary" onClick={() => reset()}>
-              重新加载
+              Reload
             </button>
             <button type="button" onClick={() => window.location.reload()}>
-              刷新页面
+              Refresh page
             </button>
           </div>
         </div>

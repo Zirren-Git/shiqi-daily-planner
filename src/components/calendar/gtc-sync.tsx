@@ -58,9 +58,9 @@ export function GtcSync() {
         }
       }
       await queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      setMessage(`同步完成，新增 ${added} 项；打开日历时会重新检查。`)
+      setMessage(`Sync complete. Added ${added} tasks. The calendar checks again when opened.`)
     } catch {
-      setMessage('无法获取 GTC 考试日程。请稍后重试；已有日程不会被删除。')
+      setMessage('Could not load the GTC exam schedule. Try again later; existing tasks will not be deleted.')
     } finally {
       inFlight.current = false
       setBusy(false)
@@ -75,14 +75,14 @@ export function GtcSync() {
 
   return <div className="border-b px-4 py-2 text-sm">
     <div className="flex flex-wrap items-center gap-2">
-      <span>GTC T1cs 考试日程</span>
+      <span>GTC T1cs exam schedule</span>
       <Button size="sm" variant="outline" onClick={() => {
         const next = !enabled
         if (user) localStorage.setItem(enabledKey(user.id), String(next))
         setEnabled(next)
-      }}>{enabled ? '关闭自动同步' : '开启自动同步'}</Button>
-      {enabled && <Button size="sm" variant="ghost" disabled={busy} onClick={() => void sync()}>{busy ? '同步中…' : '立即同步'}</Button>}
-      <a className="underline" href={GTC_URL} target="_blank" rel="noopener noreferrer">查看来源</a>
+      }}>{enabled ? 'Disable auto-sync' : 'Enable auto-sync'}</Button>
+      {enabled && <Button size="sm" variant="ghost" disabled={busy} onClick={() => void sync()}>{busy ? 'Syncing…' : 'Sync now'}</Button>}
+      <a className="underline" href={GTC_URL} target="_blank" rel="noopener noreferrer">View source</a>
     </div>
     {message && <p role="status" className="mt-1 text-muted-foreground">{message}</p>}
   </div>

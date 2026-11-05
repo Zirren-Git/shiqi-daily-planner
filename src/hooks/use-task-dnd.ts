@@ -44,7 +44,7 @@ export function useTaskDnd(): UseTaskDndReturn {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
     onError: () => {
-      toast.error('移动失败，已恢复原位置')
+      toast.error('Could not move task; restored its previous position')
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
   })
@@ -53,7 +53,7 @@ export function useTaskDnd(): UseTaskDndReturn {
     mutationFn: (updates: { id: string; order_index: number }[]) =>
       taskRepo.reorder(user!.id, updates),
     onError: () => {
-      toast.error('排序失败')
+      toast.error('Could not reorder tasks')
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
   })
@@ -74,7 +74,7 @@ export function useTaskDnd(): UseTaskDndReturn {
       if (needsRebalance(allItems)) {
         const rebalanced = rebalanceOrderIndices(allItems)
         await reorderMutation.mutateAsync(rebalanced)
-        toast.success('已排序')
+        toast.success('Tasks reordered')
       } else {
         await reorderMutation.mutateAsync(reorderUpdates)
       }

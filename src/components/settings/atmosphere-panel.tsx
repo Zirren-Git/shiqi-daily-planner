@@ -3,8 +3,8 @@
 // ============================================================
 // 氛围设置面板
 //
-// 组织：模式 → 背景 → 角色 → 每日一句 → 效果 → 恢复。
-// 自定义素材（角色图片/壁纸）走 lib/atmosphere/custom-assets，
+// 组织：模式 → 背景 → Character → Daily quote → 效果 → 恢复。
+// 自定义素材（Character图片/壁纸）走 lib/atmosphere/custom-assets，
 // 存在独立 IndexedDB 里，不碰业务数据。
 // ============================================================
 
@@ -141,7 +141,7 @@ function Segmented<T extends string>({
   )
 }
 
-/** 角色包文件名 → 状态（normal/happy/thinking/working/success/error 等） */
+/** Character包文件名 → 状态（normal/happy/thinking/working/success/error 等） */
 const STATE_ALIASES: Record<string, CharacterExpression> = {
   normal: 'idle',
   idle: 'idle',
@@ -161,10 +161,10 @@ const STATE_ALIASES: Record<string, CharacterExpression> = {
 }
 
 const POSITIONS: { value: CharacterPosition; label: string }[] = [
-  { value: 'bottom-left', label: '左下' },
-  { value: 'bottom-right', label: '右下' },
-  { value: 'hero', label: '主视觉' },
-  { value: 'sidebar', label: '侧栏' },
+  { value: 'bottom-left', label: 'Bottom left' },
+  { value: 'bottom-right', label: 'Bottom right' },
+  { value: 'hero', label: 'Hero' },
+  { value: 'sidebar', label: 'Sidebar' },
 ]
 
 export function AtmospherePanel() {
@@ -274,7 +274,7 @@ export function AtmospherePanel() {
     }
 
     if (selectedId) {
-      setImportOk(isPack ? `${picked.length} 张表情` : packName)
+      setImportOk(isPack ? `${picked.length} expressions` : packName)
       patchAtmosphere({
         customCharacterId: selectedId,
         characterEnabled: true,
@@ -291,16 +291,16 @@ export function AtmospherePanel() {
             <Sparkles className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-section text-foreground">沉浸氛围</h2>
+            <h2 className="text-section text-foreground">Atmosphere</h2>
             <p className="mt-0.5 text-caption text-muted-foreground">
-              场景、角色、每日一句与动画。全部随包离线，可一键切回纯净工作模式
+              Scenes, characters, quotes and animation, available offline. Switch back to a distraction-free workspace anytime.
             </p>
           </div>
         </div>
         <Switch
           checked={atmo.enabled}
           onCheckedChange={(v) => patchAtmosphere({ enabled: v, mode: v ? 'immersive' : atmo.mode })}
-          aria-label="沉浸氛围开关"
+          aria-label="Atmosphere toggle"
         />
       </div>
 
@@ -310,15 +310,15 @@ export function AtmospherePanel() {
           value={atmo.mode}
           onChange={(mode) => patchAtmosphere({ mode, enabled: true })}
           options={[
-            { value: 'immersive', label: '沉浸模式' },
-            { value: 'pure', label: '纯净工作模式' },
+            { value: 'immersive', label: 'Immersive mode' },
+            { value: 'pure', label: 'Distraction-free mode' },
           ]}
-          ariaLabel="氛围模式"
+          ariaLabel="Atmosphere mode"
         />
         <span className="text-micro text-muted-foreground">
           {atmo.mode === 'immersive'
-            ? '显示背景、角色、每日一句与动画'
-            : '隐藏角色、压暗背景、停止动画，但保留主题配色'}
+            ? 'Show backgrounds, characters, quotes and animations'
+            : 'Hide characters, dim backgrounds and stop animation while keeping theme colors'}
         </span>
       </div>
 
@@ -328,10 +328,10 @@ export function AtmospherePanel() {
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="flex items-center gap-1.5 text-caption text-muted-foreground">
               <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
-              {theme.name} · 场景
+              {theme.name} · Scenes
             </p>
             <div className="flex items-center gap-1">
-              <span className="text-micro text-muted-foreground">{scenes.length} 张</span>
+              <span className="text-micro text-muted-foreground">{scenes.length} scenes</span>
               <Button
                 variant="ghost"
                 size="sm"
@@ -339,7 +339,7 @@ export function AtmospherePanel() {
                 onClick={() => bgInput.current?.click()}
               >
                 <Upload className="h-3 w-3" />
-                导入壁纸
+                Import wallpaper
               </Button>
               <input
                 ref={bgInput}
@@ -385,7 +385,7 @@ export function AtmospherePanel() {
 
           {customBackgrounds.length > 0 && (
             <div className="mt-2 space-y-1">
-              <p className="text-micro text-muted-foreground">我的壁纸</p>
+              <p className="text-micro text-muted-foreground">My wallpapers</p>
               {customBackgrounds.map((asset) => {
                 const active = atmo.bgSource === 'custom' && atmo.customBackgroundId === asset.id
                 return (
@@ -404,13 +404,13 @@ export function AtmospherePanel() {
                       }
                     >
                       {asset.name}
-                      {active && <span className="ml-1.5 text-primary">使用中</span>}
+                      {active && <span className="ml-1.5 text-primary">In use</span>}
                     </button>
                     <Button
                       variant="ghost"
                       size="icon-xs"
                       className="text-muted-foreground hover:text-destructive"
-                      aria-label={`删除壁纸 ${asset.name}`}
+                      aria-label={`Delete wallpaper ${asset.name}`}
                       onClick={() => {
                         void deleteAsset(asset.id)
                         if (atmo.customBackgroundId === asset.id) {
@@ -426,81 +426,81 @@ export function AtmospherePanel() {
             </div>
           )}
 
-          <Row label="随机轮换" description="每天首次打开时换一张（同一天内稳定）">
+          <Row label="Rotate randomly" description="Choose a new image each day">
             <Switch
               checked={atmo.rotateScenes}
               onCheckedChange={(v) => patchAtmosphere({ rotateScenes: v })}
-              aria-label="随机轮换场景"
+              aria-label="Rotate scenes randomly"
             />
           </Row>
 
           <div className="mt-1 space-y-2.5">
             <SliderRow
-              label="可见度"
+              label="Visibility"
               value={atmo.bgOpacity}
               min={0}
               max={100}
               step={5}
               suffix="%"
-              ariaLabel="背景可见度"
+              ariaLabel="Background visibility"
               onChange={(v) => patchAtmosphere({ bgOpacity: v })}
             />
             <SliderRow
-              label="模糊"
+              label="Blur"
               value={atmo.bgBlur}
               min={0}
               max={20}
               suffix="px"
-              ariaLabel="背景模糊"
+              ariaLabel="Background blur"
               onChange={(v) => patchAtmosphere({ bgBlur: v })}
             />
             <SliderRow
-              label="压暗"
+              label="Dim"
               value={atmo.bgDarken}
               min={0}
               max={60}
               step={5}
               suffix="%"
-              ariaLabel="背景压暗"
+              ariaLabel="Background dimming"
               onChange={(v) => patchAtmosphere({ bgDarken: v })}
             />
             <SliderRow
-              label="遮罩"
+              label="Overlay"
               value={atmo.bgMask}
               min={0}
               max={100}
               step={5}
               suffix="%"
-              ariaLabel="遮罩强度"
+              ariaLabel="Overlay strength"
               onChange={(v) => patchAtmosphere({ bgMask: v })}
             />
             <SliderRow
-              label="色相"
+              label="Hue"
               value={atmo.bgHue}
               min={-30}
               max={30}
               suffix="°"
-              ariaLabel="背景色相"
+              ariaLabel="Background hue"
               onChange={(v) => patchAtmosphere({ bgHue: v })}
             />
             <SliderRow
-              label="亮度"
+              label="Brightness"
               value={atmo.bgBrightness}
               min={70}
               max={130}
               suffix="%"
-              ariaLabel="背景亮度"
+              ariaLabel="Background brightness"
               onChange={(v) => patchAtmosphere({ bgBrightness: v })}
             />
           </div>
         </div>
 
-        {/* 角色 */}
+        {/* Character */}
         <div className="border-t border-border pt-3">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="flex items-center gap-1.5 text-caption text-muted-foreground">
               <UserRound className="h-3.5 w-3.5" aria-hidden="true" />
-              角色伙伴
+              Character companion
             </p>
             <div className="flex items-center gap-1">
               <Button
@@ -510,7 +510,7 @@ export function AtmospherePanel() {
                 onClick={() => charInput.current?.click()}
               >
                 <Upload className="h-3 w-3" />
-                导入角色图
+                Import character image
               </Button>
               <input
                 ref={charInput}
@@ -526,7 +526,7 @@ export function AtmospherePanel() {
               <Switch
                 checked={atmo.characterEnabled}
                 onCheckedChange={(v) => patchAtmosphere({ characterEnabled: v })}
-                aria-label="角色显示开关"
+                aria-label="Show character"
               />
             </div>
           </div>
@@ -562,7 +562,7 @@ export function AtmospherePanel() {
                         </span>
                         {active && (
                           <span className="rounded-full bg-primary/12 px-1.5 py-0.5 text-[10px] text-primary">
-                            使用中
+                            In use
                           </span>
                         )}
                       </span>
@@ -588,7 +588,7 @@ export function AtmospherePanel() {
 
           {customCharacters.length > 0 && (
             <div className="mt-2 space-y-1">
-              <p className="text-micro text-muted-foreground">我的角色图</p>
+              <p className="text-micro text-muted-foreground">My character images</p>
               {customCharacters.map((asset) => {
                 const active = atmo.customCharacterId === asset.id
                 return (
@@ -611,13 +611,13 @@ export function AtmospherePanel() {
                       }
                     >
                       {asset.name}
-                      {active && <span className="ml-1.5 text-primary">使用中</span>}
+                      {active && <span className="ml-1.5 text-primary">In use</span>}
                     </button>
                     <Button
                       variant="ghost"
                       size="icon-xs"
                       className="text-muted-foreground hover:text-destructive"
-                      aria-label={`删除角色图 ${asset.name}`}
+                      aria-label={`Delete character image ${asset.name}`}
                       onClick={() => {
                         void deleteAsset(asset.id)
                         if (atmo.customCharacterId === asset.id) {
@@ -635,70 +635,70 @@ export function AtmospherePanel() {
 
           <div className="mt-2 space-y-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <Label className="text-caption text-muted-foreground">位置</Label>
+              <Label className="text-caption text-muted-foreground">Position</Label>
               <Segmented
                 value={atmo.characterPosition}
                 onChange={(v) => patchAtmosphere({ characterPosition: v })}
                 options={POSITIONS}
-                ariaLabel="角色位置"
+                ariaLabel="Character position"
               />
             </div>
             <SliderRow
-              label="尺寸"
+              label="Size"
               value={atmo.characterSize}
               min={60}
               max={160}
               step={5}
               suffix="%"
-              ariaLabel="角色尺寸"
+              ariaLabel="Character size"
               onChange={(v) => patchAtmosphere({ characterSize: v })}
             />
             <SliderRow
-              label="不透明"
+              label="Opacity"
               value={atmo.characterOpacity}
               min={30}
               max={100}
               step={5}
               suffix="%"
-              ariaLabel="角色不透明度"
+              ariaLabel="Character opacity"
               onChange={(v) => patchAtmosphere({ characterOpacity: v })}
             />
           </div>
 
-          <Row label="自动状态" description="表情跟随真实的完成/专注/失败事件切换">
+          <Row label="Automatic reactions" description="React to task completion, focus and errors">
             <Switch
               checked={atmo.characterAutoState}
               onCheckedChange={(v) => patchAtmosphere({ characterAutoState: v })}
-              aria-label="自动状态开关"
+              aria-label="Automatic reactions toggle"
             />
           </Row>
-          <Row label="表情动画" description="待机轻晃与切换动画；关闭后完全静止">
+          <Row label="Expression animation" description="Idle and transition animations; turn off for still images">
             <Switch
               checked={atmo.characterAnimate}
               onCheckedChange={(v) => patchAtmosphere({ characterAnimate: v })}
-              aria-label="表情动画开关"
+              aria-label="Expression animation toggle"
             />
           </Row>
-          <Row label="欢迎语" description="完成任务/出错时让角色开口">
+          <Row label="Greetings" description="Let the character react to tasks and errors">
             <Switch
               checked={atmo.characterWelcome}
               onCheckedChange={(v) => patchAtmosphere({ characterWelcome: v })}
-              aria-label="角色欢迎语开关"
+              aria-label="Character greetings toggle"
             />
           </Row>
         </div>
 
-        {/* 每日一句 */}
+        {/* Daily quote */}
         <div className="border-t border-border pt-3">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="flex items-center gap-1.5 text-caption text-muted-foreground">
               <MessageSquareQuote className="h-3.5 w-3.5" aria-hidden="true" />
-              每日一句
+              Daily quote
             </p>
             <Switch
               checked={atmo.quoteEnabled}
               onCheckedChange={(v) => patchAtmosphere({ quoteEnabled: v })}
-              aria-label="每日一句开关"
+              aria-label="Daily quote toggle"
             />
           </div>
 
@@ -708,10 +708,10 @@ export function AtmospherePanel() {
             <Input
               value={customQuote}
               onChange={(e) => setCustomQuote(e.target.value)}
-              placeholder="加一句自己的话…"
+              placeholder="Add your own quote…"
               maxLength={120}
               className="h-8 w-56"
-              aria-label="自定义短句"
+              aria-label="Custom quote"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
@@ -726,10 +726,10 @@ export function AtmospherePanel() {
               disabled={!customQuote.trim() || customList.length >= 20}
               onClick={addCustomQuote}
             >
-              添加
+              Add
             </Button>
             <span className="text-micro text-muted-foreground">
-              内置 {builtinCount} 句 · 自定义 {customList.length}/20
+              {builtinCount} built-in · {customList.length}/20 custom
             </span>
           </div>
 
@@ -754,7 +754,7 @@ export function AtmospherePanel() {
                       })
                     }
                   >
-                    删除
+                    Delete
                   </Button>
                 </li>
               ))}
@@ -764,25 +764,25 @@ export function AtmospherePanel() {
 
         {/* 效果 */}
         <div className="border-t border-border pt-3">
-          <Row label="氛围动画" description="花瓣、星点、扫描线、像素粒子（低帧耗）">
+          <Row label="Ambient animation" description="Petals, stars, scanlines and pixel effects">
             <Switch
               checked={atmo.animations}
               onCheckedChange={(v) => patchAtmosphere({ animations: v })}
-              aria-label="氛围动画开关"
+              aria-label="Ambient animation toggle"
             />
           </Row>
-          <Row label="完成庆祝" description="勾选完成时撒一点彩带">
+          <Row label="Celebrate completion" description="Show confetti when a task is completed">
             <Switch
               checked={atmo.celebration}
               onCheckedChange={(v) => patchAtmosphere({ celebration: v })}
-              aria-label="完成庆祝开关"
+              aria-label="Celebration toggle"
             />
           </Row>
-          <Row label="每日开场页" description="每天第一次打开首页时展示场景与问候">
+          <Row label="Daily welcome screen" description="Show a scene and greeting when you first open the app each day">
             <Switch
               checked={atmo.welcome}
               onCheckedChange={(v) => patchAtmosphere({ welcome: v })}
-              aria-label="开场页开关"
+              aria-label="Welcome screen toggle"
             />
           </Row>
         </div>
@@ -790,14 +790,14 @@ export function AtmospherePanel() {
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-border pt-3">
           <Button variant="outline" size="sm" className="h-8 gap-1" onClick={resetAtmosphere}>
             <RotateCcw className="h-3.5 w-3.5" />
-            恢复主题默认视觉素材
+            Reset to default theme artwork
           </Button>
           <span className="flex items-center gap-1 text-micro text-muted-foreground">
             <Sunrise className="h-3 w-3" aria-hidden="true" />
-            内置素材为原创 SVG；自定义图片只存在本机
+            Built-in artwork is original SVG. Custom images remain on your device.
           </span>
           {importError && <span className="text-micro text-destructive">{importError}</span>}
-          {importOk && <span className="text-micro text-success">已导入 {importOk}</span>}
+          {importOk && <span className="text-micro text-success">Imported {importOk}</span>}
         </div>
       </div>
     </section>

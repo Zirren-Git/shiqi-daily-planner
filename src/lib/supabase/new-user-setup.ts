@@ -7,14 +7,14 @@
 import { createClient } from '@/lib/supabase/client'
 
 const DEFAULT_TAGS = [
-  { name: '学习', color: '#3b82f6', icon: 'BookOpen' },
-  { name: '科研', color: '#8b5cf6', icon: 'FlaskConical' },
-  { name: '工作', color: '#f59e0b', icon: 'Briefcase' },
-  { name: '运动', color: '#10b981', icon: 'Dumbbell' },
-  { name: '生活', color: '#ec4899', icon: 'Heart' },
-  { name: '休息', color: '#6b7280', icon: 'Moon' },
-  { name: '社交', color: '#06b6d4', icon: 'Users' },
-  { name: '其他', color: '#94a3b8', icon: 'Ellipsis' },
+  { name: 'Study', color: '#3b82f6', icon: 'BookOpen' },
+  { name: 'Research', color: '#8b5cf6', icon: 'FlaskConical' },
+  { name: 'Work', color: '#f59e0b', icon: 'Briefcase' },
+  { name: 'Exercise', color: '#10b981', icon: 'Dumbbell' },
+  { name: 'Life', color: '#ec4899', icon: 'Heart' },
+  { name: 'Rest', color: '#6b7280', icon: 'Moon' },
+  { name: 'Social', color: '#06b6d4', icon: 'Users' },
+  { name: 'Other', color: '#94a3b8', icon: 'Ellipsis' },
 ]
 
 /**

@@ -53,7 +53,7 @@ export function QuoteStrip({ className, compact = false }: QuoteStripProps) {
             {quote.source ?? ''}
           </p>
         ) : (
-          <p className="mt-1 text-micro text-muted-foreground">{theme.name} · 每日一句</p>
+          <p className="mt-1 text-micro text-muted-foreground">{theme.name} · Daily quote</p>
         )}
       </div>
       {!compact && (
@@ -61,8 +61,8 @@ export function QuoteStrip({ className, compact = false }: QuoteStripProps) {
           type="button"
           onClick={next}
           className="shrink-0 rounded-md p-1 text-muted-foreground ui-transition hover:bg-accent hover:text-foreground"
-          aria-label="换一句"
-          title="换一句"
+          aria-label="Next quote"
+          title="Next quote"
         >
           <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
         </button>

@@ -42,9 +42,9 @@ export function UpcomingTasks({
     const laterTasks = future.filter((t) => t.task_date! > nextWeek)
 
     const result: UpcomingGroup[] = []
-    if (tomorrowTasks.length > 0) result.push({ label: '明天', tasks: tomorrowTasks })
-    if (weekTasks.length > 0) result.push({ label: '未来 7 天', tasks: weekTasks })
-    if (laterTasks.length > 0) result.push({ label: '更晚', tasks: laterTasks })
+    if (tomorrowTasks.length > 0) result.push({ label: 'Tomorrow', tasks: tomorrowTasks })
+    if (weekTasks.length > 0) result.push({ label: 'Next 7 days', tasks: weekTasks })
+    if (laterTasks.length > 0) result.push({ label: 'Later', tasks: laterTasks })
     return result
   }, [tasks, today])
 
@@ -53,7 +53,7 @@ export function UpcomingTasks({
   return (
     <section className="space-y-3">
       <h3 className="px-2 text-micro font-medium uppercase tracking-wider text-muted-foreground">
-        接下来
+        Coming up
       </h3>
       {groups.map((group) => (
         <div key={group.label} className="space-y-0.5">
@@ -78,7 +78,7 @@ export function UpcomingTasks({
               size="sm"
               className="h-7 w-full text-muted-foreground"
             >
-              <span className="text-caption">查看全部 {group.tasks.length} 项</span>
+              <span className="text-caption">View all {group.tasks.length} tasks</span>
               <ChevronRight className="ml-1 h-3 w-3" aria-hidden="true" />
             </Button>
           )}

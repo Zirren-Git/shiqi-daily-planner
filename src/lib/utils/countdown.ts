@@ -33,9 +33,9 @@ export function calcDaysRemaining(targetDate: string, isYearly: boolean): number
  * Get human-readable display text for days remaining.
  */
 export function getDisplayText(days: number): string {
-  if (days > 0) return `还有 ${days} 天`
-  if (days === 0) return '就是今天'
-  return `已过去 ${Math.abs(days)} 天`
+  if (days > 0) return `${days} days left`
+  if (days === 0) return 'Today'
+  return `${Math.abs(days)} days ago`
 }
 
 /**

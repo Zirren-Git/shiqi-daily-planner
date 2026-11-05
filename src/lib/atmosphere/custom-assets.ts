@@ -120,13 +120,13 @@ export async function addAsset(
   file: File,
   meta: { kind: AssetKind; name: string; state?: CharacterExpression; groupId?: string }
 ): Promise<{ ok: true; asset: CustomAssetMeta } | { ok: false; error: string }> {
-  if (!file.type.startsWith('image/')) return { ok: false, error: '只支持图片文件' }
-  if (file.size > 8 * 1024 * 1024) return { ok: false, error: '图片不能超过 8MB' }
+  if (!file.type.startsWith('image/')) return { ok: false, error: 'Only image files are supported' }
+  if (file.size > 8 * 1024 * 1024) return { ok: false, error: 'Images must be under 8 MB' }
 
   const record: StoredAsset = {
     id: `asset-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
     kind: meta.kind,
-    name: meta.name.trim().slice(0, 40) || (meta.kind === 'character' ? '自定义角色' : '自定义背景'),
+    name: meta.name.trim().slice(0, 40) || (meta.kind === 'character' ? 'Custom character' : 'Custom background'),
     state: meta.state,
     groupId: meta.groupId ?? `group-${Date.now().toString(36)}`,
     mime: file.type,
@@ -151,7 +151,7 @@ export async function addAsset(
       },
     }
   } catch {
-    return { ok: false, error: '保存失败，可能是存储空间不足' }
+    return { ok: false, error: 'Could not save. Storage may be full.' }
   }
 }
 

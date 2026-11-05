@@ -5,8 +5,8 @@ export default function HabitsLoading() {
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">习惯打卡</h1>
-          <p className="text-sm text-muted-foreground mt-1">坚持每一天</p>
+          <h1 className="text-2xl font-bold tracking-tight">Habit tracking</h1>
+          <p className="text-sm text-muted-foreground mt-1">Keep it up every day</p>
         </div>
         <Skeleton className="h-9 w-24" />
       </div>

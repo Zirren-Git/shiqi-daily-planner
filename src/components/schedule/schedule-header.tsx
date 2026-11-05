@@ -7,9 +7,9 @@ import { Sun, Moon, Sunrise, AlertCircle, Clock, Timer } from 'lucide-react'
 
 function getGreeting(): { text: string; icon: typeof Sun } {
   const hour = new Date().getHours()
-  if (hour < 12) return { text: '早上好', icon: Sunrise }
-  if (hour < 18) return { text: '下午好', icon: Sun }
-  return { text: '晚上好', icon: Moon }
+  if (hour < 12) return { text: 'Good morning', icon: Sunrise }
+  if (hour < 18) return { text: 'Good afternoon', icon: Sun }
+  return { text: 'Good evening', icon: Moon }
 }
 
 interface ScheduleHeaderProps {
@@ -64,17 +64,17 @@ export function ScheduleHeader({ today, tasks }: ScheduleHeaderProps) {
             {greeting.text}
           </p>
           <h1 className="flex flex-wrap items-baseline gap-x-2 text-title">
-            {format(new Date(), 'yyyy年M月d日')}
+            {format(new Date(), 'MMM d, yyyy')}
             <span className="text-caption font-normal text-muted-foreground">
               {formatWeekday(today)}
             </span>
           </h1>
           <p className="text-caption text-muted-foreground">
             {stats.total === 0
-              ? '今天还没有计划，先加一项吧'
+              ? 'Nothing planned yet. Add a task to get started.'
               : remaining > 0
-                ? `还有 ${remaining} 项计划需要处理`
-                : '今天的计划全部完成了 🎉'}
+                ? `${remaining} tasks remaining`
+                : 'All tasks completed today 🎉'}
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export function ScheduleHeader({ today, tasks }: ScheduleHeaderProps) {
         <div
           className="relative h-16 w-16 shrink-0"
           role="img"
-          aria-label={`今日完成进度 ${progress}%`}
+          aria-label={`Today’s progress: ${progress}%`}
         >
           <svg viewBox="0 0 36 36" className="h-16 w-16 -rotate-90">
             <circle
@@ -123,7 +123,7 @@ export function ScheduleHeader({ today, tasks }: ScheduleHeaderProps) {
         </div>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-micro text-muted-foreground">
           <span>
-            已完成{' '}
+            Completed{' '}
             <span className="font-semibold tabular-nums text-foreground">{stats.done}</span>
             {' / '}
             <span className="tabular-nums">{stats.total}</span>
@@ -132,14 +132,14 @@ export function ScheduleHeader({ today, tasks }: ScheduleHeaderProps) {
           {stats.overdue > 0 && (
             <span className="inline-flex items-center gap-1 font-medium text-foreground">
               <AlertCircle className="h-3 w-3 text-warning" aria-hidden="true" />
-              <span className="tabular-nums">{stats.overdue}</span> 项延期
+              <span className="tabular-nums">{stats.overdue}</span> overdue
             </span>
           )}
 
           {stats.focusMinutes > 0 && (
-            <span className="inline-flex items-center gap-1" title="今日任务累计的专注时长">
+            <span className="inline-flex items-center gap-1" title="Focus time for today’s tasks">
               <Timer className="h-3 w-3" aria-hidden="true" />
-              专注 <span className="tabular-nums">{stats.focusMinutes}</span> 分钟
+              Focus <span className="tabular-nums">{stats.focusMinutes}</span> minutes
             </span>
           )}
 
